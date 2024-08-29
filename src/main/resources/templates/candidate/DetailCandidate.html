@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail View</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f7ff;
+    }
+    .detail-section {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: white;
+    }
+    .detail-section h5 {
+      margin-bottom: 20px;
+    }
+    .detail-value {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <div class="detail-section">
+    <h5>I. Personal Information</h5>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Full Name</label>
+        <p class="detail-value" th:text="${person.fullName}">Trung Kiên</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Email</label>
+        <p class="detail-value" th:text="${person.email}">kien@gmail.com</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>D.O.B</label>
+        <p class="detail-value" th:text="${person.dob}">12/12/2000</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Address</label>
+        <p class="detail-value" th:text="${person.address}">No.25 Quang Trung Street, Hoan Kiem District, Hanoi</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Phone Number</label>
+        <p class="detail-value" th:text="${person.phoneNumber}">0123456789</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Gender</label>
+        <p class="detail-value" th:text="${person.gender}">Nam</p>
+      </div>
+    </div>
+    <p class="text-right">Created on <span th:text="${person.creationDate}">22/02/2022</span>, last updated by <span th:text="${person.lastUpdatedBy}">admin</span> today</p>
+  </div>
+
+  <div class="detail-section">
+    <h5>II. Professional Information</h5>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>CV Attachment</label>
+        <p class="detail-value"><a href="#" th:href="@{/files/{filename}(filename=${person.cvAttachment})}" th:text="${person.cvAttachment}">CV-TrangLH-FPT</a> <i class="fas fa-edit"></i></p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Status</label>
+        <p class="detail-value" th:text="${person.status}">Open</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Current Position</label>
+        <p class="detail-value" th:text="${person.currentPosition}">Business Analyst</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Year of Experience</label>
+        <p class="detail-value" th:text="${person.yearsOfExperience}">5</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Skills</label>
+        <p class="detail-value">
+          <span th:each="skill : ${person.skills}" th:text="${skill}" class="badge badge-secondary mr-1">Business Analysis</span>
+        </p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Highest Level</label>
+        <p class="detail-value" th:text="${person.highestLevel}">Bachelor's Degree</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Recruiter</label>
+        <p class="detail-value" th:text="${person.recruiter}">DoanTrungKien (KienDT)</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Note</label>
+        <p class="detail-value" th:text="${person.note}">N/A</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>

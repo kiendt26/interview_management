@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f7ff;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .action-icons i {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h4>Candidate List</h4>
+    <div class="search-bar row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <div class="col-md-3">
+            <select class="form-control">
+                <option selected>Status</option>
+                <option>Open</option>
+                <option>Interviewed</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-secondary">Search</button>
+        </div>
+        <div class="col-md-3 text-right">
+            <button class="btn btn-light">Add new</button>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone No.</th>
+            <th>Current Position</th>
+            <th>Owner HR</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="candidate : ${candidates}">
+            <td th:text="${candidate.name}">Nguyễn Khắc Hoàn</td>
+            <td th:text="${candidate.email}">hoankh@gmail.com</td>
+            <td th:text="${candidate.phone}">0123456789</td>
+            <td th:text="${candidate.position}">Developer</td>
+            <td th:text="${candidate.ownerHr}">anhm1</td>
+            <td th:text="${candidate.status}">Waiting for interview</td>
+            <td class="action-icons">
+                <i class="fas fa-eye"></i>
+                <i class="fas fa-edit"></i>
+                <i class="fas fa-trash"></i>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-right">
+        <p>10/60 rows</p>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>
