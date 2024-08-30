@@ -1,18 +1,16 @@
 package fa.training.entities;
 
-import fa.training.enums.CurrentPosition;
-import fa.training.enums.Department;
-import fa.training.enums.Level;
-import fa.training.enums.OfferStatus;
+import fa.training.enums.*;
+import fa.training.validation.ValidOfferTime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -20,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ValidOfferTime(offerFrom = "contractFrom", offerTo = "contractTo")
 public class Offer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,41 +26,73 @@ public class Offer implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "candidateId")
+    @NotNull
     private Candidate candidate;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private CurrentPosition position;
 
+    @NotNull
     private String interviewInfo;
 
-    private LocalDate contactFrom;
+    @NotNull
+    private LocalDate contractFrom;
 
-    private LocalDate contactTo;
+    @NotNull
+    private LocalDate contractTo;
 
+    @Column(columnDefinition = "TEXT")
+    @ColumnDefault("'N/A'")
     private String interviewNote;
 
-    private String contactType;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ContractType contractType;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Level level;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Department department;
 
+    @NotNull
     private String recruiterOwner;
 
+    @NotNull
     private LocalDate dueDate;
 
+    @NotNull
     private BigDecimal basicSalary;
 
+    @Column(columnDefinition = "TEXT")
+    @ColumnDefault("'N/A'")
     private String note;
-
-    @OneToMany(mappedBy = "users")
-    private List<User> approvalBy = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private OfferStatus status;
+    @ColumnDefault("'WAITING'")
+    private Status status;
 
-    private LocalDateTime offerDate;
+    private LocalDate offerDate;
+
+    @ManyToOne
+    @JoinColumn(name = "approver", referencedColumnName = "userId")
+    private User approvalBy;
+
+    public boolean noDataInRequired(){
+        return Objects.isNull(candidate) ||
+                Objects.isNull(position) ||
+                Objects.isNull(interviewInfo) ||
+                Objects.isNull(contractFrom) ||
+                Objects.isNull(contractTo) ||
+                Objects.isNull(contractType) ||
+                Objects.isNull(level) ||
+                Objects.isNull(department) ||
+                Objects.isNull(recruiterOwner) ||
+                Objects.isNull(dueDate) ||
+                Objects.isNull(basicSalary);
+    }
 }
