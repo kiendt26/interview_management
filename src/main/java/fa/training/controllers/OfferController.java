@@ -1,8 +1,9 @@
 package fa.training.controllers;
 
+import fa.training.dto.AddOfferDTO;
 import fa.training.entities.Offer;
 import fa.training.repositories.OfferRepository;
-import fa.training.utils.TextUtils;
+import fa.training.services.OfferService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class OfferController {
     private OfferRepository offerRepository;
 
     @Autowired
-    private TextUtils textUtils;
+    private OfferService offerService;
 
     @GetMapping("/list")
     public String listOffers(
@@ -75,14 +76,14 @@ public class OfferController {
 
     @PostMapping("/edit")
     public String editOffer(
-            @Valid @ModelAttribute Offer offer,
+            @Valid @ModelAttribute AddOfferDTO offer,
             Model model,
             BindingResult result
     ) {
         model.addAttribute("data", offer);
 
         if (offer.getOfferId() == null) {
-            model.addAttribute("error", "Offer ID is required");
+            model.addAttribute("error", "Offer not found");
             return "redirect:/list";
         }
 
@@ -91,15 +92,11 @@ public class OfferController {
             return "redirect:/edit/" + offer.getOfferId();
         }
 
-        if (offer.noDataInRequired()) {
-            model.addAttribute("error", "Please provide data in required fields");
-            return "redirect:/edit/" + offer.getOfferId();
+        if(!offerService.update(offer)){
+            model.addAttribute("errors", "Could not update offer, offer not found.");
+            return "redirect:/list";
         }
 
-        offer.setInterviewNote(textUtils.format(offer.getInterviewNote()));
-        offer.setNote(textUtils.format(offer.getNote()));
-
-        offerRepository.save(offer);
         return "redirect:/list";
     }
 
