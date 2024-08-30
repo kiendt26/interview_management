@@ -1,6 +1,6 @@
 package fa.training.enums;
 
-public enum OfferStatus {
+public enum Status {
     WAITING ("Waiting for Approval"),
     APPROVED("Approved"),
     REJECTED("Rejected"),
@@ -11,7 +11,7 @@ public enum OfferStatus {
 
     private final String displayName;
 
-    OfferStatus(String displayName) {
+    Status(String displayName) {
         this.displayName = displayName;
     }
 
