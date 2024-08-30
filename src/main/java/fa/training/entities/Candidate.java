@@ -1,6 +1,6 @@
 package fa.training.entities;
 
-import fa.training.enums.Department;
+import fa.training.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +20,7 @@ public class Candidate implements Serializable {
     private String fullName;
     private String email;
     private String phone;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }
