@@ -1,33 +1,121 @@
 package fa.training.controllers;
 
-import fa.training.services.OfferService;
+import fa.training.entities.Offer;
+import fa.training.repositories.OfferRepository;
+import fa.training.utils.TextUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/offer")
 public class OfferController {
     @Autowired
-    private OfferService offerService;
+    private OfferRepository offerRepository;
+
+    @Autowired
+    private TextUtils textUtils;
 
     @GetMapping("/list")
     public String listOffers(
-        Model model
+            Model model
     ) {
-        model.addAttribute("offers", offerService.listOffers());
+        model.addAttribute("offers", offerRepository.findAll());
         return "offer/offer-list";
     }
 
-//    @PostMapping("/add")
-//    public String addOffer(
-//            @ModelAttribute
-//    ){
-//
-//    }
+    @GetMapping("/add")
+    public String addOffer(
+            Model model
+    ) {
+        model.addAttribute("data", new Offer());
+        return "offer/add-offer";
+    }
 
+    @PostMapping("/add")
+    public String addOffer(
+            @Valid @ModelAttribute Offer offer,
+            Model model,
+            BindingResult result
+    ) {
+        model.addAttribute("data", offer);
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors().toString());
+            return "redirect:/add";
+        }
+
+        if (offer.noDataInRequired()) {
+            model.addAttribute("error", "Please provide data in required fields");
+            return "redirect:/add";
+        }
+
+        offer.setOfferDate(LocalDate.now());
+
+        offerRepository.save(offer);
+        return "redirect:/list";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editOffer(
+            @PathVariable("id") Long id,
+            Model model
+    ) {
+        Offer offer = offerRepository.findById(id).orElse(null);
+        if (offer == null) {
+            return "redirect:/list";
+        }
+        model.addAttribute("data", offer);
+        return "offer/edit-offer";
+    }
+
+    @PostMapping("/edit")
+    public String editOffer(
+            @Valid @ModelAttribute Offer offer,
+            Model model,
+            BindingResult result
+    ) {
+        model.addAttribute("data", offer);
+
+        if (offer.getOfferId() == null) {
+            model.addAttribute("error", "Offer ID is required");
+            return "redirect:/list";
+        }
+
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors().toString());
+            return "redirect:/edit/" + offer.getOfferId();
+        }
+
+        if (offer.noDataInRequired()) {
+            model.addAttribute("error", "Please provide data in required fields");
+            return "redirect:/edit/" + offer.getOfferId();
+        }
+
+        offer.setInterviewNote(textUtils.format(offer.getInterviewNote()));
+        offer.setNote(textUtils.format(offer.getNote()));
+
+        offerRepository.save(offer);
+        return "redirect:/list";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteOffer(
+            @PathVariable("id") Long id,
+            Model model
+    ) {
+        Offer offer = offerRepository.findById(id).orElse(null);
+
+        if (offer == null) {
+            model.addAttribute("error", "No offer found");
+            return "redirect:/list";
+        }
+
+        offerRepository.delete(offer);
+        return "redirect:/list";
+    }
 }
