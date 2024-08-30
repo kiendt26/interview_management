@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,5 +23,8 @@ public class User implements Serializable {
     private String passwordHash;
     private String role;
     private String email;
+
+    @OneToMany(mappedBy = "approvalBy")
+    private List<Offer> offers = new ArrayList<>();
 
 }
