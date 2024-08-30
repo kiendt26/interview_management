@@ -42,7 +42,6 @@ public class OfferService {
             candidate = candidateRepository.findById(update.getCandidateId()).orElse(null);
         }
 
-        String formattedInterviewNote = helper.format(update.getInterviewNote());
         String formattedNote = helper.format(update.getNote());
 
         // Set fields          |Call to DataHelper  |Old Data                   |New Data
@@ -51,7 +50,6 @@ public class OfferService {
         offer.setInterviewInfo( helper.updateHelper( offer.getInterviewInfo(),   update.getInterviewInfo()));
         offer.setContractFrom(  helper.updateHelper( offer.getContractFrom(),    update.getContractFrom()));
         offer.setContractTo(    helper.updateHelper( offer.getContractTo(),      update.getContractTo()));
-        offer.setInterviewNote( helper.updateHelper( offer.getInterviewNote(),   formattedInterviewNote));
         offer.setContractType(  helper.updateHelper( offer.getContractType(),    update.getContractType()));
         offer.setLevel(         helper.updateHelper( offer.getLevel(),           update.getLevel()));
         offer.setDepartment(    helper.updateHelper( offer.getDepartment(),      update.getDepartment()));
