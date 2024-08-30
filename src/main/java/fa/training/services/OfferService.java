@@ -1,6 +1,6 @@
 package fa.training.services;
 
-import fa.training.dto.AddOfferDTO;
+import fa.training.dto.OfferDTO;
 import fa.training.entities.Candidate;
 import fa.training.entities.Offer;
 import fa.training.entities.User;
@@ -29,7 +29,7 @@ public class OfferService {
 
 
     //TODO: Validate From < To and Due
-    public boolean update(AddOfferDTO update) {
+    public boolean update(OfferDTO update) {
 
         Offer offer = offerRepository.findById(update.getOfferId()).orElse(null);
 

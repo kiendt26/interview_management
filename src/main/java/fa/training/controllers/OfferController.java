@@ -1,6 +1,6 @@
 package fa.training.controllers;
 
-import fa.training.dto.AddOfferDTO;
+import fa.training.dto.OfferDTO;
 import fa.training.entities.Offer;
 import fa.training.repositories.OfferRepository;
 import fa.training.services.OfferService;
@@ -76,7 +76,7 @@ public class OfferController {
 
     @PostMapping("/edit")
     public String editOffer(
-            @Valid @ModelAttribute AddOfferDTO offer,
+            @Valid @ModelAttribute OfferDTO offer,
             Model model,
             BindingResult result
     ) {
