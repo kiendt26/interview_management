@@ -3,13 +3,16 @@ package fa.training.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @Setter
+@Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
