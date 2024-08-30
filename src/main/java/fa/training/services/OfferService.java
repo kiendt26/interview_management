@@ -27,6 +27,8 @@ public class OfferService {
     @Autowired
     private UserRepository userRepository;
 
+
+    //TODO: Validate From < To and Due
     public boolean update(AddOfferDTO update) {
 
         Offer offer = offerRepository.findById(update.getOfferId()).orElse(null);
