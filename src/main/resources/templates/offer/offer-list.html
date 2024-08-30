@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main})}">
+<head>
+    <title>Offer List</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<main class="col-12 mt-5">
+    <div class="wrapper">
+        <div class="sech-box">
+            <form>
+                <input type="text" name="search-bar" placeholder="Search">
+                <select name="department">
+                    <option th:text="Department" disabled selected>
+                    <option th:value="IT" th:text="IT"></option>
+                    <option th:value="HR" th:text="HR"></option>
+                    <option th:value="FINANCE" th:text="Finance"></option>
+                    <option th:value="COMMUNICATION" th:text="Communication"></option>
+                    <option th:value="MARKETING" th:text="Marketing"></option>
+                    <option th:value="ACCOUNTING" th:text="Accounting"></option>
+                </select>
+                <select name="status">
+                    <option disabled selected>Status</option>
+                    <option th:value="WAITING" >Waiting for Approval</option>
+                    <option th:value="APPROVED">Approved</option>
+                    <option th:value="REJECTED">Rejected</option>
+                    <option th:value="RESPONSE">Waiting for Response</option>
+                    <option th:value="ACCEPTED">Accepted Offer</option>
+                    <option th:value="DECLINED">Declined Offer</option>
+                    <option th:value="CANCELED">Cancelled</option>
+                </select>
+                <input type="submit" value="Search">
+            </form>
+        </div>
+        <div class="add-btn">
+            <a href="#" th:text="'Add new'"></a>
+            <a href="#" th:text="Export"></a>
+        </div>
+        <table style="border: 1px solid black">
+            <thead>
+            <tr>
+                <th th:text="'Candidate Name'"></th>
+                <th th:text="Email"></th>
+                <th th:text="Approver"></th>
+                <th th:text="Department"></th>
+                <th th:text="Notes"></th>
+                <th th:text="Status"></th>
+                <th th:text="Action"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="offer : ${offers}">
+                <td th:text="${offer.candidate.fullName}"></td>
+                <td th:text="${offer.candidate.email}"></td>
+                <td th:text="${offer.approval}"></td>
+                <td th:text="${offer.department.displayName}"></td>
+                <td th:text="${offer.note} ? ${offer.note} : 'N/A'"></td>
+                <td th:text="${offer.status.displayName}"></td>
+                <td>
+                    <a href="#" th:text="View"></a>
+                    <a href="#" th:text="Edit"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
