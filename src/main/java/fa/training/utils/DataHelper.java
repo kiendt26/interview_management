@@ -10,11 +10,15 @@ public class DataHelper {
 
     public String format(String text) {
         if(text == null) return text;
-        String formatted = "";
-        String[] words = text.trim().split("\\s+");
-        for(String run : words) {
-            formatted = formatted + run + "\s";
+        String[] lines = text.split("\\r?\\n");
+        StringBuilder formatted = new StringBuilder();
+        for(String line : lines) {
+            String[] words = line.trim().split("\\s+");
+            for (String word : words) {
+                formatted.append(word).append(" ");
+            }
+            formatted.append("\n");
         }
-        return formatted.trim();
+        return formatted.toString().trim();
     }
 }
