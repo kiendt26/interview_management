@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/job.css})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<main class="col-12 mt-5">
+    <h4>Job Create</h4>
+    <form method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
+        <div class="col-6 mt-3">
+        <label >Job title <span style="color: red">*</span> </label>
+        <input type="text" name="" id="" placeholder="Type a title" style="border: none;width: 75%" class="ms-5">
+        </div>
+        <div class="col-6 ps-3 mt-3">
+            <label >Skills <span style="color: red">*</span> </label>
+            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 40px" >
+                <option checked>...</option>
+
+                <option value="">Java</option>
+                <option value="">Nodejs</option>
+                <option value="">.net</option>
+                <option value="">C++</option>
+                <option value="">Business analysis</option>
+                <option value="">Communication</option>
+
+
+            </select>
+        </div>
+
+
+
+        <div class="col-6 mt-3">
+            <label >Start Date <span style="color: red">*</span> </label>
+            <input type="date" name="" id="" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 30px">
+        </div>
+        <div class="col-6 ps-3 mt-3">
+            <label >End Date <span style="color: red">* </span> </label>
+            <input type="date" name="" id="" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 11px" >
+
+
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Salary Range</label>
+            <label for="" class="ms-3 me-3">From</label>
+
+            <input type="text" name="" id="" placeholder="" style="border: none;width: 25%" class="">
+            <label class="ms-3">To</label>
+            <input type="text" name="" id="" placeholder="" style="border: none;width: 25%;margin-left: 20px">
+
+        </div>
+        <div class="col-6 mt-3">
+            <label >Benefits <span style="color: red">*</span> </label>
+<!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+            <select style="border: none;width: 75%;padding: 8px 0px" class="ms-4">
+                <option checked>...</option>
+
+                <option value="">Travel</option>
+                <option value="">25 leave off</option>
+                <option value="">Hybrid working</option>
+                <option value="">Lunch</option>
+                <option value="">Healthcare insurance</option>
+
+            </select>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Work Address</label>
+            <input type="text" name="" id="" placeholder="Type a title" style="border: none;width: 75%;margin-left: 15px">
+        </div>
+        <div class="col-6  mt-3">
+            <label >Level <span style="color: red">*</span> </label>
+            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 43px">
+                <option checked>...</option>
+
+                <option value="">Fresher</option>
+                <option value="">Junior</option>
+                <option value="">Senior</option>
+                <option value="">Leader</option>
+                <option value="">Manager</option>
+                <option value="">Vice Head</option>
+
+
+            </select>
+        </div>
+
+        <div class="col-6"></div>
+        <div class="col-6 mt-3 d-flex">
+            <label style="">Description</label>
+            <textarea placeholder="Type a Description" cols="42" rows="4" style="border: none" class="ms-3"></textarea>
+        </div>
+        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+            <button class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
+            <button class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</button>
+
+        </div>
+    </form>
+</main>
+</body>
+</html>
