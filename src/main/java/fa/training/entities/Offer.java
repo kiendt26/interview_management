@@ -1,5 +1,6 @@
 package fa.training.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fa.training.enums.*;
 import fa.training.validation.ValidOfferTime;
 import jakarta.persistence.*;
@@ -27,6 +28,7 @@ public class Offer implements Serializable {
     @ManyToOne
     @JoinColumn(name = "candidateId")
     @NotNull
+    @JsonIgnore
     private Candidate candidate;
 
     @Enumerated(EnumType.STRING)
@@ -44,6 +46,7 @@ public class Offer implements Serializable {
 
     @Column(columnDefinition = "TEXT")
     @ColumnDefault("'N/A'")
+    @NotNull
     private String interviewNote;
 
     @NotNull
@@ -69,6 +72,7 @@ public class Offer implements Serializable {
 
     @Column(columnDefinition = "TEXT")
     @ColumnDefault("'N/A'")
+    @NotNull
     private String note;
 
     @Enumerated(EnumType.STRING)
@@ -79,11 +83,12 @@ public class Offer implements Serializable {
     private LocalDate offerDate;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "approver", referencedColumnName = "userId")
     private User approvalBy;
 
     public boolean noDataInRequired(){
-        return Objects.isNull(candidate) ||
+        return  Objects.isNull(candidate) ||
                 Objects.isNull(position) ||
                 Objects.isNull(interviewInfo) ||
                 Objects.isNull(contractFrom) ||
