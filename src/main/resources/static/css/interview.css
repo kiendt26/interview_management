@@ -1,0 +1,21 @@
+.search{
+    background: #f0f3fb;
+    margin-right: 40px;
+    width: 200px;
+    height: 30px;
+    border: none;
+}
+
+.btn-search{
+    font-weight: bold;
+    background: #d9d9d9;
+    padding: 3px 20px 3px 30px;
+    border: none;
+}
+
+.btn-add-interview{
+    float: right;
+    background: #d9d9d9;
+    padding: 3px 15px 3px 20px;
+    text-decoration: none;
+}

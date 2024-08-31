@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:include="~{layout/template::areas(~{::title}, ~{::main}, @{/css/interview.css})}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <title>Home page</title>
+
+</head>
+<body>
+<main class="col-12 mt-5">
+    <h1>Interview Schedule</h1>
+    <p><i>Interview Schedule List</i></p>
+
+    <form>
+        <input class="search" type="search" name="" th:value="${param.keyword}" placeholder="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <select class="search" name="" >
+            <option value="">Interviewer</option>
+        </select>
+
+        <select class="search"  name="" id="">
+<option value="">Status</option>
+        </select>
+
+        <input class="btn-search" type="submit" value="Search">
+    </form>
+    <a class="btn-add-interview" href="">Add new</a>
+    <table class="table table-striped">
+        <thead >
+            <th>Title</th>
+            <th>Candidate</th>
+            <th>Interviewer</th>
+            <th>Schedule</th>
+            <th>Result</th>
+            <th>Status</th>
+            <th>Job</th>
+            <th>Action</th>
+        </thead>
+
+        <tbody>
+            <tr th:each="schedule : ${interviewSchedules}">
+<!--                <td th:text="${schedule.interview?.interviewId}"></td>-->
+                <td th:text="${schedule.interview.interviewTitle}"></td>
+                <td th:text="${schedule.interview.location}"></td>
+                <td th:text="${schedule.interview.meetingId}"></td>
+                <td th:text="${schedule.interview.note}"></td>
+                <td th:text="${schedule.interview.scheduledDate}"></td>
+                <td th:text="${schedule.interview.status}"></td>
+                    <td th:text="${schedule.interview.job?.jobId}"></td>
+                    <td th:text="${schedule.interview.user?.userId}"></td>
+                    <td th:text="${schedule.interview.user?.userName}"></td>
+
+            </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

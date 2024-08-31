@@ -9,7 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+@Table(name = "Users")
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
