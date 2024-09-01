@@ -18,13 +18,13 @@ public class CandidateController {
     @GetMapping
     public String listCandidates(Model model) {
         model.addAttribute("candidates", candidateService.findAll());
-        return "candidates/list";
+        return "candidates/ListCandidate";
     }
 
     @GetMapping("/new")
     public String newCandidateForm(Model model) {
         model.addAttribute("candidate", new Candidate());
-        return "candidates/form";
+        return "candidates/CreateCandidate";
     }
 
     @PostMapping
@@ -38,7 +38,7 @@ public class CandidateController {
         Optional<Candidate> candidate = candidateService.findById(id);
         if (candidate.isPresent()) {
             model.addAttribute("candidate", candidate.get());
-            return "candidates/form";
+            return "candidates/ListCandidate";
         }
         return "redirect:/candidates";
     }
