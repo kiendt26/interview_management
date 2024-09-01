@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main})}">
+<head>
+    <title>Add Offer</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<main class="col-12 mt-5">
+    <div class="fom-wrapper">
+        <form action="" method="post" th:object="${data}">
+        <div>
+            <label for="candidate">Candidate</label>
+            <select name="candidate" id="candidate">
+                <option th:each="candiate : ${candidateList}" th:text="candiate"></option>
+            </select>
+        </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
