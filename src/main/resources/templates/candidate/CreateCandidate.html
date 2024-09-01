@@ -1,125 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Interface</title>
+  <title>Candidate Form</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f0f7ff;
-    }
-    .form-section {
-      border: 1px solid #ccc;
-      padding: 20px;
-      margin-bottom: 20px;
-      background-color: white;
-    }
-    .form-section h5 {
-      margin-bottom: 20px;
-    }
-  </style>
 </head>
 <body>
 <div class="container mt-5">
-  <div class="form-section">
-    <h5>I. Personal Information</h5>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="fullName">Full Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" id="fullName" placeholder="Type a name...">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="email">Email <span class="text-danger">*</span></label>
-        <input type="email" class="form-control" id="email" placeholder="Type an email...">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="dob">D.O.B</label>
-        <input type="text" class="form-control" id="dob" placeholder="DD/MM/YYYY">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="address">Address</label>
-        <input type="text" class="form-control" id="address" placeholder="Type an address...">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="phone">Phone Number</label>
-        <input type="text" class="form-control" id="phone" placeholder="Type a number...">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="gender">Gender <span class="text-danger">*</span></label>
-        <select id="gender" class="form-control">
-          <option selected>Select a gender</option>
-          <option>Male</option>
-          <option>Female</option>
-        </select>
-      </div>
-    </div>
-  </div>
+  <h1 th:text="${candidate.candidateId == null ? 'New Candidate' : 'Edit Candidate'}" class="mb-4"></h1>
+  <form th:action="@{/candidates}" th:object="${candidate}" method="post">
+    <input type="hidden" th:field="*{candidateId}"/>
 
-  <div class="form-section">
-    <h5>II. Professional Information</h5>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="cv">CV Attachment</label>
-        <input type="text" class="form-control" id="cv" value="CV-CHANHNK-FPT" readonly>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="note">Note</label>
-        <input type="text" class="form-control" id="note" value="N/A" readonly>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="position">Position</label>
-        <select id="position" class="form-control">
-          <option selected>Select a position...</option>
-          <option>Backend Developer</option>
-          <option>Frontend Developer</option>
-        </select>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="status">Status <span class="text-danger">*</span></label>
-        <select id="status" class="form-control">
-          <option selected>Select a status</option>
-          <option>Active</option>
-          <option>Inactive</option>
-        </select>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="skills">Skills</label>
-        <select id="skills" class="form-control">
-          <option selected>Select skills...</option>
-          <option>Java</option>
-          <option>Python</option>
-          <option>Node.js</option>
-        </select>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="experience">Year of Experience</label>
-        <input type="number" class="form-control" id="experience" placeholder="Type a number...">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="recruiter">Recruiter</label>
-        <input type="text" class="form-control" id="recruiter" value="Assign me" readonly>
-      </div>
-      <div class="form-group col-md-6">
-        <label for="highestLevel">Highest Level</label>
-        <select id="highestLevel" class="form-control">
-          <option selected>Select highest level...</option>
-          <option>Bachelor</option>
-          <option>Master</option>
-          <option>PhD</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="fullname">Full Name:</label>
+      <input type="text" th:field="*{fullname}" class="form-control" required/>
     </div>
-  </div>
 
-  <div class="text-center">
-    <button type="submit" class="btn btn-secondary">Submit</button>
-    <button type="reset" class="btn btn-light">Cancel</button>
-  </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth:</label>
+      <input type="date" th:field="*{dob}" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" th:field="*{phone}" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" th:field="*{email}" class="form-control" required/>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address:</label>
+      <input type="text" th:field="*{address}" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+      <label for="gender">Gender:</label>
+      <select th:field="*{gender}" class="form-control">
+        <option value="true">Male</option>
+        <option value="false">Female</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="attachment">Attachment:</label>
+      <input type="text" th:field="*{attachment}" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+      <label for="skill">Skill:</label>
+      <select th:field="*{skill}" class="form-control">
+        <option th:each="skill : ${T(fa.training.enums.Skills).values()}"
+                th:value="${skill}"
+                th:text="${skill.displayName}">Skill</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="position">Position:</label>
+      <select th:field="*{position}" class="form-control">
+        <option th:each="position : ${T(fa.training.enums.CurrentPosition).values()}"
+                th:value="${position}"
+                th:text="${position.displayName}">Position</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="note">Note:</label>
+      <textarea th:field="*{note}" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <select th:field="*{status}" class="form-control">
+        <option th:each="status : ${T(fa.training.enums.Status).values()}"
+                th:value="${status}"
+                th:text="${status.displayName}">Status</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="yearOfExp">Years of Experience:</label>
+      <input type="number" th:field="*{yearOfExp}" class="form-control"/>
+    </div>
+
+    <div class="form-group">
+      <label for="highestLevel">Highest Level:</label>
+      <select th:field="*{highestLevel}" class="form-control">
+        <option th:each="level : ${T(fa.training.enums.HighestLevel).values()}"
+                th:value="${level}"
+                th:text="${level.displayName}">Level</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+  </form>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,48 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidate List</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f0f7ff;
+        .table-actions {
+            display: flex;
+            gap: 5px;
+        }
+        .search-input {
+            max-width: 300px;
+            margin-right: 10px;
+        }
+        .btn-custom {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
         }
         .table th, .table td {
             vertical-align: middle;
-        }
-        .search-bar {
-            margin-bottom: 20px;
-        }
-        .action-icons i {
-            margin-right: 10px;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <h4>Candidate List</h4>
-    <div class="search-bar row">
-        <div class="col-md-4">
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <div class="col-md-3">
-            <select class="form-control">
-                <option selected>Status</option>
-                <option>Open</option>
-                <option>Interviewed</option>
+    <h2>Candidate List</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex">
+            <input type="text" class="form-control search-input" placeholder="Search">
+            <select class="form-control search-input">
+                <option>Status</option>
+                <!-- Add other status options here -->
             </select>
+            <button class="btn btn-secondary btn-custom">Search</button>
         </div>
-        <div class="col-md-2">
-            <button class="btn btn-secondary">Search</button>
-        </div>
-        <div class="col-md-3 text-right">
-            <button class="btn btn-light">Add new</button>
-        </div>
+        <a href="/candidates/new" class="btn btn-primary">Add New</a>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-hover table-bordered">
         <thead class="thead-light">
         <tr>
             <th>Name</th>
@@ -56,28 +49,28 @@
         </thead>
         <tbody>
         <tr th:each="candidate : ${candidates}">
-            <td th:text="${candidate.name}">Nguyễn Khắc Hoàn</td>
-            <td th:text="${candidate.email}">hoankh@gmail.com</td>
-            <td th:text="${candidate.phone}">0123456789</td>
-            <td th:text="${candidate.position}">Developer</td>
-            <td th:text="${candidate.ownerHr}">anhm1</td>
-            <td th:text="${candidate.status}">Waiting for interview</td>
-            <td class="action-icons">
-                <i class="fas fa-eye"></i>
-                <i class="fas fa-edit"></i>
-                <i class="fas fa-trash"></i>
+            <td th:text="${candidate.fullname}">Name</td>
+            <td th:text="${candidate.email}">Email</td>
+            <td th:text="${candidate.phone}">Phone No.</td>
+            <td th:text="${candidate.position.displayName}">Current Position</td>
+            <td>Owner HR</td> <!-- Replace with actual data if available -->
+            <td th:text="${candidate.status.displayName}">Status</td>
+            <td class="table-actions">
+                <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" class="btn btn-sm btn-warning">Edit</a>
+                <a th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" class="btn btn-sm btn-danger">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <div class="text-right">
-        <p>10/60 rows</p>
+    <div class="d-flex justify-content-between">
+        <span>10/60 rows</span>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
 </html>
