@@ -2,9 +2,11 @@ package fa.training.controllers;
 
 import fa.training.entities.Candidate;
 import fa.training.services.CandidateService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,17 +20,20 @@ public class CandidateController {
     @GetMapping
     public String listCandidates(Model model) {
         model.addAttribute("candidates", candidateService.findAll());
-        return "candidates/ListCandidate";
+        return "candidates/list";
     }
 
     @GetMapping("/new")
     public String newCandidateForm(Model model) {
         model.addAttribute("candidate", new Candidate());
-        return "candidates/CreateCandidate";
+        return "candidates/form";
     }
 
     @PostMapping
-    public String saveCandidate(@ModelAttribute Candidate candidate) {
+    public String saveCandidate(@Valid @ModelAttribute Candidate candidate, BindingResult result) {
+        if (result.hasErrors()) {
+            return "candidates/form";
+        }
         candidateService.save(candidate);
         return "redirect:/candidates";
     }
@@ -38,7 +43,7 @@ public class CandidateController {
         Optional<Candidate> candidate = candidateService.findById(id);
         if (candidate.isPresent()) {
             model.addAttribute("candidate", candidate.get());
-            return "candidates/ListCandidate";
+            return "candidates/form";
         }
         return "redirect:/candidates";
     }

@@ -13,21 +13,25 @@
     <div class="form-group">
       <label for="fullname">Full Name:</label>
       <input type="text" th:field="*{fullname}" class="form-control" required/>
+      <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></div>
     </div>
 
     <div class="form-group">
       <label for="dob">Date of Birth:</label>
-      <input type="date" th:field="*{dob}" class="form-control" />
+      <input type="date" th:field="*{dob}" class="form-control"/>
+      <div class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></div>
     </div>
 
     <div class="form-group">
       <label for="phone">Phone:</label>
       <input type="text" th:field="*{phone}" class="form-control"/>
+      <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
     </div>
 
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" th:field="*{email}" class="form-control" required/>
+      <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
     </div>
 
     <div class="form-group">
@@ -41,6 +45,7 @@
         <option value="true">Male</option>
         <option value="false">Female</option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
     </div>
 
     <div class="form-group">
@@ -55,6 +60,7 @@
                 th:value="${skill}"
                 th:text="${skill.displayName}">Skill</option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('skill')}" th:errors="*{skill}"></div>
     </div>
 
     <div class="form-group">
@@ -64,6 +70,7 @@
                 th:value="${position}"
                 th:text="${position.displayName}">Position</option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></div>
     </div>
 
     <div class="form-group">
@@ -78,11 +85,13 @@
                 th:value="${status}"
                 th:text="${status.displayName}">Status</option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
     </div>
 
     <div class="form-group">
       <label for="yearOfExp">Years of Experience:</label>
       <input type="number" th:field="*{yearOfExp}" class="form-control"/>
+      <div class="text-danger" th:if="${#fields.hasErrors('yearOfExp')}" th:errors="*{yearOfExp}"></div>
     </div>
 
     <div class="form-group">
@@ -92,6 +101,7 @@
                 th:value="${level}"
                 th:text="${level.displayName}">Level</option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('highestLevel')}" th:errors="*{highestLevel}"></div>
     </div>
 
     <button type="submit" class="btn btn-success">Save</button>
