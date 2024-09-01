@@ -93,18 +93,18 @@ public class OfferService {
         String formattedNote = helper.format(update.getNote());
 
         // Set fields          |Call to DataHelper  |Old Data                   |New Data
-        offer.setCandidate(helper.updateHelper(offer.getCandidate(), candidate));
-        offer.setPosition(helper.updateHelper(offer.getPosition(), update.getPosition()));
-        offer.setInterviewInfo(helper.updateHelper(offer.getInterviewInfo(), update.getInterviewInfo()));
-        offer.setContractFrom(helper.updateHelper(offer.getContractFrom(), update.getContractFrom()));
-        offer.setContractTo(helper.updateHelper(offer.getContractTo(), update.getContractTo()));
-        offer.setContractType(helper.updateHelper(offer.getContractType(), update.getContractType()));
-        offer.setLevel(helper.updateHelper(offer.getLevel(), update.getLevel()));
-        offer.setDepartment(helper.updateHelper(offer.getDepartment(), update.getDepartment()));
-        offer.setRecruiterOwner(helper.updateHelper(offer.getRecruiterOwner(), recruiteOwner.getUserName()));
-        offer.setDueDate(helper.updateHelper(offer.getDueDate(), update.getDueDate()));
-        offer.setBasicSalary(helper.updateHelper(offer.getBasicSalary(), update.getBasicSalary()));
-        offer.setNote(helper.updateHelper(offer.getNote(), formattedNote));
+        offer.setCandidate(     helper.updateHelper(offer.getCandidate(),       candidate));
+        offer.setPosition(      helper.updateHelper(offer.getPosition(),        update.getPosition()));
+        offer.setInterviewInfo( helper.updateHelper(offer.getInterviewInfo(),   update.getInterviewInfo()));
+        offer.setContractFrom(  helper.updateHelper(offer.getContractFrom(),    update.getContractFrom()));
+        offer.setContractTo(    helper.updateHelper(offer.getContractTo(),      update.getContractTo()));
+        offer.setContractType(  helper.updateHelper(offer.getContractType(),    update.getContractType()));
+        offer.setLevel(         helper.updateHelper(offer.getLevel(),           update.getLevel()));
+        offer.setDepartment(    helper.updateHelper(offer.getDepartment(),      update.getDepartment()));
+        offer.setRecruiterOwner(helper.updateHelper(offer.getRecruiterOwner(),  recruiteOwner.getUserName()));
+        offer.setDueDate(       helper.updateHelper(offer.getDueDate(),         update.getDueDate()));
+        offer.setBasicSalary(   helper.updateHelper(offer.getBasicSalary(),     update.getBasicSalary()));
+        offer.setNote(          helper.updateHelper(offer.getNote(),            formattedNote));
 
         offer.getCandidate().setStatus(Status.WAITING);
 

@@ -5,6 +5,8 @@ import fa.training.entities.Candidate;
 import fa.training.entities.Offer;
 import fa.training.entities.User;
 import fa.training.enums.Role;
+import fa.training.enums.Status;
+import fa.training.exception.EnumMismatchException;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.OfferRepository;
 import fa.training.repositories.UserRepository;
@@ -66,14 +68,17 @@ public class OfferController {
 
         model.addAttribute("candidates", candidates);
 
-        List<User> users = userRepository.findByRoleOrRole(Role.ADMIN, Role.HR);
+        List<User> approvers = userRepository.findByRoleOrRole(Role.ADMIN, Role.HR);
 
-        model.addAttribute("users", users);
+        model.addAttribute("approver", approvers);
+
+        List<User> allUsers = userRepository.findAll();
+
+        model.addAttribute("users", allUsers);
 
         return "offer/add-offer";
     }
 
-    //TODO: Add validation
     @PostMapping("/add")
     public String addOffer(
             @Valid @ModelAttribute Offer offer,
@@ -145,5 +150,26 @@ public class OfferController {
 
         offerRepository.delete(offer);
         return "redirect:/list";
+    }
+
+    @PostMapping("/update/{id}/{status}")
+    public String updateOfferStatus(
+            @PathVariable("id") Long id,
+            @PathVariable("status") String status,
+            Model model
+    ) {
+        Offer offer =  offerRepository.findById(id).orElse(null);
+
+        if(offer == null) {
+            return "redirect:/list";
+        }
+
+        try{
+            offer.setStatus(Status.valueOf(status));
+        } catch (IllegalArgumentException e){
+            throw new EnumMismatchException("Invalid status");
+        }
+
+        return "/list/" + offer.getOfferId();
     }
 }
