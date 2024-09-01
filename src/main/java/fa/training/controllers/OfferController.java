@@ -1,8 +1,13 @@
 package fa.training.controllers;
 
 import fa.training.dto.OfferDTO;
+import fa.training.entities.Candidate;
 import fa.training.entities.Offer;
+import fa.training.entities.User;
+import fa.training.enums.Role;
+import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.OfferRepository;
+import fa.training.repositories.UserRepository;
 import fa.training.services.OfferService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/offer")
@@ -21,13 +28,32 @@ public class OfferController {
 
     @Autowired
     private OfferService offerService;
+    @Autowired
+    private CandidateRepository candidateRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/list")
-    public String listOffers(
+    public String getOffers(
             Model model
     ) {
         model.addAttribute("offers", offerRepository.findAll());
         return "offer/offer-list";
+    }
+
+    @GetMapping("/list/{id}")
+    public String getOffer(
+            @PathVariable("id") Long id,
+            Model model
+    ){
+        Offer offer = offerRepository.findById(id).orElse(null);
+
+        //TODO: get user's role for edit managing
+
+        if(offer == null) return "/list";
+
+        model.addAttribute("data", offer);
+        return "offer/offer-detail";
     }
 
     @GetMapping("/add")
@@ -35,9 +61,19 @@ public class OfferController {
             Model model
     ) {
         model.addAttribute("data", new Offer());
+
+        List<Candidate> candidates = candidateRepository.findAll();
+
+        model.addAttribute("candidates", candidates);
+
+        List<User> users = userRepository.findByRoleOrRole(Role.ADMIN, Role.HR);
+
+        model.addAttribute("users", users);
+
         return "offer/add-offer";
     }
 
+    //TODO: Add validation
     @PostMapping("/add")
     public String addOffer(
             @Valid @ModelAttribute Offer offer,
@@ -77,23 +113,18 @@ public class OfferController {
     @PostMapping("/edit")
     public String editOffer(
             @Valid @ModelAttribute OfferDTO offer,
+            BindingResult result,
             Model model,
-            BindingResult result
+            RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute("data", offer);
-
-        if (offer.getOfferId() == null) {
-            model.addAttribute("error", "Offer not found");
-            return "redirect:/list";
-        }
-
         if (result.hasErrors()) {
+            model.addAttribute("data", offer);
             model.addAttribute("errors", result.getAllErrors().toString());
-            return "redirect:/edit/" + offer.getOfferId();
+            return "offer/edit-offer";
         }
 
-        if(!offerService.update(offer)){
-            model.addAttribute("errors", "Could not update offer, offer not found.");
+        if (!offerService.update(offer)) {
+            redirectAttributes.addFlashAttribute("errors", "Could not update offer, offer not found.");
             return "redirect:/list";
         }
 
