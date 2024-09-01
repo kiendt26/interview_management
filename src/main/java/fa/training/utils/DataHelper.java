@@ -2,10 +2,12 @@ package fa.training.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class DataHelper {
     public <T> T updateHelper(T currentData, T newData) {
-        return newData == null ? currentData : newData;
+        return newData == null || Objects.equals(currentData, newData) ? currentData : newData;
     }
 
     public String format(String text) {
