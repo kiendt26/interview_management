@@ -29,10 +29,9 @@ public class Job implements Serializable {
     @NotBlank(message = "Job Title must not be blank")
     private String jobTitle;
 
-    @NotEmpty(message = "Date must not empty")
     @Future(message = "Date must be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @Positive(message = "Salary must be positive")
@@ -46,9 +45,8 @@ public class Job implements Serializable {
     @NotEmpty(message = "Skill must not empty")
     private String skills;
 
-    @NotEmpty(message = "Date must not empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
     @NotEmpty(message = "Benefit must not empty")

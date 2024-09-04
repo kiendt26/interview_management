@@ -60,11 +60,11 @@
 
         <tbody>
             <tr th:each="job : ${listJobs}">
-                <td th:text="${job.jobId}"></td>
-                <td th:text="${job.skillsDTO}"></td>
+                <td th:text="${job.jobTitle}"></td>
+                <td th:text="${#strings.arrayJoin(job.skillsDTO, ', ')}"></td>
                 <td th:text="${job.startDate}"></td>
                 <td th:text="${job.endDate}"></td>
-                <td th:text="${job.levelDTO}"></td>
+                <td th:text="${#strings.arrayJoin(job.levelDTO, ', ')}"></td>
                 <td th:text="${job.status}"></td>
                 <td class="d-flex justify-content-center">
                     <a th:href="@{'/job/job-detail/' + ${job.jobId}}">
