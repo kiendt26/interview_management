@@ -17,40 +17,49 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
 
-    @GetMapping
+    @GetMapping("/list")
     public String listCandidates(Model model) {
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates/list";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/create")
     public String newCandidateForm(Model model) {
         model.addAttribute("candidate", new Candidate());
-        return "candidates/form";
+        return "candidates/create";
     }
 
-    @PostMapping
+    @PostMapping("/addNew")
     public String saveCandidate(@Valid @ModelAttribute Candidate candidate, BindingResult result) {
         if (result.hasErrors()) {
-            return "candidates/form";
+            return "candidates/create";
         }
+
+        if (candidate.getSkills() != null) {
+            candidate.setSkills(candidate.getSkills());
+        }
+
         candidateService.save(candidate);
-        return "redirect:/candidates";
+        return "redirect:/candidates/list";
     }
 
     @GetMapping("/edit/{id}")
     public String editCandidateForm(@PathVariable Long id, Model model) {
         Optional<Candidate> candidate = candidateService.findById(id);
         if (candidate.isPresent()) {
-            model.addAttribute("candidate", candidate.get());
-            return "candidates/form";
+            Candidate c = candidate.get();
+            c.setSkillsAsString(c.getSkillsAsString());
+            model.addAttribute("candidate", c);
+            return "candidates/create";
         }
-        return "redirect:/candidates";
+        return "redirect:/candidates/list";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteCandidate(@PathVariable Long id) {
         candidateService.deleteById(id);
-        return "redirect:/candidates";
+        return "redirect:/candidates/list";
     }
+
+    
 }

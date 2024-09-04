@@ -1,39 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main})}">
 <head>
-    <title>Candidate List</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .table-actions {
-            display: flex;
-            gap: 5px;
-        }
-        .search-input {
-            max-width: 300px;
-            margin-right: 10px;
-        }
-        .btn-custom {
-            background-color: #f8f9fa;
-            border-color: #ced4da;
-        }
-        .table th, .table td {
-            vertical-align: middle;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Home page</title>
 </head>
 <body>
-<div class="container mt-5">
+<main class="col-12 mt-5">
     <h2>Candidate List</h2>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="d-flex">
             <input type="text" class="form-control search-input" placeholder="Search">
             <select class="form-control search-input">
                 <option>Status</option>
-                <!-- Add other status options here -->
             </select>
             <button class="btn btn-secondary btn-custom">Search</button>
         </div>
-        <a href="/candidates/new" class="btn btn-primary">Add New</a>
+        <a href="/candidates/create" class="btn btn-primary">Add New</a>
     </div>
     <table class="table table-hover table-bordered">
         <thead class="thead-light">
@@ -71,6 +54,6 @@
             </ul>
         </nav>
     </div>
-</div>
+</main>
 </body>
 </html>

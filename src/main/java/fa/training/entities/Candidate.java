@@ -4,8 +4,13 @@ import fa.training.enums.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -24,6 +29,7 @@ public class Candidate {
     private String fullname;
 
     @Past(message = "Date of birth must be in the past")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dob")
     @Temporal(TemporalType.DATE)
     private Date dob;
@@ -47,10 +53,22 @@ public class Candidate {
     @Column(name = "attachment", length = 255)
     private String attachment;
 
-    @NotNull(message = "Skill is required")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "skill")
-    private Skills skill;
+    @Column(name = "skills", columnDefinition = "TEXT")
+    private String skillsAsString;
+    @Transient
+    private List<Skills> skills = new ArrayList<>();
+    public void setSkills(List<Skills> skills) {
+        this.skills = skills;
+        this.skillsAsString = skills.stream()
+                .map(Skills::name)
+                .collect(Collectors.joining(","));
+    }
+    public void setSkillsAsString(String skillsAsString) {
+        this.skillsAsString = skillsAsString;
+        this.skills = Arrays.stream(skillsAsString.split(","))
+                .map(Skills::valueOf)
+                .collect(Collectors.toList());
+    }
 
     @NotNull(message = "Position is required")
     @Enumerated(EnumType.STRING)
