@@ -1,7 +1,18 @@
 package fa.training.entities;
 
+import fa.training.enums.Benefit;
+import fa.training.enums.Level;
+import fa.training.enums.Skills;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -9,14 +20,44 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Job {
+public class Job implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
+
+    @NotBlank(message = "Job Title must not be blank")
     private String jobTitle;
-    private String department;
-    private String status;
+
+    @NotEmpty(message = "Date must not empty")
+    @Future(message = "Date must be in future")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+
+    @Positive(message = "Salary must be positive")
+    private Double salaryFrom;
+
+    @Positive(message = "Salary must be positive")
+    private Double salaryTo;
+
+    private String workingAddress;
+
+    @NotEmpty(message = "Skill must not empty")
+    private String skills;
+
+    @NotEmpty(message = "Date must not empty")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+
+    @NotEmpty(message = "Benefit must not empty")
+    private String benefit;
+
+    @NotEmpty(message = "Level must not empty")
+    private String level;
+    private String description;
+    private Boolean status;
 
 
 }

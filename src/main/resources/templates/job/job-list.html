@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/job.css})}">
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/job.css},@{/js/job.js})}">
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
@@ -36,7 +36,9 @@
         </div>
 
         <div class="col-12 d-flex mb-3" style="justify-content: flex-end;">
-            <button class="btn" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600">Add new</button>
+            <a th:href="@{/job/job-create}"><button class="btn" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600" >Add new</button>
+
+            </a>
             <button class="btn ms-3 me-3" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600">Import</button>
 
         </div>
@@ -59,13 +61,13 @@
         <tbody>
             <tr th:each="job : ${listJobs}">
                 <td th:text="${job.jobId}"></td>
-                <td th:text="${job.skills}"></td>
+                <td th:text="${job.skillsDTO}"></td>
                 <td th:text="${job.startDate}"></td>
                 <td th:text="${job.endDate}"></td>
-                <td th:text="${job.level}"></td>
+                <td th:text="${job.levelDTO}"></td>
                 <td th:text="${job.status}"></td>
                 <td class="d-flex justify-content-center">
-                    <a href="">
+                    <a th:href="@{'/job/job-detail/' + ${job.jobId}}">
                         <i class="fa-regular fa-eye"></i>
                     </a>
 
@@ -73,7 +75,7 @@
                         <i class="fa-solid fa-file-pen"></i>
                     </a>
 
-                    <a href="">
+                    <a th:href="@{'/job/job-delete/' + ${job.jobId}}">
                         <i class="fa-regular fa-trash-can"></i>
                     </a>
                 </td>
