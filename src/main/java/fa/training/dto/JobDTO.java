@@ -1,8 +1,4 @@
 package fa.training.dto;
-<<<<<<< HEAD
-public class JobDTO {
-=======
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -53,6 +49,4 @@ public class JobDTO {
     private String description;
     private Boolean status;
 
-
->>>>>>> job/vietanh
 }
