@@ -6,6 +6,10 @@ label{
 }
 input:hover{
     border: none;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c95720c4d2cd8d07da3815152ffbcccf2b0ce7a
 }
 .wrapper{
     padding: 40px;
@@ -33,6 +37,7 @@ input:hover{
     cursor:pointer;
     display:none;
 }
+<<<<<<< HEAD
 .select2-container--default .select2-selection--multiple {
     border: none;
     /*border: 1px solid #d1d5db;*/
@@ -63,3 +68,5 @@ input:hover{
 .select2-container--open .select2-dropdown--below{
     margin-left: 60px;
 }
+=======
+>>>>>>> 7c95720c4d2cd8d07da3815152ffbcccf2b0ce7a
