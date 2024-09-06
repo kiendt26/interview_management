@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/template::areas(~{::title},~{::main})}">
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/candidate.js})}">
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
     <link rel="stylesheet" href="../css/main.css">
+<!--    mmmm-->
     <style>
 
     </style>
@@ -16,11 +17,11 @@
         <h4 style="font-size: 18px">I. Personal information</h4>
         <div class="col-6 mt-3">
         <label >Full name <span style="color: red">*</span> </label>
-        <input type="text" name="" id="" placeholder="Type a title..." style="border: none;width: 75%;margin-left: 27px" >
+        <input type="text" name="" id="" placeholder="Type a title..." style="border: none;width: 65%;margin-left: 29px" >
         </div>
         <div class="col-6 ps-3 mt-3">
             <label >Email <span style="color: red">*</span> </label>
-            <input type="text" name="" id="" placeholder="Type an email..." style="border: none;width: 75%" class="ms-5">
+            <input type="text" name="" id="" placeholder="Type an email..." style="border: none;width: 65%;margin-left: 83px">
 
         </div>
 
@@ -28,24 +29,24 @@
 
         <div class="col-6 mt-3">
             <label >D.O.B <span style="color: red">*</span> </label>
-            <input type="date" name="" id="" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 53px">
+            <input type="date" name="" id="" placeholder="DD/MM/YYYY" style="border: none;width: 65%;margin-left: 53px">
         </div>
         <div class="col-6 ps-3 mt-3">
             <label >Adress </label>
-            <input type="text" name="" id="" placeholder="Type a address..." style="border: none;width: 75%;margin-left: 48px" >
+            <input type="text" name="" id="" placeholder="Type a address..." style="border: none;width: 65%;margin-left: 83px" >
 
 
         </div>
 
         <div class="col-6 mt-3">
             <label class="">Phone Number</label>
-            <input type="text" name="" id="" placeholder="Type a number..." style="border: none;width: 75%;margin-left: 0px">
+            <input type="text" name="" id="" placeholder="Type a number..." style="border: none;width: 65%;margin-left: 7px">
 
         </div>
         <div class="col-6 mt-3">
             <label >Gender <span style="color: red">*</span> </label>
 <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 37px">
+            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 75px">
                 <option checked>Select a gender</option>
 
                 <option value="">Male</option>
@@ -57,17 +58,19 @@
         </div>
         <h4 class="mt-5" style="font-size: 18px">II. Professional information</h4>
 
-        <div class="col-6  mt-3 d-flex" style="width: 50%">
+        <div class="col-6  mt-3 " style="width: 50%">
             <label>CV attachment</label>
 
-            <input type="text" class="form-control" id="inputGroupFile01" style="border: none;padding: 0px 0px;width: 75%;margin-left: 5px">
-            <label class="input-group-text" for="inputGroupFile01" style="background: white;border: none" typeof="file" >
-                <i class="fa-solid fa-link"></i>
+            <input type="file" id="file-input" style="display: none">
+            <label for="file-input" class="ms-3">
+                <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>
+                <span></span>
             </label>
+            <i class="fa fa-times-circle remove"></i>
         </div>
         <div class="col-6 ps-3 mt-3">
             <label >Note <span style="color: red">*</span> </label>
-            <input type="text" name="" id="" placeholder="N/A" style="border: none;width: 75%" class="ms-5">
+            <input type="text" name="" id="" placeholder="N/A" style="border: none;width: 65%;margin-left: 90px" >
 
         </div>
 
@@ -75,7 +78,7 @@
 
         <div class="col-6 mt-3">
             <label >Position <span style="color: red">*</span> </label>
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 27px">
+            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 43px">
                 <option checked>Select a position... ex Backend developer,...</option>
 
                 <option value="">Business Analyst</option>
@@ -90,7 +93,7 @@
             </select>        </div>
         <div class="col-6 ps-3 mt-3">
             <label >Status <span style="color: red">*</span>    </label>
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 37px">
+            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 80px">
                 <option checked>Select a status</option>
 
                 <option value="">Checked</option>
@@ -106,7 +109,7 @@
         <div class="col-6 mt-3">
             <label >Skills <span style="color: red">*</span> </label>
             <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 40px" >
+            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 60px" >
                 <option checked>...</option>
 
                 <option value="">Java</option>
@@ -123,14 +126,14 @@
         <div class="col-6 mt-3">
             <label >Year of Experience</label>
             <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <input type="number" name="" id="" placeholder="N/A" style="border: none;width: 75%" class="ms-5">
+            <input type="number" name="" id="" placeholder="N/A" style="border: none;width: 65%" class="ms-3">
 
         </div>
 
         <div class="col-6 mt-3">
             <label >Recruiter <span style="color: red">*</span> </label>
             <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 40px" >
+            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 36px" >
                 <option checked>Recruiter name</option>
 
                 <option value="">Java</option>
@@ -147,7 +150,7 @@
         <div class="col-6 mt-3">
             <label >Highest level  <span style="color: red">*</span> </label>
             <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 40px" >
+            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 44px" >
                 <option checked>Select highest level...</option>
 
                 <option value="">Java</option>
