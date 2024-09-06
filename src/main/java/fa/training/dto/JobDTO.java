@@ -1,2 +1,3 @@
-package fa.training.dto;public class jobDTO {
+package fa.training.dto;
+public class JobDTO {
 }
