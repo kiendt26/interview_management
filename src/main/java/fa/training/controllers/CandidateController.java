@@ -60,6 +60,4 @@ public class CandidateController {
         candidateService.deleteById(id);
         return "redirect:/candidates/list";
     }
-
-    
-}
+    }

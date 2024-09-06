@@ -1,24 +1,28 @@
-package fa.training.dto;
-<<<<<<< HEAD
-public class JobDTO {
-=======
+package fa.training.entities;
 
+import fa.training.enums.Benefit;
+import fa.training.enums.Level;
+import fa.training.enums.Skills;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 @Getter
 @Setter
-public class JobDTO {
-
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Job implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
 
@@ -39,20 +43,19 @@ public class JobDTO {
     private String workingAddress;
 
     @NotEmpty(message = "Skill must not empty")
-    private String[] skillsDTO;
+    private String skills;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
     @NotEmpty(message = "Benefit must not empty")
-    private String[] benefitDTO;
+    private String benefit;
 
     @NotEmpty(message = "Level must not empty")
-    private String[] levelDTO;
+    private String level;
     private String description;
     private Boolean status;
 
 
->>>>>>> job/vietanh
 }
