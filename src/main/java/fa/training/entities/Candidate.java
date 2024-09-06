@@ -34,7 +34,7 @@ public class Candidate {
     @Temporal(TemporalType.DATE)
     private Date dob;
 
-    @Pattern(regexp = "\\d{10,15}", message = "Phone number must be between 10 and 15 digits")
+//    @Pattern(regexp = "\\d{10,15}", message = "Phone number must be between 10 and 15 digits")
     @Column(name = "phone", length = 15)
     private String phone;
 
@@ -57,18 +57,6 @@ public class Candidate {
     private String skillsAsString;
     @Transient
     private List<Skills> skills = new ArrayList<>();
-    public void setSkills(List<Skills> skills) {
-        this.skills = skills;
-        this.skillsAsString = skills.stream()
-                .map(Skills::name)
-                .collect(Collectors.joining(","));
-    }
-    public void setSkillsAsString(String skillsAsString) {
-        this.skillsAsString = skillsAsString;
-        this.skills = Arrays.stream(skillsAsString.split(","))
-                .map(Skills::valueOf)
-                .collect(Collectors.toList());
-    }
 
     @NotNull(message = "Position is required")
     @Enumerated(EnumType.STRING)
@@ -91,6 +79,20 @@ public class Candidate {
     @Enumerated(EnumType.STRING)
     @Column(name = "highest_level")
     private HighestLevel highestLevel;
+
+    public void setSkills(List<Skills> skills) {
+        this.skills = skills;
+        this.skillsAsString = skills.stream()
+                .map(Skills::name)
+                .collect(Collectors.joining(","));
+    }
+
+    public void setSkillsAsString(String skillsAsString) {
+        this.skillsAsString = skillsAsString;
+        this.skills = Arrays.stream(skillsAsString.split(","))
+                .map(Skills::valueOf)
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -25,7 +25,8 @@ a{
     display: block;
     color: black;
 }
-li{
+.menu-li{
+
     padding: 30px;
 }
 h4{
@@ -33,7 +34,7 @@ h4{
     font-size: 23px;
 }
 .header{
-    width: 90%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
     height: 100%;
