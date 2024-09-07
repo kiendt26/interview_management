@@ -55,6 +55,8 @@ public class Candidate {
 
     @Column(name = "skills", columnDefinition = "TEXT")
     private String skillsAsString;
+
+    @NotEmpty(message = "At least one skill is required")
     @Transient
     private List<Skills> skills = new ArrayList<>();
 

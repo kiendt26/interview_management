@@ -11,7 +11,7 @@
     <h4>Candidate Create</h4>
     <form th:action="@{/candidates/addNew}" th:object="${candidate}" method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
         <h4 style="font-size: 18px">I. Personal information</h4>
-        <input type="hidden" th:field="*{candidateId}"/>
+        <input type="hidden"  th:field="*{candidateId}"/>
 
         <div class="col-6 mt-3">
             <label >Full name <span style="color: red">*</span> </label>
@@ -85,15 +85,16 @@
         </div>
 
         <div class="col-6 mt-3">
-            <label >Skills <span style="color: red">*</span> </label>
-            <select id="skillSelectTag" th:field="*{skills}" class="form-control"  style="border: none;width: 65%;padding: 8px 0px;margin-left: 60px" multiple>
+            <label>Skills <span style="color: red">*</span></label>
+            <select id="skillSelectTag" th:field="*{skills}" class="form-control" style="border: none;width: 65%;padding: 8px 0px;margin-left: 60px" multiple>
                 <option th:each="skill : ${T(fa.training.enums.Skills).values()}"
                         th:value="${skill}"
                         th:text="${skill.displayName}"
                         th:selected="${candidate.skills.contains(skill)}">Skill</option>
             </select>
-
+            <div class="text-danger" th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}"></div>
         </div>
+
         <div class="col-6 mt-3">
             <label >Year of Experience</label>
             <input type="number" th:field="*{yearOfExp}" placeholder="N/A" style="border: none;width: 65%" class="ms-3">
@@ -119,7 +120,7 @@
         </div>
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <button class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
-            <button class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</button>
+            <button th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</button>
         </div>
     </form>
 </main>
