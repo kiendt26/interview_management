@@ -19,3 +19,36 @@
     padding: 3px 15px 3px 20px;
     text-decoration: none;
 }
+
+.date-input-container {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+input[type="date"]::-webkit-calendar-picker-indicator{
+    opacity: 0;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator{
+    opacity: 0;
+}
+.date-input-container .fa-calendar,
+.date-input-container .fa-business-time {
+    position: absolute;
+    left: 80%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.input-left {
+    width: 50%;
+    margin-right: 32%;
+    float: right;
+}
+textarea:focus {
+    border: none;
+    outline: none;
+}
