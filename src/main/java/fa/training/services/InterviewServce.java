@@ -8,6 +8,7 @@ import fa.training.entities.Schedule;
 import fa.training.entities.User;
 import fa.training.enums.ResultInterview;
 import fa.training.enums.Role;
+import fa.training.enums.Status;
 import fa.training.enums.StatusInterview;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
@@ -225,8 +226,7 @@ public class InterviewServce {
 
     // selection candidate
     public List<InterviewSearchByInterviewDTO> selectByCandidate() {
-        String statusCandidate = "Open";
-        List<Object[]> rawResults = interviewRepository.searchByCandidate(statusCandidate);
+        List<Object[]> rawResults = interviewRepository.searchByCandidate(Status.OPEN);
         List<InterviewSearchByInterviewDTO> candidateDTOs = new ArrayList<>();
 
         for (Object[] result : rawResults) {
@@ -255,7 +255,7 @@ public class InterviewServce {
 
     // selection recruiter
     public List<InterviewSearchByInterviewDTO> selectByRecruiter() {
-        List<Object[]> rawResults = interviewRepository.selectByRecruiter(Role.Reccruiter);
+        List<Object[]> rawResults = interviewRepository.selectByRecruiter(Role.Recruiter);
         List<InterviewSearchByInterviewDTO> userDTOs = new ArrayList<>();
 
         for (Object[] result : rawResults) {
@@ -341,9 +341,9 @@ public class InterviewServce {
 
          interviewRepository.save(savedSchedule);
 
-         // TODO update status candidate
-//        Candidate updateStatusCandidate = candidateRepository.findById(savedSchedule.getCandidate().getCandidateId()).orElse(null);
-//        updateStatusCandidate.setStatus();
+        Candidate updateStatusCandidate = candidateRepository.findById(savedSchedule.getCandidate().getCandidateId()).orElse(null);
+        updateStatusCandidate.setStatus(Status.WAITING_FOR_INTERVIEW);
+        candidateRepository.save(updateStatusCandidate);
 
         List<Long> interviewDTO= interviewIds;
         for (Long interviewId : interviewDTO) {
