@@ -1,10 +1,7 @@
 package fa.training.dto;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,20 +20,25 @@ public class JobDTO {
     private String jobTitle;
 
     @Future(message = "Date must be in future")
+    @NotNull(message = "Start Date must not be blank")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @Positive(message = "Salary must be positive")
+
     private Double salaryFrom;
 
     @Positive(message = "Salary must be positive")
+    @NotNull(message = "Salary must not be blank")
     private Double salaryTo;
 
     private String workingAddress;
 
     @NotEmpty(message = "Skill must not empty")
     private String[] skillsDTO;
+
+    @NotNull(message = "End Date must not be blank")
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)

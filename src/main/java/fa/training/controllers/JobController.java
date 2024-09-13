@@ -50,7 +50,7 @@ public class JobController {
     }
 
     @GetMapping("/job/job-create")
-    public String jobCreate(Model model) {
+    public String jobCreate(Model model,@ModelAttribute("dto") JobDTO jobDTO) {
         model.addAttribute("job", new Job());
         return "job/job-create";
     }

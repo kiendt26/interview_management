@@ -16,6 +16,8 @@
         <div class="col-6 mt-3">
         <label >Job title <span style="color: red">*</span> </label>
         <input type="text" name="jobTitle" id="jobTitle" placeholder="Type a title" style="border: none;width: 75%" class="ms-5">
+            <small th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}" th:errorclass="error"></small>
+
         </div>
         <div class="col-6 ps-3 mt-3 skills-container">
             <label  class="skills-label">Skills <span style="color: red">*</span> </label>
@@ -30,17 +32,23 @@
 
 
             </select>
+<!--            <small th:errors="*{skillsDTO}" th:errorclass="error"></small>-->
+
         </div>
 
 
 
         <div class="col-6 mt-3">
             <label >Start Date <span style="color: red">*</span> </label>
-            <input type="datetime-local" name="startDate" id="startDate" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 30px">
+            <input type="date" name="startDate" id="startDate" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 30px">
+            <small th:errors="*{startDate}" th:errorclass="error"></small>
+
         </div>
         <div class="col-6 ps-3 mt-3">
             <label >End Date <span style="color: red">* </span> </label>
-            <input type="datetime-local" name="endDate" id="endDate" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 11px" >
+            <input type="date" name="endDate" id="endDate" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 11px">
+            <small th:errors="*{endDate}" th:errorclass="error"></small>
+
 
 
         </div>
@@ -50,8 +58,13 @@
             <label for="" class="ms-3 me-3">From</label>
 
             <input type="number" name="salaryFrom" id="salaryFrom" placeholder="" style="border: none;width: 25%" class="">
+            <small th:errors="*{salaryFrom}" th:errorclass="error"></small>
+
+
             <label class="ms-3">To</label>
             <input type="number" name="salaryTo" id="salaryTo" placeholder="" style="border: none;width: 25%;margin-left: 20px">
+            <small th:errors="*{salaryTo}" th:errorclass="error"></small>
+
 
         </div>
         <div class="col-6 mt-3 skills-container">
@@ -66,6 +79,8 @@
                 <option th:value="HealthcareInsurance">Healthcare insurance</option>
 
             </select>
+<!--            <small th:errors="*{benefitDTO}" th:errorclass="error"></small>-->
+
         </div>
 
         <div class="col-6 mt-3">
@@ -86,6 +101,8 @@
 
 
             </select>
+<!--            <small th:errors="*{levelDTO}" th:errorclass="error"></small>-->
+
         </div>
 
         <div class="col-6"></div>

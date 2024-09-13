@@ -45,3 +45,7 @@ li{
 .select2-search .select2-search--inline{
     padding: 0px;
 }
+.error{
+    color: red;
+    display: block;
+}

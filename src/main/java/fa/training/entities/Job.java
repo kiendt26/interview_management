@@ -31,7 +31,7 @@ public class Job implements Serializable {
 
     @Future(message = "Date must be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date startDate;
 
     @Positive(message = "Salary must be positive")
@@ -46,7 +46,7 @@ public class Job implements Serializable {
     private String skills;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date endDate;
 
     @NotEmpty(message = "Benefit must not empty")

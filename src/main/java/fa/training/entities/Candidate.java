@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "candidate_id")
     private Long candidateId;
 
     @NotBlank(message = "Full name is required")
