@@ -61,7 +61,7 @@
             <div >
                 <label >Interviewer <span style="color: red">*</span> </label>
 
-                <select id="mySelect"  name="userNames" class="form-select" multiple="multiple">
+                <select id="skillSelectTag"  name="userNames" class="form-select" multiple="multiple">
                     <option th:each="id : ${idInterviewer}"
                             th:value="${id.id}"
                             th:text="${id.name}"

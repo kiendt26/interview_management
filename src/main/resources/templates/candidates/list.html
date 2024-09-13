@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/candidate.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .btn{
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<main class="col-12 mt-5">
+    <h4>Candidate list</h4>
+    <div class="row">
+        <form th:action="@{/candidates/list}" class="formSearch" style="display: flex;" method="GET">
+                <div class="col-4 input-group mb-3" style="width:33.33333333%">
+                    <input name="keyword" type="text" class="form-control"
+                           placeholder="Search by name, email, phone..."
+                           th:value="${keyword}" aria-describedby="basic-addon2"
+                           aria-label="Recipient's username">
+                    <span class="input-group-text" id="basic-addon2" style="background: none; border-top:1px solid #ced4da;border-right:1px solid #ced4da;border-bottom:1px solid #ced4da;border-left:none  ">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                </div>
+
+                <div class="col-4 input-group mb-3" style="width:33.33333333% ">
+                    <select name="status" class="form-select" id="inputGroupSelect01">
+                        <option value="">All Status</option>
+                        <option value="OPEN" th:selected="${status == 'OPEN'}">Open</option>
+                        <option value="WAITING_FOR_INTERVIEW" th:selected="${status == 'WAITING_FOR_INTERVIEW'}">Waiting For Interview</option>
+                        <option value="CANCELLED_INTERVIEW" th:selected="${status == 'CANCELLED_INTERVIEW'}">Cancelled Interview</option>
+                        <option value="PASSED_INTERVIEW" th:selected="${status == 'PASSED_INTERVIEW'}">Passed Interview</option>
+                        <option value="FAILED_INTERVIEW" th:selected="${status == 'FAILED_INTERVIEW'}">Failed Interview</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn ms-5" style="background: #e1dfdf;font-weight: 600">Search</button>
+                </div>
+        </form>
+
+
+        <div class="col-12 d-flex mb-3" style="justify-content: flex-end;">
+            <a th:href="@{/candidates/create}">
+            <button class="btn" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600">Add new</button>
+            </a>
+        </div>
+
+    </div>
+    <table class="table table-striped">
+        <thead style="background: #EEF1DF">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone No.</th>
+            <th>Current Position</th>
+            <th>Owner HR</th>
+            <th>Status</th>
+            <th>Action</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="candidate : ${candidates}">
+            <td th:text="${candidate.fullname}">Name</td>
+            <td th:text="${candidate.email}">Email</td>
+            <td th:text="${candidate.phone}">Phone No.</td>
+            <td th:text="${candidate.position.displayName}">Current Position</td>
+            <td>Owner HR</td> <!-- Replace with actual data if available -->
+            <td th:text="${candidate.status.displayName}">Status</td>
+            <td class="d-flex justify-content-center">
+                <a th:href="@{/candidates/detail/{id}(id=${candidate.candidateId})}" class="ms-2 me-2">
+                    <i class="fa-solid fa-eye"></i>
+                </a>
+
+                <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" class="ms-2 me-2">
+                    <i class="fa-solid fa-file-pen"></i>
+                </a>
+
+                <a th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" onclick="return confirm('Are you sure you want to delete this candidate?');">
+                    <i class="fa-regular fa-trash-can"></i>
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

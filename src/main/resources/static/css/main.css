@@ -24,7 +24,8 @@ a{
     font-weight: 700;
     color: black;
 }
-li{
+.menu-li{
+
     padding: 30px;
 }
 h4{
@@ -41,3 +42,7 @@ h4{
 p{
     margin-bottom: 0px;
 }
+
+
+
+

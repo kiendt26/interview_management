@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/candidate.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidate Detail</title>
+    <link rel="stylesheet" href="../../static/css/main.css">
+</head>
+<body>
+<main class="col-12 mt-5">
+    <h4>Candidate Detail</h4>
+    <form th:action="@{/candidates/edit/{id}(id=${candidate.candidateId})}" th:object="${candidate}" method="get" style="background: #f1f6fb" class="pt-3 pb-3 row">
+        <h4 style="font-size: 18px">I. Personal information</h4>
+        <input type="hidden" th:field="*{candidateId}"/>
+
+        <div class="col-6 mt-3">
+            <label>Full name</label>
+            <input type="text" th:field="*{fullname}" readonly="true" style="border: none;width: 65%;margin-left: 29px">
+        </div>
+        <div class="col-6 ps-3 mt-3">
+            <label>Email</label>
+            <input type="email" th:field="*{email}" readonly="true" style="border: none;width: 65%;margin-left: 83px">
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>D.O.B</label>
+            <input type="date" th:field="*{dob}" readonly="true" style="border: none;width: 65%;margin-left: 53px">
+        </div>
+
+        <div class="col-6 ps-3 mt-3">
+            <label>Address</label>
+            <input type="text" th:field="*{address}" readonly="true" style="border: none;width: 65%;margin-left: 83px">
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Phone Number</label>
+            <input type="text" th:field="*{phone}" readonly="true" style="border: none;width: 65%;margin-left: 7px">
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Gender</label>
+            <select th:field="*{gender}" disabled="true" style="border: none;width: 65%;padding: 8px 0px;margin-left: 75px">
+                <option value="true">Male</option>
+                <option value="false">Female</option>
+            </select>
+        </div>
+
+        <h4 class="mt-5" style="font-size: 18px">II. Professional information</h4>
+
+        <div class="col-6  mt-3 " style="width: 50%">
+            <label>CV attachment</label>
+            <input type="file" th:field="*{attachment}" id="file-input" style="display: none" disabled>
+            <label for="file-input" class="ms-3">
+                <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>
+                <span th:text="${candidate.attachment}"></span>
+            </label>
+        </div>
+
+        <div class="col-6 ps-3 mt-3">
+            <label>Note</label>
+            <textarea th:field="*{note}" placeholder="N/A" style="border: none;width: 65%;margin-left: 90px" disabled
+                      th:text="${candidate.note}"></textarea>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Position</label>
+            <select th:field="*{position}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 43px" disabled>
+                <option th:each="position : ${T(fa.training.enums.CurrentPosition).values()}"
+                        th:value="${position}"
+                        th:text="${position.displayName}"
+                        th:selected="${candidate.position == position}">
+                </option>
+            </select>
+        </div>
+
+        <div class="col-6 ps-3 mt-3">
+            <label>Status</label>
+            <select th:field="*{status}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 80px" disabled>
+                <option th:each="status : ${T(fa.training.enums.Status).values()}"
+                        th:value="${status}"
+                        th:text="${status.displayName}"
+                        th:selected="${candidate.status == status}">
+                </option>
+            </select>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Skills</label>
+            <select id="skillSelectTag" th:field="*{skills}" class="form-control" style="border: none;width: 65%;padding: 8px 0px;margin-left: 60px" multiple disabled>
+                <option th:each="skill : ${T(fa.training.enums.Skills).values()}"
+                        th:value="${skill}"
+                        th:text="${skill.displayName}"
+                        th:selected="${candidate.skills.contains(skill)}">
+                </option>
+            </select>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Year of Experience</label>
+            <input type="number" th:field="*{yearOfExp}" placeholder="N/A" style="border: none;width: 65%" class="ms-3" disabled
+                   th:value="${candidate.yearOfExp}">
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Highest level</label>
+            <select th:field="*{highestLevel}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 44px" disabled>
+                <option th:each="level : ${T(fa.training.enums.HighestLevel).values()}"
+                        th:value="${level}"
+                        th:text="${level.displayName}"
+                        th:selected="${candidate.highestLevel == level}">
+                </option>
+            </select>
+        </div>
+
+        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+            <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}">
+                <button type="button" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Edit</button>
+            </a>
+            <a th:href="@{/candidates/list}">
+                <button type="button" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Cancel</button>
+            </a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
