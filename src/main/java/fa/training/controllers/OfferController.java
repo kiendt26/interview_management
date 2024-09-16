@@ -1,9 +1,11 @@
 package fa.training.controllers;
 
-import fa.training.dto.OfferDTO;
+import fa.training.dto.OfferAddDTO;
+import fa.training.dto.OfferEditDTO;
 import fa.training.entities.Candidate;
 import fa.training.entities.Offer;
 import fa.training.entities.User;
+import fa.training.enums.Department;
 import fa.training.enums.Role;
 import fa.training.enums.Status;
 import fa.training.exception.EnumMismatchException;
@@ -19,7 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -27,7 +28,6 @@ import java.util.List;
 public class OfferController {
     @Autowired
     private OfferRepository offerRepository;
-
     @Autowired
     private OfferService offerService;
     @Autowired
@@ -40,7 +40,9 @@ public class OfferController {
             Model model
     ) {
         model.addAttribute("offers", offerRepository.findAll());
-        return "offer/offer-list";
+        model.addAttribute("departments", Department.values());
+        model.addAttribute("statuses", Status.values());
+        return "offer/offer-list-page";
     }
 
     @GetMapping("/list/{id}")
@@ -65,15 +67,12 @@ public class OfferController {
         model.addAttribute("data", new Offer());
 
         List<Candidate> candidates = candidateRepository.findAll();
-
         model.addAttribute("candidates", candidates);
 
         List<User> approvers = userRepository.findByRoleOrRole(Role.ADMIN, Role.HR);
-
         model.addAttribute("approver", approvers);
 
         List<User> allUsers = userRepository.findAll();
-
         model.addAttribute("users", allUsers);
 
         return "offer/add-offer";
@@ -81,24 +80,21 @@ public class OfferController {
 
     @PostMapping("/add")
     public String addOffer(
-            @Valid @ModelAttribute Offer offer,
+            @Valid @ModelAttribute OfferAddDTO dto,
             Model model,
-            BindingResult result
+            BindingResult result,
+            RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute("data", offer);
+        model.addAttribute("data", dto);
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors().toString());
             return "redirect:/add";
         }
 
-        if (offer.noDataInRequired()) {
-            model.addAttribute("error", "Please provide data in required fields");
-            return "redirect:/add";
+        if(!offerService.add(dto)){
+            redirectAttributes.addFlashAttribute("errors", "Could not add offer.");
+            return "redirect:/list";
         }
-
-        offer.setOfferDate(LocalDate.now());
-
-        offerRepository.save(offer);
         return "redirect:/list";
     }
 
@@ -117,7 +113,7 @@ public class OfferController {
 
     @PostMapping("/edit")
     public String editOffer(
-            @Valid @ModelAttribute OfferDTO offer,
+            @Valid @ModelAttribute OfferEditDTO offer,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes

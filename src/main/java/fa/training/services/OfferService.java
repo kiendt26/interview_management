@@ -1,12 +1,11 @@
 package fa.training.services;
 
 import fa.training.dto.OfferAddDTO;
-import fa.training.dto.OfferDTO;
-import fa.training.entities.Candidate;
-import fa.training.entities.Offer;
-import fa.training.entities.User;
+import fa.training.dto.OfferEditDTO;
+import fa.training.entities.*;
 import fa.training.enums.Status;
 import fa.training.repositories.CandidateRepository;
+import fa.training.repositories.InterviewRepository;
 import fa.training.repositories.OfferRepository;
 import fa.training.repositories.UserRepository;
 import fa.training.utils.DataHelper;
@@ -30,6 +29,9 @@ public class OfferService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private InterviewRepository interviewRepository;
+
     public boolean add(OfferAddDTO add) {
         Candidate candidate = candidateRepository.findById(add.getCandidateId()).orElse(null);
 
@@ -49,12 +51,15 @@ public class OfferService {
 
         if (add.getBasicSalary().doubleValue() < 0) return false;
 
+        InterviewInfo info = helper.getInterviewInfo(add.getInterviewInfo());
+
         Offer offer = Offer.builder()
                 .candidate(candidate)
                 .approvalBy(approver)
                 .recruiterOwner(recruiterOwner.getUserName())
                 .position(add.getPosition())
                 .department(add.getDepartment())
+                .interviewInfo(info.toString())
                 .level(add.getLevel())
                 .contractFrom(add.getContractFrom())
                 .contractTo(add.getContractTo())
@@ -71,7 +76,7 @@ public class OfferService {
         return true;
     }
 
-    public boolean update(OfferDTO update) {
+    public boolean update(OfferEditDTO update) {
 
         if (update.getContractFrom().isAfter(update.getContractTo()))
             return false;
@@ -90,12 +95,26 @@ public class OfferService {
             candidate = candidateRepository.findById(update.getCandidateId()).orElse(null);
         }
 
+        if(candidate == null)
+            return false;
+
+        Interview interview = interviewRepository.findByTitle(update.getInterviewTitle());
+        if(interview == null)
+            return false;
+
+        //?? how dfuk
+        //TODO: properly set interviewInfo
+        InterviewInfo info = InterviewInfo.builder()
+                .title(interview.getTitle())
+//                .users(interview.getInterviewer()) -> unable to get a List<User> since db schema for Interview is ambiguous
+                .build();
+
         String formattedNote = helper.format(update.getNote());
 
         // Set fields          |Call to DataHelper  |Old Data                   |New Data
         offer.setCandidate(     helper.updateHelper(offer.getCandidate(),       candidate));
         offer.setPosition(      helper.updateHelper(offer.getPosition(),        update.getPosition()));
-        offer.setInterviewInfo( helper.updateHelper(offer.getInterviewInfo(),   update.getInterviewInfo()));
+        offer.setInterviewInfo( helper.updateHelper(offer.getInterviewInfo(),   info.toString()));
         offer.setContractFrom(  helper.updateHelper(offer.getContractFrom(),    update.getContractFrom()));
         offer.setContractTo(    helper.updateHelper(offer.getContractTo(),      update.getContractTo()));
         offer.setContractType(  helper.updateHelper(offer.getContractType(),    update.getContractType()));

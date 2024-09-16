@@ -12,11 +12,11 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class OfferDTO {
+public class OfferEditDTO {
     private Long offerId;
     private Long candidateId;
     private CurrentPosition position;
-    private String interviewInfo;
+    private String interviewTitle;
     private LocalDate contractFrom;
     private LocalDate contractTo;
     private String interviewNote;

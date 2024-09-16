@@ -21,6 +21,7 @@ public class OfferAddDTO {
     private Level level;
     private Long approver;
     private Department department;
+    private String interviewInfo;
     private String interviewNote;
     private Long recruiterOwnerId;
     private LocalDate contractFrom;

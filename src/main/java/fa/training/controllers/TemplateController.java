@@ -11,4 +11,9 @@ public class TemplateController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/test-with-menu")
+    public String test() {
+        return "layout/test-with-menu";
+    }
 }
