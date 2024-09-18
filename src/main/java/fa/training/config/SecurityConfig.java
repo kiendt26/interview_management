@@ -23,10 +23,11 @@ public class SecurityConfig {
             "/",
             "/css/**",
             "/js/**",
-            "/send"
+            "/send",
     };
     private static final String[] ADMIN_PERMIT_LINK = {
-            "/interview/edit"
+            "/interview/edit",
+            "/candidate/detail",
     };
     private static final String[] INTERVIEW_PERMIT_LINK = {
             "/interview/submit"

@@ -8,7 +8,14 @@
 </head>
 <body>
 <main class="col-12 mt-5">
-    <h4>Candidate Create</h4>
+
+    <div class="mb-4">
+        <h1>Candidate Create</h1>
+        <a th:href="@{/candidates/list}">Interview Schedule List</a>
+        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+        <span><i class="ps-3">Create Candidate</i></span>
+    </div>
+
     <form th:action="@{/candidates/addNew}" th:object="${candidate}" method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
         <h4 style="font-size: 18px">I. Personal information</h4>
         <input type="hidden"  th:field="*{candidateId}"/>
@@ -93,6 +100,7 @@
                         th:selected="${candidate.skills.contains(skill)}">Skill</option>
             </select>
             <div class="text-danger" th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}"></div>
+
         </div>
 
         <div class="col-6 mt-3">
@@ -120,7 +128,7 @@
         </div>
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <button class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
-            <button th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</button>
+            <a th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</a>
         </div>
     </form>
 </main>

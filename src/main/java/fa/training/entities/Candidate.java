@@ -58,7 +58,7 @@ public class Candidate {
 
     @NotNull(message = "At least one skill is required")
     @Transient
-    private List<Skills> skills = new ArrayList<>();
+    private List<Skills> skills;
 
     @NotNull(message = "Position is required")
     @Enumerated(EnumType.STRING)
@@ -95,6 +95,4 @@ public class Candidate {
                 .map(Skills::valueOf)
                 .collect(Collectors.toList());
     }
-
-
 }
