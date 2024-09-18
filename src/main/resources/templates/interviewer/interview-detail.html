@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
       th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/interview.css},@{/js/interview.js})}">
 <head>
     <meta charset="UTF-8">
@@ -20,9 +20,13 @@
         <span><i class="ps-3">New Interview Schedule</i></span>
     </div>
 
-    <button class="btn btn-primary mb-3 float-end">Send Reminder</button>
+
 
     <form method="post" th:action="@{/interview-edit}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
+        <div>
+            <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/send-email(userNames=${scheduleDetail.userNames})}" class="btn btn-primary mb-3 float-end">Send Reminder</a>
+        </div>
+
         <div class="col-6 mt-3">
             <div>
                 <label class="me-4" >Schedule title <span style="color: red">*</span> </label>
@@ -45,12 +49,7 @@
                 <label >Interviewer <span style="color: red">*</span> </label>
                 <label  th:text="${#strings.listJoin(scheduleDetail.userNames, ', ')}" class="ms-5 input-left" ></label>
 
-<!--                <select id="mySelect" name="userNames" class="form-select" multiple="multiple">-->
-<!--                    <option th:each="id : ${idInterviewer}"-->
-<!--                            th:value="${id.id}"-->
-<!--                            th:text="${id.name}"-->
-<!--                            th:selected="${scheduleDetail.userNames.contains(id.name)}"></option>-->
-<!--                </select>-->
+
             </div>
 
             <div class="mt-3">
@@ -109,17 +108,12 @@
         </div>
 
 
-
-
-
-
-
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <div class="col-md-6">
-                <a type="button" th:href="@{/}" href="" class="btn btn-light ms-5 ps-5 pe-5">Edit</a>
+                <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  type="button" th:href="@{/interview/edit(id=${scheduleDetail.interviewId})}" href="" class="btn btn-light ms-5 ps-5 pe-5">Edit</a>
 
                 <!-- Nút thứ hai để gửi đến /submit2 -->
-                <a type="button" th:href="@{/}"  class="btn btn-light ms-5 ps-3 pe-3">Submit Result</a>
+                <a  sec:authorize="hasAnyAuthority('Interview', 'Admin')" type="button" th:href="@{/interview/submit(id=${scheduleDetail.interviewId})}"  class="btn btn-light ms-5 ps-3 pe-3">Submit Result</a>
             </div>
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
 
       th:include="~{layout/template::areas(~{::title}, ~{::main}, @{/css/interview.css},@{/js/interview.js})}">
 <head>
@@ -42,7 +42,7 @@
 
         <input class="btn-search" type="submit" value="Search">
     </form>
-    <a class="btn-add-interview" th:href="@{/create-interview}">Add new</a>
+    <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" class="btn-add-interview" th:href="@{/create-interview}">Add new</a>
     <table class="table table-striped">
         <thead >
             <th>Title</th>
@@ -73,11 +73,11 @@
                         <i class="fa-regular fa-eye"></i>
                     </a>
 
-                    <a th:href="@{/interview/edit(id=${schedule.interviewId})}" class="ms-2 me-2">
+                    <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/interview/edit(id=${schedule.interviewId})}" class="ms-2 me-2">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
 
-                    <a th:href="@{/interview/submit(id=${schedule.interviewId})}">
+                    <a sec:authorize="hasAuthority('Interview')" th:href="@{/interview/submit(id=${schedule.interviewId})}">
                         <i class="fa-regular fa-hand-pointer"></i>
                     </a>
                 </td>

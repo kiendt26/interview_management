@@ -81,5 +81,8 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
     @Query("SELECT u.userId ,u.userName FROM User u WHERE u.role = :role")
     List<Object[]> selectByRecruiter(@Param("role") Role role);
 
+
+
+
     // create
 }

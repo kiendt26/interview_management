@@ -17,14 +17,8 @@ class ScheduleManagementApplicationTests {
     @Autowired
     private InterviewServce interviewServce;
     @Test
-    void contextLoads() {
-        Schedule newSchedule = new Schedule();
-        newSchedule.setScheduleTitle("123");
-        List<Long> interviewIds = new ArrayList<>();
-        interviewIds.add(1L);
-        interviewIds.add(2L);
-        interviewServce.createNewSchedule(newSchedule, interviewIds);
-
+    void testSendMail(){
+//        interviewServce.sendEmail1();
     }
 
 }

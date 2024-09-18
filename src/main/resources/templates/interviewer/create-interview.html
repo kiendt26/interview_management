@@ -100,8 +100,8 @@
 
         <div class="col-6 mt-3">
             <label>Recruiter owner</label>
-            <select name="recruiters" th:field="*{recruiter.userId}" class="input-left" >
-                <option value=""></option>
+            <select name="recruiters" th:field="*{recruiter.userId}" class="input-left" required>
+                <option value=""  selected>Select recruiter ...</option>
                 <option th:each="recruiter : ${recruiters}"
                         th:value="${recruiter.id}"
                         th:text="${recruiter.name}"

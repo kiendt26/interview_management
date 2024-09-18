@@ -12,8 +12,11 @@ import java.util.Objects;
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Long> {
+    @Query("SELECT u.email FROM User u WHERE u.userName IN :userNames")
+    List<String> findEmailByUserNameIn(@Param("userNames") List<String> userNames);
+
+    User findByUserName(String userName);
 
 
-
-
+    User findByEmail(String email);
 }
