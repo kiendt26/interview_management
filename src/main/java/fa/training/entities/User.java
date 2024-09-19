@@ -1,5 +1,6 @@
 package fa.training.entities;
 
+import fa.training.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "Users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +18,9 @@ public class User {
 
     private String userName;
     private String passwordHash;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private String email;
+    private String passApp;
 
 }

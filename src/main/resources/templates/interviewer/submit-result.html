@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/interview.css})}">
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/interview.css},@{/js/interview.js})}">
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
@@ -23,7 +23,7 @@
 
 
     <form method="post" th:action="@{/interview/submit-schedule}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
-        <input type="hidden" name="" th:field="${scheduleDetail.interviewId}">
+        <input type="hidden" name="id" th:field="${scheduleDetail.interviewId}">
         <div class="col-6 mt-3">
             <div>
                 <label class="me-4" >Schedule title <span style="color: red">*</span> </label>
@@ -100,8 +100,17 @@
                     <option th:each="result1 : ${results}"
                             th:value="${result1}"
                             th:text="${result1.displayName}"
+                            th:if="${result1.name() != 'NA'}"
                             th:selected="${scheduleDetail.result.equals(result1)}"
                     ></option>
+
+                    <option th:if="${scheduleDetail.result.name() == 'NA'}"
+                            th:value="'NA'"
+                            th:text="'N/A'"
+                            th:selected="true"
+                            style="display:none;"
+                    ></option>
+
 
                 </select>
             </div>

@@ -4,6 +4,6 @@ public enum Role {
     Interview,
     Admin,
     Manager,
-    Reccruiter
+    Recruiter
 
 }

@@ -2,15 +2,14 @@ package fa.training.services;
 
 import fa.training.dto.Interview.InterviewDTO;
 import fa.training.dto.Interview.InterviewSearchByInterviewDTO;
-import fa.training.entities.Candidate;
-import fa.training.entities.InterviewSchedule;
-import fa.training.entities.Schedule;
-import fa.training.entities.User;
+import fa.training.entities.*;
 import fa.training.enums.ResultInterview;
 import fa.training.enums.Role;
+import fa.training.enums.Status;
 import fa.training.enums.StatusInterview;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
+import fa.training.repositories.Interview.PasswordResetTokenRepository;
 import fa.training.repositories.InterviewRepository;
 import fa.training.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -225,8 +227,7 @@ public class InterviewServce {
 
     // selection candidate
     public List<InterviewSearchByInterviewDTO> selectByCandidate() {
-        String statusCandidate = "Open";
-        List<Object[]> rawResults = interviewRepository.searchByCandidate(statusCandidate);
+        List<Object[]> rawResults = interviewRepository.searchByCandidate(Status.OPEN);
         List<InterviewSearchByInterviewDTO> candidateDTOs = new ArrayList<>();
 
         for (Object[] result : rawResults) {
@@ -255,7 +256,7 @@ public class InterviewServce {
 
     // selection recruiter
     public List<InterviewSearchByInterviewDTO> selectByRecruiter() {
-        List<Object[]> rawResults = interviewRepository.selectByRecruiter(Role.Reccruiter);
+        List<Object[]> rawResults = interviewRepository.selectByRecruiter(Role.Recruiter);
         List<InterviewSearchByInterviewDTO> userDTOs = new ArrayList<>();
 
         for (Object[] result : rawResults) {
@@ -336,14 +337,14 @@ public class InterviewServce {
     public void createNewSchedule(Schedule newSchedule, List<Long> interviewIds) {
         // Thêm schedule mới
         Schedule savedSchedule =   interviewRepository.save(newSchedule);
-        savedSchedule.setResult(ResultInterview.OPEN);
+        savedSchedule.setResult(ResultInterview.NA);
         savedSchedule.setStatus(StatusInterview.New);
 
          interviewRepository.save(savedSchedule);
 
-         // TODO update status candidate
-//        Candidate updateStatusCandidate = candidateRepository.findById(savedSchedule.getCandidate().getCandidateId()).orElse(null);
-//        updateStatusCandidate.setStatus();
+        Candidate updateStatusCandidate = candidateRepository.findById(savedSchedule.getCandidate().getCandidateId()).orElse(null);
+        updateStatusCandidate.setStatus(Status.WAITING_FOR_INTERVIEW);
+        candidateRepository.save(updateStatusCandidate);
 
         List<Long> interviewDTO= interviewIds;
         for (Long interviewId : interviewDTO) {
@@ -365,14 +366,23 @@ public class InterviewServce {
     public void updateSchedule(Schedule newSchedule, List<Long> interviewIds) {
         if (newSchedule != null){
             newSchedule.setStatus(StatusInterview.New);
+            Candidate updateStatusCandidate = candidateRepository.findById(newSchedule.getCandidate().getCandidateId()).orElse(null);
+
             if (newSchedule.getResult() != ResultInterview.NA) {
                 newSchedule.setStatus(StatusInterview.Interviewed);
+                if (newSchedule.getResult().equals(ResultInterview.FAILDED)){
+                    updateStatusCandidate.setStatus(Status.FAILED_INTERVIEW);
+
+                }
+                if (newSchedule.getResult().equals(ResultInterview.PASS)){
+                    updateStatusCandidate.setStatus(Status.PASSED_INTERVIEW);
+
+                }
             }
             interviewRepository.save(newSchedule);
+
+            candidateRepository.save(updateStatusCandidate);
         }
-        // TODO update status candidate
-//        Candidate updateStatusCandidate = candidateRepository.findById(savedSchedule.getCandidate().getCandidateId()).orElse(null);
-//        updateStatusCandidate.setStatus();
 
         //delete List interview cũ để add lại list mới
         List<InterviewSchedule>  interviewScheduleList = interviewScheduleRepository.findBySchedule(newSchedule);
@@ -395,17 +405,6 @@ public class InterviewServce {
         }
 
     }
-
-    //cancel
-    public void cancelSchedule(Schedule schedule) {
-        if (schedule != null){
-           schedule.setStatus(StatusInterview.Cancelled);
-           interviewRepository.save(schedule);
-            // TODO update states candidate
-        }
-
-    }
-
     //submit
     public void submitSchedule(InterviewDTO newSchedule){
         if (newSchedule != null){
@@ -419,10 +418,32 @@ public class InterviewServce {
                 }
                 interviewRepository.save(schedule);
 
+                Candidate updateStatusCandidate = candidateRepository.findById(schedule.getCandidate().getCandidateId()).orElse(null);
+                if (newSchedule.getResult().equals(ResultInterview.FAILDED)){
+                    updateStatusCandidate.setStatus(Status.FAILED_INTERVIEW);
+
+                }
+                if (newSchedule.getResult().equals(ResultInterview.PASS)){
+                    updateStatusCandidate.setStatus(Status.PASSED_INTERVIEW);
+
+                }
+                candidateRepository.save(updateStatusCandidate);
             }
         }
     }
 
+    //cancel
+    public void cancelSchedule(InterviewDTO schedule) {
+        if (schedule != null){
+            Schedule scheduleDB = interviewRepository.findById(schedule.getInterviewId()).orElse(null);
+            scheduleDB.setStatus(StatusInterview.Cancelled);
+            interviewRepository.save(scheduleDB);
+            Candidate updateStatusCandidate = candidateRepository.findById(scheduleDB.getCandidate().getCandidateId()).orElse(null);
+            updateStatusCandidate.setStatus(Status.CANCELLED_INTERVIEW);
+            candidateRepository.save(updateStatusCandidate);
+        }
+
+    }
 
     public Map<String, String> getAllResults() {
         Map<String, String> resultsMap = new HashMap<>();
@@ -430,6 +451,57 @@ public class InterviewServce {
             resultsMap.put(result.name(), result.getDisplayName());
         }
         return resultsMap;
+    }
+
+
+    //send mail
+    @Autowired
+
+    private JavaMailSender mailSender;
+
+    public void sendEmail(List<String> interviewer) {
+
+        List<String> emailList = userRepository.findEmailByUserNameIn(interviewer);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject("subject");
+        message.setText("body link");
+        message.setFrom("recruiter1.com"); // Địa chỉ email của bạn
+
+        // Chuyển đổi danh sách người nhận thành mảng
+        String[] recipientArray = emailList.toArray(new String[0]);
+        message.setTo(recipientArray);
+
+        mailSender.send(message);
+    }
+
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+
+    //tao token để lấy lại mật khẩu
+    public void initiatePasswordReset(String email){
+        User user = userRepository.findByEmail(email);
+
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setToken(token);
+        passwordResetToken.setUser(user);
+        passwordResetToken.setExpiryDate(LocalDateTime.now().plusDays(1));
+
+        passwordResetTokenRepository.save(passwordResetToken);
+
+        String resetLink = "http://localhost:8080/reset-password?token=" + token;
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Reset Password");
+        message.setText("To reset your password, click the link below:\n" + resetLink);
+        mailSender.send(message);
+
+
+
     }
 
 }

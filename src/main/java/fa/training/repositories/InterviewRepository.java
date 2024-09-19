@@ -2,6 +2,7 @@ package fa.training.repositories;
 
 import fa.training.entities.Schedule;
 import fa.training.enums.Role;
+import fa.training.enums.Status;
 import fa.training.enums.StatusInterview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
 
     // show list schedule
     @Query(
-            "SELECT i.scheduleId, i.scheduleTitle, c.fullName , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result,i.status ,j.jobTitle " +
+            "SELECT i.scheduleId, i.scheduleTitle, c.fullname , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result,i.status ,j.jobTitle " +
                     "FROM Schedule i JOIN i.interviewScheduleList s " +
                     "JOIN s.interview u " +
                     "LEFT JOIN i.candidate c " +
@@ -27,7 +28,7 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
 
     //read one
     @Query(
-            "SELECT i.scheduleId, i.scheduleTitle, c.fullName , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result,i.status ,i.job.jobTitle,i.meetingId, i.note, i.location, i.recruiter.userName " +
+            "SELECT i.scheduleId, i.scheduleTitle, c.fullname , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result,i.status ,i.job.jobTitle,i.meetingId, i.note, i.location, i.recruiter.userName " +
                     "FROM Schedule i JOIN i.interviewScheduleList s " +
                     "JOIN s.interview u " +
                     "LEFT JOIN i.candidate c " +
@@ -37,7 +38,7 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
 
     // Tìm kiếm bằng status hoặc interview
     @Query(
-            "SELECT i.scheduleId, i.scheduleTitle, c.fullName , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result, i.status ,j.jobTitle " +
+            "SELECT i.scheduleId, i.scheduleTitle, c.fullname , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result, i.status ,j.jobTitle " +
                     "FROM Schedule i JOIN i.interviewScheduleList s " +
                     "JOIN s.interview u " +
                     "LEFT JOIN i.candidate c " +
@@ -52,12 +53,12 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
 
     // search all
     @Query(
-            "SELECT i.scheduleId, i.scheduleTitle, c.fullName , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result, i.status ,j.jobTitle " +
+            "SELECT i.scheduleId, i.scheduleTitle, c.fullname , u.userName,i.scheduledDate, i.scheduleDateFrom, i.scheduleDateTo, i.result, i.status ,j.jobTitle " +
                     "FROM Schedule i JOIN i.interviewScheduleList s " +
                     "JOIN s.interview u " +
                     "LEFT JOIN i.candidate c " +
                     "LEFT JOIN i.job j " +
-                    "WHERE concat(COALESCE(i.scheduleTitle, ''), COALESCE(c.fullName, ''), COALESCE(u.userName, ''), COALESCE(i.scheduledDate, ''), COALESCE(i.scheduleDateFrom, ''), COALESCE(i.scheduleDateTo, ''), COALESCE(i.result, ''), COALESCE(i.status, ''), COALESCE(j.jobTitle, ''))  " +
+                    "WHERE concat(COALESCE(i.scheduleTitle, ''), COALESCE(c.fullname, ''), COALESCE(u.userName, ''), COALESCE(i.scheduledDate, ''), COALESCE(i.scheduleDateFrom, ''), COALESCE(i.scheduleDateTo, ''), COALESCE(i.result, ''), COALESCE(i.status, ''), COALESCE(j.jobTitle, ''))  " +
                     "like %:keyword% "
     )
     List<Object[]> findAllScheduleByKeyword(@Param("keyword") String keyword);
@@ -68,8 +69,8 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
     List<Object[]> searchByInterview(@Param("role") Role role);
 
     // List candidate trong select status open
-    @Query("SELECT c.candidateId, c.fullName FROM Candidate c WHERE c.status = :statusCandidate" )
-    List<Object[]> searchByCandidate(@Param("statusCandidate") String statusCandidate );
+    @Query("SELECT c.candidateId, c.fullname FROM Candidate c WHERE c.status = :statusCandidate" )
+    List<Object[]> searchByCandidate(@Param("statusCandidate") Status statusCandidate );
 
     //
     // List job trong select với status open
@@ -79,6 +80,9 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
     // List recruiter
     @Query("SELECT u.userId ,u.userName FROM User u WHERE u.role = :role")
     List<Object[]> selectByRecruiter(@Param("role") Role role);
+
+
+
 
     // create
 }

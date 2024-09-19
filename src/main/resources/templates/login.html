@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>Login</h1>
+    <form th:action="@{/login-check}" method="post" th:object="${user}">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="userName" th:field="*{userName}" />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"  th:field="*{passwordHash}" />
+
+        <button type="submit">Login</button>
+    </form>
+    <a th:href="@{/forgot-password}">Forgot password?</a>
+</div>
+</form>
+</body>
+</html>

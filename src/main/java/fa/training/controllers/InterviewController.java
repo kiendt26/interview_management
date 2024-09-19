@@ -3,6 +3,7 @@ package fa.training.controllers;
 import fa.training.dto.Interview.InterviewDTO;
 import fa.training.entities.InterviewSchedule;
 import fa.training.entities.Schedule;
+import fa.training.entities.User;
 import fa.training.enums.ResultInterview;
 import fa.training.enums.StatusInterview;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
@@ -12,6 +13,7 @@ import fa.training.repositories.UsersRepository;
 import fa.training.services.InterviewServce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,14 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class InterviewController {
-//    @GetMapping("/list-interview")
-//    public String viewController() {
-//        return "interviewer/interview-list";
-//    }
 
     @Autowired
     private InterviewRepository interviewRepository;
@@ -213,6 +210,48 @@ public String listInterviews(
         return "redirect:/list-interview";
     }
 
+    @GetMapping("/interview/cancel")
+    public String cancelInterview(
 
+            @RequestParam("id") Long id,
+            RedirectAttributes attributes
+    ){
+        InterviewDTO schedule = new InterviewDTO();
+        schedule.setInterviewId(id);
+        interviewServce.cancelSchedule(schedule);
+        return "redirect:/list-interview";
+    }
 
+    @GetMapping("/send-email")
+    public String sendEmail(
+            @RequestParam(name = "userNames") List<String> userNames) {
+        interviewServce.sendEmail(userNames);
+        return "redirect:/list-interview";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "login";
+    }
+
+    //forgot-pass
+    @GetMapping("/forgot-password")
+    public String forgot(
+           Model model,
+           String email
+    ){
+
+        model.addAttribute("email", email);
+        return "forgot-password";
+    }
+
+    @PostMapping("/send")
+    public String sendForgot(
+            @RequestParam(name = "email") String email
+    ){
+       interviewServce.initiatePasswordReset(email);
+        return "redirect:/login";
+    }
 }

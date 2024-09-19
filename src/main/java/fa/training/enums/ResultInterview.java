@@ -3,8 +3,7 @@ package fa.training.enums;
 public enum ResultInterview {
     NA("N/A"),
     FAILDED("Failded"),
-    PASS("Pass"),
-    OPEN("Open");
+    PASS("Pass");
     private final String displayName;
 
     ResultInterview(String displayName) {
