@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
 th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/candidate.js})}">
 <head>
     <meta charset="UTF-8">
@@ -25,17 +25,6 @@ th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},
                     <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
                 </div>
-
-                <div class="col-4 input-group mb-3" style="width:33.33333333% ">
-                    <select name="status" class="form-select" id="inputGroupSelect01">
-                        <option value="">All Status</option>
-                        <option value="OPEN" th:selected="${status == 'OPEN'}">Open</option>
-                        <option value="WAITING_FOR_INTERVIEW" th:selected="${status == 'WAITING_FOR_INTERVIEW'}">Waiting For Interview</option>
-                        <option value="CANCELLED_INTERVIEW" th:selected="${status == 'CANCELLED_INTERVIEW'}">Cancelled Interview</option>
-                        <option value="PASSED_INTERVIEW" th:selected="${status == 'PASSED_INTERVIEW'}">Passed Interview</option>
-                        <option value="FAILED_INTERVIEW" th:selected="${status == 'FAILED_INTERVIEW'}">Failed Interview</option>
-                    </select>
-                </div>
                 <div class="col-3">
                     <button type="submit" class="btn ms-5" style="background: #e1dfdf;font-weight: 600">Search</button>
                 </div>
@@ -43,7 +32,7 @@ th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},
 
 
         <div class="col-12 d-flex mb-3" style="justify-content: flex-end;">
-            <a th:href="@{/candidates/create}">
+            <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/create}">
             <button class="btn" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600">Add new</button>
             </a>
         </div>
@@ -76,11 +65,11 @@ th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},
                     <i class="fa-solid fa-eye"></i>
                 </a>
 
-                <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" class="ms-2 me-2">
+                <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" class="ms-2 me-2">
                     <i class="fa-solid fa-file-pen"></i>
                 </a>
 
-                <a th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" onclick="return confirm('Are you sure you want to delete this candidate?');">
+                <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" onclick="return confirm('Are you sure you want to delete this candidate?');">
                     <i class="fa-regular fa-trash-can"></i>
                 </a>
             </td>

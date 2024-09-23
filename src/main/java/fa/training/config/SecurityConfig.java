@@ -26,7 +26,8 @@ public class SecurityConfig {
             "/send"
     };
     private static final String[] ADMIN_PERMIT_LINK = {
-            "/interview/edit"
+            "/interview/edit",
+            "/candidates/edit"
     };
     private static final String[] INTERVIEW_PERMIT_LINK = {
             "/interview/submit"
