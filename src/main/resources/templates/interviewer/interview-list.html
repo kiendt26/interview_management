@@ -51,8 +51,8 @@
             <th>Schedule</th>
             <th>Result</th>
             <th>Status</th>
-            <th>Job</th>
-            <th>Action</th>
+            <th >Job</th>
+            <th class="text-center">Action</th>
         </thead>
 
         <tbody>
@@ -73,11 +73,11 @@
                         <i class="fa-regular fa-eye"></i>
                     </a>
 
-                    <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/interview/edit(id=${schedule.interviewId})}" class="ms-2 me-2">
+                    <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/interview/edit(id=${schedule.interviewId})}" class="ms-3">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
 
-                    <a sec:authorize="hasAuthority('Interview')" th:href="@{/interview/submit(id=${schedule.interviewId})}">
+                    <a sec:authorize="hasAuthority('Interview')" class="ms-3" th:href="@{/interview/submit(id=${schedule.interviewId})}">
                         <i class="fa-regular fa-hand-pointer"></i>
                     </a>
                 </td>

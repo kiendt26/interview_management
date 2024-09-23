@@ -27,9 +27,9 @@
 
 
 
-input[type="date"]::-webkit-calendar-picker-indicator{
-    opacity: 0;
-}
+/*input[type="date"]::-webkit-calendar-picker-indicator{*/
+/*    opacity: 0;*/
+/*}*/
 
 input[type="time"]::-webkit-calendar-picker-indicator{
     opacity: 0;
@@ -51,4 +51,22 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 textarea:focus {
     border: none;
     outline: none;
+}
+.select2-container{
+    /*width: 100% !important;*/
+    /*margin-right: 32% !important;*/
+    /*float: right;*/
+}
+.btn-danger{
+    margin-top: -50px;
+}
+.btn-primary{
+    margin-top: -50px;
+}
+.fa-magnifying-glass:before{
+    margin-left: -70px;
+}
+.error{
+    color: red;
+    font-size: 13px;
 }

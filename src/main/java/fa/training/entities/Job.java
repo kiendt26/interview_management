@@ -4,10 +4,7 @@ import fa.training.enums.Benefit;
 import fa.training.enums.Level;
 import fa.training.enums.Skills;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Job implements Serializable {
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;

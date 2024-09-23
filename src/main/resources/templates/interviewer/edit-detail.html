@@ -24,21 +24,25 @@
 
     <form id="myForm" method="post" th:action="@{/interview/edit-schedule}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
         <div>
-            <a th:href="@{/interview/cancel(id=${scheduleDetail.scheduleId})}" type="button" class="btn btn-primary mb-3 float-end">Cancel Schedule</a>
+            <a th:href="@{/interview/cancel(id=${scheduleDetail.scheduleId})}" id="cancelSchedule" type="button" class="btn btn-danger mb-3 float-end">Cancel Schedule</a>
         </div>
 
         <input type="hidden" name="" th:field="${scheduleDetail.scheduleId}">
         <div class="col-6 mt-3">
             <div>
                 <label class="me-4" >Schedule title <span style="color: red">*</span> </label>
-                <input type="text"  name="" th:field="${scheduleDetail.scheduleTitle}"  class=" input-left"></input>
+                <div  class=" input-left">
+                    <input type="text"  name="" class="w-100" th:field="${scheduleDetail.scheduleTitle}" >
+                    <div th:if="${#fields.hasErrors('scheduleTitle')}" th:errorclass="error"  th:errors="*{scheduleTitle}"></div>
+                </div>
+
             </div>
         </div>
 
         <div class="col-6 mt-3">
             <label >Job <span style="color: red">*</span> </label>
-            <select name="" th:field="*{job.jobId}"  class="input-left" >
-<!--                <option value="" >Select a job...</option>-->
+            <select name="" th:field="*{job.jobId}"  class="input-left p-1" >
+                <option value="" >Select a job...</option>
                 <option
                         th:each="job : ${jobs}"
                         th:value="${job.id}"
@@ -50,22 +54,22 @@
 
         <div class="col-6 mt-3 d-flex align-items-center">
             <label class="me-3" >Candidate name <span style="color: red">*</span> </label>
-            <select name="candidateName"  th:field="*{candidate.candidateId}" class="input-left">
-                <option value="" >Select candidate...</option>
-                <option th:each="candidate : ${candidateName}"
-                        th:value="${candidate.id}"
-                        th:text="${candidate.name}"
-                        th:selected="${scheduleDetail.candidate.fullname.equals(candidate.name)}"
-                ></option>
+            <input type="text" th:field="*{candidate.fullname}" readonly class="input-left">
+<!--            <select name="candidateName"  th:field="*{candidate.candidateId}" class="input-left">-->
+<!--                <option value="" >Select candidate...</option>-->
+<!--                <option th:each="candidate : ${candidateName}"-->
+<!--                        th:value="${candidate.id}"-->
+<!--                        th:text="${candidate.name}"-->
+<!--                        th:selected="${scheduleDetail.candidate.fullname.equals(candidate.name)}"-->
+<!--                ></option>-->
 
-            </select>
+<!--            </select>-->
         </div>
 
         <div class="col-6 mt-3">
-            <div >
-                <label >Interviewer <span style="color: red">*</span> </label>
-
-                <select id="skillSelectTag"  name="userNames" class="input-left form-select" multiple="multiple">
+            <label >Interviewer <span style="color: red">*</span> </label>
+            <div  class="input-left">
+                <select id="skillSelectTag"  name="userNames" class="form-select" multiple="multiple">
                     <option th:each="id : ${idInterviewer}"
                             th:value="${id.id}"
                             th:text="${id.name}"
@@ -76,10 +80,8 @@
 
         </div>
         <div class="col-6 mt-3" >
-            <label >Schedule Time</label>
+            <label >Schedule Time <span style="color: red">*</span> </label>
             <div  class="date-input-container input-left mb-3">
-
-                <i class="fa-regular fa-calendar"></i>
                 <input type="date" name="scheduledDate"  th:field="${scheduleDetail.scheduledDate}" class="w-100" >
             </div>
             <div class="input-left">
@@ -105,20 +107,19 @@
             </div>
 
             <div >
-                <label>Recruiter owner</label>
+                <label>Recruiter owner<span style="color: red">*</span> </label>
 <!--                <label th:text="${scheduleDetail.recruiter}" class="input-left"></label>-->
-                <select name="recruiters" th:field="*{recruiter.userId}" class="input-left" >
-
+                <select name="recruiters" th:field="*{recruiter.userId}" class="input-left p-1" >
                     <option th:each="recruiter : ${recruiters}"
                             th:value="${recruiter.id}"
                             th:text="${recruiter.name}"
                     ></option>
-
                 </select>
 
             </div>
-            <div class="input-left mb-3">
-                <a href="">Assign me</a>
+            <div class="mb-3">
+                <a href="#" id="assignLink" class=" mb-3 input-left"
+                   th:attr="data-user-id=${#authentication.principal.userDB.userId}">Assign me</a>
             </div>
 
 
@@ -138,7 +139,7 @@
 
             <div >
                 <label>Result</label>
-                <select class="input-left" name="" th:field="*{result}">
+                <select class="input-left p-1" name="" th:field="*{result}">
                     <option th:each="result1 : ${results}"
                             th:value="${result1}"
                             th:text="${result1.displayName}"
@@ -161,13 +162,13 @@
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <div class="col-md-6">
 
-                <input type="submit"  class="btn btn-light ms-5 ps-3 pe-3" value="Submit">
+                <input type="submit"  class="btn btn-light ms-5 ps-3 pe-3 float-end me-5" value="Submit">
             </div>
 
 
             <div class="col-md-6">
 
-                <a th:href="@{/list-interview}" class="btn btn-light ms-5 ps-4 pe-4" >Cancel</a>
+                <a th:href="@{/list-interview}" class="btn btn-light  ps-4 pe-4" >Cancel</a>
             </div>
 
 

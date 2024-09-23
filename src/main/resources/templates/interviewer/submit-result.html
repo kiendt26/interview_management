@@ -26,24 +26,24 @@
         <input type="hidden" name="id" th:field="${scheduleDetail.interviewId}">
         <div class="col-6 mt-3">
             <div>
-                <label class="me-4" >Schedule title <span style="color: red">*</span> </label>
+                <label class="me-4" >Schedule title  </label>
                 <label  name="" th:text="${scheduleDetail.title}"  class=" input-left"></label>
             </div>
         </div>
 
         <div class="col-6 mt-3">
-            <label >Job <span style="color: red">*</span> </label>
+            <label >Job</label>
             <label  th:text="${scheduleDetail.jobName}"  class="ms-5 input-left"></label>
         </div>
 
         <div class="col-6 mt-3 d-flex align-items-center">
-            <label class="me-3" >Candidate name <span style="color: red">*</span> </label>
+            <label class="me-3" >Candidate name </label>
             <label  th:text="${scheduleDetail.candidateName}"  class="input-left"></label>
         </div>
 
         <div class="col-6 mt-3">
             <div >
-                <label >Interviewer <span style="color: red">*</span> </label>
+                <label >Interviewer</label>
                 <label  th:text="${#strings.listJoin(scheduleDetail.userNames, ', ')}" class="ms-5 input-left" ></label>
 
                 <!--                <select id="mySelect" name="userNames" class="form-select" multiple="multiple">-->
@@ -91,12 +91,12 @@
 
         <div class="col-md-6 mt-3">
             <label>Notes</label>
-            <textarea name="" id="" cols="30" rows="5" th:field="${scheduleDetail.note}"  style="resize: none" class="input-left "></textarea>
+            <textarea name="" id="" cols="30" rows="5" th:field="${scheduleDetail.note}"  style="resize: none" class="input-left p-1"></textarea>
         </div>
         <div class="col-md-6 mt-3">
             <div >
                 <label>Result</label>
-                <select class="input-left" name="" th:field="*{result}">
+                <select class="input-left p-1" name="" th:field="*{result}">
                     <option th:each="result1 : ${results}"
                             th:value="${result1}"
                             th:text="${result1.displayName}"

@@ -45,6 +45,8 @@ public class CandidateController {
 
     @PostMapping("/addNew")
     public String saveCandidate(@Valid @ModelAttribute Candidate candidate, BindingResult result) {
+
+
         if (result.hasErrors()) {
             return "candidates/create";
         }

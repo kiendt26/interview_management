@@ -23,30 +23,31 @@
 
 
     <form method="post" th:action="@{/interview-edit}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
+<!--        <input type="text" name="interviewId" th:field="${scheduleDetail.interviewId}">-->
         <div>
-            <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/send-email(userNames=${scheduleDetail.userNames})}" class="btn btn-primary mb-3 float-end">Send Reminder</a>
+            <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/send-email(userNames=${scheduleDetail.userNames}, interviewId=${scheduleDetail.interviewId})}" class="btn btn-primary mb-3 float-end">Send Reminder</a>
         </div>
 
         <div class="col-6 mt-3">
             <div>
-                <label class="me-4" >Schedule title <span style="color: red">*</span> </label>
+                <label class="me-4" >Schedule title</label>
                 <label   th:text="${scheduleDetail.title}"  class=" input-left"></label>
             </div>
         </div>
 
         <div class="col-6 mt-3">
-            <label >Job <span style="color: red">*</span> </label>
+            <label >Job</label>
             <label  th:text="${scheduleDetail.jobName}"  class="ms-5 input-left"></label>
         </div>
 
         <div class="col-6 mt-3 d-flex align-items-center">
-            <label class="me-3" >Candidate name <span style="color: red">*</span> </label>
+            <label class="me-3" >Candidate name</label>
             <label  th:text="${scheduleDetail.candidateName}"  class="input-left"></label>
         </div>
 
         <div class="col-6 mt-3">
             <div >
-                <label >Interviewer <span style="color: red">*</span> </label>
+                <label >Interviewer </label>
                 <label  th:text="${#strings.listJoin(scheduleDetail.userNames, ', ')}" class="ms-5 input-left" ></label>
 
 
@@ -110,16 +111,16 @@
 
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <div class="col-md-6">
-                <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  type="button" th:href="@{/interview/edit(id=${scheduleDetail.interviewId})}" href="" class="btn btn-light ms-5 ps-5 pe-5">Edit</a>
+                <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  type="button" th:href="@{/interview/edit(id=${scheduleDetail.interviewId})}" href="" class="btn btn-light ps-5 pe-5 float-end me-5">Edit</a>
 
                 <!-- Nút thứ hai để gửi đến /submit2 -->
-                <a  sec:authorize="hasAnyAuthority('Interview', 'Admin')" type="button" th:href="@{/interview/submit(id=${scheduleDetail.interviewId})}"  class="btn btn-light ms-5 ps-3 pe-3">Submit Result</a>
+                <a  sec:authorize="hasAnyAuthority('Interview', 'Admin')" type="button" th:href="@{/interview/submit(id=${scheduleDetail.interviewId})}"  class="btn btn-light ps-3 pe-3 float-end me-5">Submit Result</a>
             </div>
 
 
             <div class="col-md-6">
 
-                <a th:href="@{/list-interview}" class="btn btn-light ms-5 ps-4 pe-4" >Cancel</a>
+                <a th:href="@{/list-interview}" class="btn btn-light ps-4 pe-4" >Cancel</a>
             </div>
 
 
