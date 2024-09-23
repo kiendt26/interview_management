@@ -6,10 +6,13 @@ import fa.training.repositories.JobRepository;
 import fa.training.services.JobService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -93,20 +96,43 @@ public class JobDTOImpl implements JobService {
     }
 
     @Override
-    public List<JobDTO> getAll() {
-        List<JobDTO> jobDTO = new ArrayList<>();
-        List<Job> jobList = jobRepository.findAll();
+    public Page<JobDTO> getAll(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<JobDTO> jobDTOList = new ArrayList<>();
+        Page<Job> jobList = jobRepository.findAll(pageable);
+        LocalDate currentDate = LocalDate.now();
+
+
+        for (Job job : jobList) {
+            if (job.getEndDate().isBefore(currentDate)) {
+                job.setStatus("Closed");
+            } else if (job.getStartDate().isAfter(currentDate)) {
+                job.setStatus("Open");
+
+            } else {
+                job.setStatus("Draft");
+            }
+            // Lưu lại trạng thái mới nếu có thay đổi
+            jobRepository.save(job);
+        }
 
         for (Job job : jobList) {
             JobDTO dto = convertEntity2DTO(job,null);
-            jobDTO.add(dto);
+            jobDTOList.add(dto);
+
         }
-        return jobDTO;}
+        return jobList.map(job -> {
+            JobDTO dto = convertEntity2DTO(job,null);
+            return dto;
+        });
+    }
 
     @Override
     public JobDTO save(JobDTO jobDTO) {
         Job job = convertDTO2Entity(jobDTO,null);
         jobRepository.save(job);
+        jobDTO.setStatus("Open");
         jobDTO.setJobId(job.getJobId());
         return jobDTO;
     }
@@ -129,4 +155,23 @@ public class JobDTOImpl implements JobService {
     public JobDTO findById(Long id) {
         Job job = jobRepository.findById(id).orElse(null);
         return convertEntity2DTO(job,null);    }
+
+    @Override
+    public Page<JobDTO> searchJob(String keyword, String status,int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        if ((keyword == null || keyword.isEmpty()) && (status == null || status.isEmpty())) {
+            return getAll(page, size);
+
+        } else if (status == null || status.isEmpty()) {
+            return jobRepository.findByKeyword(keyword, pageable);
+        } else if (keyword == null || keyword.isEmpty()) {
+            return jobRepository.findByStatus(status, pageable);
+        } else {
+            return jobRepository.findByKeywordAndStatus(keyword, status, pageable);
+        }
+
+    }
+
+
 }
+

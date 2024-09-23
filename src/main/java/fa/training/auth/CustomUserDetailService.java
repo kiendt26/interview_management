@@ -1,6 +1,5 @@
 package fa.training.auth;
 
-
 import fa.training.entities.User;
 import fa.training.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;

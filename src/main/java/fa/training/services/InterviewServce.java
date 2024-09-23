@@ -7,6 +7,7 @@ import fa.training.enums.ResultInterview;
 import fa.training.enums.Role;
 import fa.training.enums.Status;
 import fa.training.enums.StatusInterview;
+import fa.training.exception.InvalidTokenException;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
 import fa.training.repositories.Interview.PasswordResetTokenRepository;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -454,25 +456,31 @@ public class InterviewServce {
     }
 
 
-    //send mail
+    //send mail to interviewer
     @Autowired
-
     private JavaMailSender mailSender;
 
-    public void sendEmail(List<String> interviewer) {
+    public void sendEmail(List<String> interviewer, Long interviewID) {
 
         List<String> emailList = userRepository.findEmailByUserNameIn(interviewer);
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject("subject");
-        message.setText("body link");
-        message.setFrom("recruiter1.com"); // Địa chỉ email của bạn
+        message.setSubject("Schedule Interview");
+
+        String linkSchedule = "http://localhost:8080/interview/detail?id="+interviewID;
+        message.setText(linkSchedule);
+//        message.setFrom("recruiter1.com"); // Địa chỉ email của bạn
 
         // Chuyển đổi danh sách người nhận thành mảng
         String[] recipientArray = emailList.toArray(new String[0]);
         message.setTo(recipientArray);
 
         mailSender.send(message);
+
+        // Cập nhật status
+        Schedule schedule = interviewRepository.findById(interviewID).orElse(null);
+        schedule.setStatus(StatusInterview.Invited);
+        interviewRepository.save(schedule);
     }
 
 
@@ -480,7 +488,7 @@ public class InterviewServce {
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
 
-    //tao token để lấy lại mật khẩu
+    //tao token để lấy lại mật khẩu và gửi link để lấy lại mat khau
     public void initiatePasswordReset(String email){
         User user = userRepository.findByEmail(email);
 
@@ -492,7 +500,7 @@ public class InterviewServce {
 
         passwordResetTokenRepository.save(passwordResetToken);
 
-        String resetLink = "http://localhost:8080/reset-password?token=" + token;
+        String resetLink = "http://localhost:8080/reset/reset-password/" + token;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
@@ -500,9 +508,23 @@ public class InterviewServce {
         message.setText("To reset your password, click the link below:\n" + resetLink);
         mailSender.send(message);
 
-
-
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    //set lại password
+    public void resetPassword(String token, String newPass){
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
+        if (passwordResetToken == null){
+           throw new InvalidTokenException("Link not va");
+        }
+        User userDB = userRepository.findById(passwordResetToken.getUser().getUserId()).orElse(null);
+        String encodePass = passwordEncoder.encode(newPass);
+        userDB.setPasswordHash(encodePass);
+        userRepository.save(userDB);
+
+        passwordResetToken.setToken(null);
+        passwordResetToken.setExpiryDate(LocalDateTime.now().minusDays(1));
+    }
 }
 

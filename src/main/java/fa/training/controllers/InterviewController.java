@@ -2,15 +2,18 @@ package fa.training.controllers;
 
 import fa.training.dto.Interview.InterviewDTO;
 import fa.training.entities.InterviewSchedule;
+import fa.training.entities.PasswordResetToken;
 import fa.training.entities.Schedule;
 import fa.training.entities.User;
 import fa.training.enums.ResultInterview;
 import fa.training.enums.StatusInterview;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
+import fa.training.repositories.Interview.PasswordResetTokenRepository;
 import fa.training.repositories.InterviewRepository;
 //import fa.training.repositories.Interview.InterviewScheduleRepository;
 import fa.training.repositories.UsersRepository;
 import fa.training.services.InterviewServce;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +43,7 @@ public class InterviewController {
     @Autowired
     private InterviewServce interviewServce;
 
-
+// show list interview schedule
     @RequestMapping(value = "/list-interview", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewContent(
             Model model,
@@ -60,7 +63,7 @@ public class InterviewController {
 
         Page<InterviewDTO> page = null;
         // số hàng hiện trên 1 trang
-        int pageSize = 5;
+        int pageSize = 1;
 
         Page<InterviewDTO> interviewDTOPage = getInterviewListPage(keyword, interviewSearch, statusSearch, pageNumber, pageSize);
 
@@ -71,10 +74,7 @@ public class InterviewController {
             pageNums.add(i);
         }
         model.addAttribute("pageNums", pageNums);
-
         model.addAttribute("interviewListPage", interviewDTOPage);
-
-//
         return "interviewer/interview-list";
     }
 
@@ -93,31 +93,49 @@ public class InterviewController {
 
 
 
-//Create interview schedule
-@GetMapping("/create-interview")
-public String listInterviews(
-        Model model
+    //Create interview schedule
+    @GetMapping("/create-interview")
+    public String listInterviews(
+            Model model
 
-) {
-    model.addAttribute("recruiters", interviewServce.selectByRecruiter());
-    model.addAttribute("jobs", interviewServce.selectByJob());
-    model.addAttribute("candidateName", interviewServce.selectByCandidate());
-    model.addAttribute("idInterviewer", interviewServce.searchByInterview());
-    model.addAttribute("addInterview",new Schedule());
-    return "interviewer/create-interview";
+    ) {
+        model.addAttribute("recruiters", interviewServce.selectByRecruiter());
+        model.addAttribute("jobs", interviewServce.selectByJob());
+        model.addAttribute("candidateName", interviewServce.selectByCandidate());
+        model.addAttribute("idInterviewer", interviewServce.searchByInterview());
+        model.addAttribute("addInterview",new Schedule());
+        return "interviewer/create-interview";
 
-}
+    }
     @PostMapping("/create-interview")
     public String createInterview(
-            Model model,
-            @Validated()
+
+            @Valid
             @ModelAttribute(name = "addInterview") Schedule schedule,
-            @RequestParam(name = "idInterviewer") List<Long> idInterviewer,
             BindingResult result,
+            Model model,
+            @RequestParam(name = "idInterviewer", required = false) List<Long> idInterviewer,
             RedirectAttributes redirectAttributes
 
     ){
-        if(result.hasErrors()) {
+        if (idInterviewer == null || idInterviewer.isEmpty()) {
+            result.rejectValue("interviewScheduleList", "error.interviewScheduleList", "*Must selected interviewer");
+        }
+        if (schedule.getCandidate().getCandidateId() == null) {
+            result.rejectValue("candidate", "error.candidate", "*Candidate must be selected.");
+        }
+        if (schedule.getJob().getJobId() == null) {
+            result.rejectValue("job", "error.job", "*Job must be selected.");
+        }
+        if (schedule.getRecruiter().getUserId() == null) {
+            result.rejectValue("recruiter", "error.recruiter", "*Recruiter must be selected.");
+        }
+
+        if(result.hasErrors() ) {
+            model.addAttribute("recruiters", interviewServce.selectByRecruiter());
+            model.addAttribute("jobs", interviewServce.selectByJob());
+            model.addAttribute("candidateName", interviewServce.selectByCandidate());
+            model.addAttribute("idInterviewer", interviewServce.searchByInterview());
             return "interviewer/create-interview";
         }
         interviewServce.createNewSchedule(schedule, idInterviewer);
@@ -125,9 +143,6 @@ public String listInterviews(
 
         return "redirect:/list-interview";
     }
-
-
-
 
     //Show detail interview
     @GetMapping("/interview/detail")
@@ -142,6 +157,11 @@ public String listInterviews(
         return "interviewer/interview-detail";
     }
 
+
+
+
+
+    //edit schedule
     @GetMapping("/interview/edit")
     public String editInterview(
             @RequestParam("id") Long idInterviewSchedule,
@@ -170,14 +190,48 @@ public String listInterviews(
 
     @PostMapping("/interview/edit-schedule")
     public String edit(
+            @Valid
             @ModelAttribute("scheduleDetail") Schedule schedule,
-            @RequestParam(name = "userNames") List<Long> idInterviewer,
+            BindingResult bindingResult,
+            @RequestParam(name = "userNames", required = false) List<Long> idInterviewer,
             RedirectAttributes attributes,
-            BindingResult result
-    ) {
+            Model model
 
+    ) {
+        if (idInterviewer == null || idInterviewer.isEmpty()) {
+            bindingResult.rejectValue("interviewScheduleList", "error.interviewScheduleList", "*Must selected interviewer");
+        }
+        if (schedule.getCandidate().getFullname() == null) {
+            bindingResult.rejectValue("candidate", "error.candidate", "*Candidate must be selected.");
+        }
+        if (schedule.getJob().getJobId() == null) {
+            bindingResult.rejectValue("job", "error.job", "*Job must be selected.");
+        }
+        if (schedule.getRecruiter().getUserId() == null) {
+            bindingResult.rejectValue("recruiter", "error.recruiter", "*Recruiter must be selected.");
+        }
+
+        if (bindingResult.hasErrors()){
+            Schedule scheduleDB = interviewRepository.findById(schedule.getScheduleId()).orElse(null);
+
+            List<String> userNames = new ArrayList<>();
+            for (InterviewSchedule interview : scheduleDB.getInterviewScheduleList()) {
+                userNames.add(interview.getInterview().getUserName());
+            }
+
+            List<ResultInterview> result = Arrays.asList(ResultInterview.values());
+            model.addAttribute("results", result);
+            model.addAttribute("userNames", userNames);
+            model.addAttribute("idInterviewer", interviewServce.searchByInterview());
+            model.addAttribute("candidateName", interviewServce.selectByCandidate());
+            model.addAttribute("scheduleDetail", scheduleDB);
+            model.addAttribute("jobs", interviewServce.selectByJob());
+            model.addAttribute("recruiters", interviewServce.selectByRecruiter());
+
+            return "interviewer/edit-detail";
+        }
         interviewServce.updateSchedule(schedule, idInterviewer);
-//        redirectAttributes.addFlashAttribute("message", "Interview Schedule created successfully");
+        attributes.addFlashAttribute("message", "Interview Schedule edit success");
 
         return "redirect:/list-interview";
     }
@@ -205,7 +259,7 @@ public String listInterviews(
     ) {
 
         interviewServce.submitSchedule(schedule);
-//        redirectAttributes.addFlashAttribute("message", "Interview Schedule created successfully");
+        attributes.addFlashAttribute("message", "Interview Schedule submit result success");
 
         return "redirect:/list-interview";
     }
@@ -219,13 +273,19 @@ public String listInterviews(
         InterviewDTO schedule = new InterviewDTO();
         schedule.setInterviewId(id);
         interviewServce.cancelSchedule(schedule);
+        attributes.addFlashAttribute("message","Status schedule change cancel done");
         return "redirect:/list-interview";
     }
 
     @GetMapping("/send-email")
     public String sendEmail(
-            @RequestParam(name = "userNames") List<String> userNames) {
-        interviewServce.sendEmail(userNames);
+            @RequestParam(name = "userNames") List<String> userNames,
+            @RequestParam(name = "interviewId") Long interviewID,
+            RedirectAttributes redirect
+
+    ) {
+        interviewServce.sendEmail(userNames, interviewID);
+        redirect.addFlashAttribute("message","Send reminder to Interviewer success! ");
         return "redirect:/list-interview";
     }
 
@@ -246,12 +306,38 @@ public String listInterviews(
         model.addAttribute("email", email);
         return "forgot-password";
     }
-
+    //gửi mail lấy link để điền mk mới
     @PostMapping("/send")
     public String sendForgot(
             @RequestParam(name = "email") String email
     ){
        interviewServce.initiatePasswordReset(email);
         return "redirect:/login";
+    }
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @GetMapping("/reset/reset-password/{token}")
+    public String showResetPasswordPage(
+            @PathVariable("token") String token,
+            Model model
+    ) {
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
+
+        if (passwordResetToken == null) {
+            model.addAttribute("error", "Token không tồn tại.");
+            return "reset-password"; // Trả về trang với thông báo lỗi
+        }
+
+        // Kiểm tra xem token có hết hạn không
+//        if (userService.isTokenExpired(passwordResetToken)) {
+//            model.addAttribute("error", "Token đã hết hạn.");
+//            return "reset-password"; // Trả về trang với thông báo lỗi
+//        }
+
+        // Nếu token hợp lệ, truyền token đến view để sử dụng khi đặt lại mật khẩu
+        model.addAttribute("token", token);
+        return "reset-password"; // Trả về trang nơi người dùng có thể nhập mật khẩu mới
     }
 }
