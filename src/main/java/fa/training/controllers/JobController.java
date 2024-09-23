@@ -74,7 +74,7 @@ public class JobController {
             result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
 
         }
-        if(jobDTO.getStartDate().isAfter(localDate)) {
+        if(!jobDTO.getStartDate().isAfter(localDate)) {
             jobDTO.setStatus("Open");
             result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
         }
@@ -120,12 +120,7 @@ public class JobController {
         session.invalidate();
         return "redirect:/login";
     }
-    @GetMapping("/login")
-    public String login(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "login";
-    }
+
 }
 
 
