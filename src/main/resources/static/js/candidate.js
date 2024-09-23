@@ -43,4 +43,25 @@ function confirmDelete(url) {
             window.location.href = url;
         }
     });
+    }
+
+function showFileName() {
+    const fileInput = document.getElementById('attachment');
+    const fileNameSpan = document.getElementById('fileName');
+
+    if (fileInput.files.length > 0) {
+        fileNameSpan.textContent = fileInput.files[0].name;
+    } else {
+        fileNameSpan.textContent = '';
+    }
+}
+
+
+function removeFile() {
+    const fileInput = document.getElementById('attachment');
+    const fileNameSpan = document.getElementById('fileName');
+
+    // Xóa file đã chọn
+    fileInput.value = '';
+    fileNameSpan.textContent = '';
 }

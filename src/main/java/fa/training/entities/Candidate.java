@@ -59,7 +59,7 @@ public class Candidate {
 
 
     @Transient
-    private List<Skills> skills;
+    private List<Skills> skills = new ArrayList<>();
 
     @NotNull(message = "Position is required")
     @Enumerated(EnumType.STRING)
