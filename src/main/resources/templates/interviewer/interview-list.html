@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+
+      th:include="~{layout/template::areas(~{::title}, ~{::main}, @{/css/interview.css},@{/js/interview.js})}">
+<head>
+    <meta charset="UTF-8">
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+
+    <title>Home page</title>
+
+</head>
+<body>
+<main class="col-12 mt-5">
+    <h1>Interview Schedule</h1>
+    <p><i>Interview Schedule List</i></p>
+
+    <form th:action="@{/list-interview}">
+        <input class="search" type="search" name="keyword" th:value="${param.keyword}" placeholder="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <select class="search" name="interview" >
+            <option value=""  >Interviewer</option>
+            <option th:each="interview : ${interviewSearch}"
+                    th:value="${interview.id}"
+                    th:text="${interview.name}">
+
+            </option>
+        </select>
+
+        <select class="search"  name="status" id="">
+            <option value=""  >Status</option>
+
+
+                    <option th:each="status : ${statuses}"
+                            th:value="${status.name}"
+                            th:text="${status.name()}">
+
+                    </option>
+
+
+        </select>
+
+        <input class="btn-search" type="submit" value="Search">
+    </form>
+    <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" class="btn-add-interview" th:href="@{/create-interview}">Add new</a>
+    <table class="table table-striped">
+        <thead >
+            <th>Title</th>
+            <th>Candidate</th>
+            <th>Interviewer</th>
+            <th>Schedule</th>
+            <th>Result</th>
+            <th>Status</th>
+            <th >Job</th>
+            <th class="text-center">Action</th>
+        </thead>
+
+        <tbody>
+            <tr th:each="schedule : ${interviewListPage.content}">
+                <td th:text="${schedule.title}"></td>
+                <td th:text="${schedule.candidateName}"></td>
+                <td th:text="${#strings.listJoin(schedule.userNames, ', ') }"></td>
+                <td th:text="${
+                    #temporals.format(schedule.schedudate, 'dd/MM/yyyy')
+                    +' '+#temporals.format(schedule.schedudateFrom, 'HH:mm')
+                     +' - '+#temporals.format(schedule.schedudateTo, 'HH:mm')
+                }"></td>
+                <td th:text="${schedule.result.displayName}"></td>
+                <td th:text="${schedule.status}"></td>
+                <td th:text="${schedule.jobName}"></td>
+                <td class="d-flex justify-content-center">
+                    <a th:href="@{/interview/detail(id=${schedule.interviewId})}">
+                        <i class="fa-regular fa-eye"></i>
+                    </a>
+
+                    <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/interview/edit(id=${schedule.interviewId})}" class="ms-3">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+
+                    <a sec:authorize="hasAuthority('Interview')" class="ms-3" th:href="@{/interview/submit(id=${schedule.interviewId})}">
+                        <i class="fa-regular fa-hand-pointer"></i>
+                    </a>
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+    <div class="row">
+        <nav class="d-flex justify-content-end align-items-baseline">
+            <span th:text="${interviewListPage.numberOfElements + (interviewListPage.number * interviewListPage.size) } + '/' + ${interviewListPage.totalElements} + ' rows'"></span>
+            <ul class="pagination">
+                <!-- Previous button -->
+<!--               -->
+                <li  th:if="${interviewListPage.hasPrevious()}" class="page-item p-0">
+                    <a class="page-link border-0" th:href="@{/list-interview(page=${interviewListPage.getNumber()}, interview=${param.interview}, status=${param.status})}">
+                        <i class="fa-solid fa-chevron-left " style="color: #000000;"></i>
+                    </a>
+                </li>
+
+                <!-- Next button -->
+<!--                -->
+                <li th:if="${interviewListPage.hasNext()}" class="page-item p-0">
+                    <a class="page-link border-0 " th:href="@{/list-interview(page=${interviewListPage.getNumber() + 2}, interview=${param.interview}, status=${param.status})}">
+                        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</main>
+</body>
+</html>

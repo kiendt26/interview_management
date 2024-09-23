@@ -22,7 +22,6 @@ ul li a {
 }
 a{
     font-weight: 700;
-    display: block;
     color: black;
 }
 .menu-li{
@@ -34,7 +33,7 @@ h4{
     font-size: 23px;
 }
 .header{
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: space-between;
     height: 100%;

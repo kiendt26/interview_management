@@ -1,5 +1,4 @@
 package fa.training.dto;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -56,7 +55,6 @@ public class JobDTO {
     private String[] levelDTO;
     private String description;
     private String status;
-
 
 
 }

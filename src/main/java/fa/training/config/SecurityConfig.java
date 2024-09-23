@@ -15,6 +15,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 public class SecurityConfig {
+
+
     private static final String[] PERMIT_ALL_LINK = {
             "/login",
             "/forgot-password",
@@ -34,6 +36,7 @@ public class SecurityConfig {
             "/interview/submit"
 
     };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

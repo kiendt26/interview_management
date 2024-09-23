@@ -37,5 +37,6 @@ public interface JobRepository extends JpaRepository<Job,Long> {
 //    Page<JobDTO> findByKeywordAndStatus(@Param("keyword") String keyword,
 //                                        @Param("status") String status,
 //                                        Pageable pageable);
+
 }
 
