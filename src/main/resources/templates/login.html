@@ -2,22 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .login-container {
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-<div>
-    <h1>Login</h1>
-    <form th:action="@{/login-check}" method="post" th:object="${user}">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="userName" th:field="*{userName}" />
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"  th:field="*{passwordHash}" />
-
-        <button type="submit">Login</button>
-    </form>
-    <a th:href="@{/forgot-password}">Forgot password?</a>
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 100px;">
+        <div class="col-md-4 login-container">
+            <h1 class="text-center">Login</h1>
+            <form th:action="@{/login-check}" method="post" th:object="${user}">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="userName" th:field="*{userName}" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password" th:field="*{passwordHash}" required />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <div class="text-center mt-3">
+                    <a th:href="@{/forgot-password}">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-</form>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+</script>
 </body>
 </html>
