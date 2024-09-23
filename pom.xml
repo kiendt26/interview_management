@@ -67,6 +67,7 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>12.6.3.jre11</version>
         </dependency>
+
         <!--send mail-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

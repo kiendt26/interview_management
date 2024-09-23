@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -29,8 +30,8 @@ public class Job implements Serializable {
 
     @Future(message = "Date must be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private LocalDate startDate;
 
     @Positive(message = "Salary must be positive")
     private Double salaryFrom;
@@ -44,8 +45,8 @@ public class Job implements Serializable {
     private String skills;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    @Temporal(TemporalType.DATE)
+    private LocalDate endDate;
 
     @NotEmpty(message = "Benefit must not empty")
     private String benefit;

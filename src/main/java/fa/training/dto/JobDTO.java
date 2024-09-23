@@ -1,17 +1,19 @@
 package fa.training.dto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobDTO {
 
 
@@ -22,14 +24,17 @@ public class JobDTO {
     private String jobTitle;
 
     @Future(message = "Date must be in future")
+    @NotNull(message = "Start Date must not be blank")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Positive(message = "Salary must be positive")
+
     private Double salaryFrom;
 
     @Positive(message = "Salary must be positive")
+    @NotNull(message = "Salary must not be blank")
     private Double salaryTo;
 
     private String workingAddress;
@@ -37,9 +42,11 @@ public class JobDTO {
     @NotEmpty(message = "Skill must not empty")
     private String[] skillsDTO;
 
+    @NotNull(message = "End Date must not be blank")
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotEmpty(message = "Benefit must not empty")
     private String[] benefitDTO;
@@ -47,6 +54,7 @@ public class JobDTO {
     @NotEmpty(message = "Level must not empty")
     private String[] levelDTO;
     private String description;
-    private Boolean status;
+    private String status;
+
 
 }

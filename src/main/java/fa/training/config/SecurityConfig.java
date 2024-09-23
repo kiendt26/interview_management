@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 public class SecurityConfig {
 
+
     private static final String[] PERMIT_ALL_LINK = {
             "/login",
             "/forgot-password",
@@ -27,14 +28,18 @@ public class SecurityConfig {
             "/reset/reset-password/*",
 
     };
+
     private static final String[] ADMIN_PERMIT_LINK = {
             "/interview/edit",
-            "/candidates/edit"
+            "/candidate/detail",
+            "/job/job-detail"
 
     };
     private static final String[] INTERVIEW_PERMIT_LINK = {
             "/interview/submit"
+
     };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
