@@ -1,5 +1,6 @@
 package fa.training.controllers;
 
+import fa.training.dto.CandidateDTO;
 import fa.training.entities.Candidate;
 import fa.training.enums.Status;
 import fa.training.services.CandidateService;
@@ -118,8 +119,8 @@ public class CandidateController {
             Candidate c = candidate.get();
             c.setSkillsAsString(c.getSkillsAsString());
             model.addAttribute("candidate", c);
-            model.addAttribute("readonly", true); // Thêm thuộc tính để hiển thị form chỉ đọc
-            return "candidates/detail"; // Sử dụng template riêng cho detail
+            model.addAttribute("readonly", true);
+            return "candidates/detail";
         }
         return "redirect:/candidates/list";
     }

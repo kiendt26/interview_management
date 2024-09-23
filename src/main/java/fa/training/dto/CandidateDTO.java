@@ -8,7 +8,6 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,12 +36,6 @@ public class CandidateDTO {
     private String attachment;
 
     @NotNull(message = "At least one skill is required")
-    private List<String> skills = new ArrayList<>();
-
-//    private String skillsAsString;
-
-//    @NotNull(message = "At least one skill is required")
-//    private List<Skills> skills = new ArrayList<>();
 
     @NotNull(message = "Position is required")
     private CurrentPosition position;
@@ -57,6 +50,4 @@ public class CandidateDTO {
 
     @NotNull(message = "Highest level is required")
     private HighestLevel highestLevel;
-
 }
-
