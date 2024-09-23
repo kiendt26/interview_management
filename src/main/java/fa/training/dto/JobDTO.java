@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -27,7 +28,7 @@ public class JobDTO {
     @NotNull(message = "Start Date must not be blank")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Positive(message = "Salary must be positive")
 
@@ -46,7 +47,7 @@ public class JobDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotEmpty(message = "Benefit must not empty")
     private String[] benefitDTO;

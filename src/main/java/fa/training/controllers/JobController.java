@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class JobController {
     public String jobList(Model model,@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size,
                           @RequestParam(value = "keyword",required = false) String keyword,
                           @RequestParam(value = "status",required = false) String status) {
+
         if (keyword != null && !keyword.isEmpty()) {
             keyword = keyword.trim().replaceAll("\\s+", " ");
         }
@@ -59,16 +62,28 @@ public class JobController {
     @GetMapping("/job/job-create")
     public String jobCreate(Model model,@ModelAttribute("dto") JobDTO jobDTO) {
         model.addAttribute("job", new Job());
-        jobDTO.setStatus("Open");
 
         return "job/job-create";
     }
     @PostMapping("/job/create")
     public String jobCreate(@Validated @ModelAttribute("dto") JobDTO jobDTO,BindingResult result, Model model) {
+        LocalDate localDate = LocalDate.now();
+
+        if(jobDTO.getEndDate().isBefore(localDate)) {
+            jobDTO.setStatus("Closed");
+            result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
+
+        }
+        if(jobDTO.getStartDate().isAfter(localDate)) {
+            jobDTO.setStatus("Open");
+            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
+        }
+
         if (result.hasErrors()) {
             return "job/job-create";
         }
-        jobDTO.setStatus("Open");
+
+        jobDTO.setStatus("Draft");
         jobService.save(jobDTO);
         return "redirect:/job/job-list";
     }

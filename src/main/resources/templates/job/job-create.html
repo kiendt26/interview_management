@@ -41,13 +41,13 @@
         <div class="col-6 mt-3">
             <label >Start Date <span style="color: red">*</span> </label>
             <input type="date" name="startDate" id="startDate" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 30px">
-            <small th:errors="*{startDate}" th:errorclass="error"></small>
+            <small th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" th:errorclass="error"></small>
 
         </div>
         <div class="col-6 ps-3 mt-3">
             <label >End Date <span style="color: red">* </span> </label>
             <input type="date" name="endDate" id="endDate" placeholder="DD/MM/YYYY" style="border: none;width: 75%;margin-left: 11px">
-            <small th:errors="*{endDate}" th:errorclass="error"></small>
+            <small th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" th:errorclass="error"></small>
 
 
 

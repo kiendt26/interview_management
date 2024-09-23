@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,12 +99,27 @@ public class JobDTOImpl implements JobService {
     public Page<JobDTO> getAll(int page,int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        List<JobDTO> jobDTO = new ArrayList<>();
+        List<JobDTO> jobDTOList = new ArrayList<>();
         Page<Job> jobList = jobRepository.findAll(pageable);
+        LocalDate currentDate = LocalDate.now();
+
+
+        for (Job job : jobList) {
+            if (job.getEndDate().isBefore(currentDate)) {
+                job.setStatus("Closed");
+            } else if (job.getStartDate().isAfter(currentDate)) {
+                job.setStatus("Open");
+
+            } else {
+                job.setStatus("Draft");
+            }
+            // Lưu lại trạng thái mới nếu có thay đổi
+            jobRepository.save(job);
+        }
 
         for (Job job : jobList) {
             JobDTO dto = convertEntity2DTO(job,null);
-            jobDTO.add(dto);
+            jobDTOList.add(dto);
 
         }
         return jobList.map(job -> {

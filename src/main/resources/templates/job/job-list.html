@@ -24,11 +24,11 @@
             </div>
 
             <div class="col-4 input-group mb-3" style="width:33.33333333% ">
-                <select class="form-select" id="inputGroupSelect01">
-                    <option selected>Status</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <select class="form-select" id="inputGroupSelect01" name="status">
+                    <option selected>Choose status...</option>
+                    <option value="Open" th:selected="${status== 'Open'}"></option>
+                    <option value="Draft" th:selected="${status== 'Draft'}"></option>
+                    <option value="Closed" th:selected="${status== 'Closed'}"></option>
                 </select>
             </div>
             <div class="col-3 d-flex">
