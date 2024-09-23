@@ -10,11 +10,12 @@
 <main class="col-12 mt-5">
     <div class="d-flex justify-content-between">
         <h4>Candidate Detail</h4>
-        <a th:if="${candidate.status.name() != 'BANNED'}"
-           th:href="@{/candidates/ban/{id}(id=${candidate.candidateId})}"
-           onclick="return confirm('Are you sure you want to ban this candidate?');">
-            Ban Candidate
-        </a>
+        <form th:if="${candidate.status.name() != 'BANNED'}"
+              th:action="@{/candidates/ban/{id}(id=${candidate.candidateId})}"
+              method="post"
+              onsubmit="return confirm('Are you sure you want to ban this candidate?');">
+            <button class="btn btn-danger" type="submit">Ban Candidate</button>
+        </form>
     </div>
     <form th:action="@{/candidates/edit/{id}(id=${candidate.candidateId})}" th:object="${candidate}" method="get" style="background: #f1f6fb" class="pt-3 pb-3 row">
         <h4 style="font-size: 18px">I. Personal information</h4>
