@@ -23,7 +23,9 @@ public class SecurityConfig {
             "/",
             "/css/**",
             "/js/**",
-            "/send"
+            "/send",
+            "/reset/reset-password/*",
+
     };
     private static final String[] ADMIN_PERMIT_LINK = {
             "/interview/edit"

@@ -157,6 +157,10 @@ public class InterviewController {
         return "interviewer/interview-detail";
     }
 
+
+
+
+
     //edit schedule
     @GetMapping("/interview/edit")
     public String editInterview(
@@ -314,8 +318,11 @@ public class InterviewController {
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @GetMapping("/reset-password")
-    public String showResetPasswordPage(@RequestParam String token, Model model) {
+    @GetMapping("/reset/reset-password/{token}")
+    public String showResetPasswordPage(
+            @PathVariable("token") String token,
+            Model model
+    ) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
 
         if (passwordResetToken == null) {
@@ -331,6 +338,6 @@ public class InterviewController {
 
         // Nếu token hợp lệ, truyền token đến view để sử dụng khi đặt lại mật khẩu
         model.addAttribute("token", token);
-        return "login"; // Trả về trang nơi người dùng có thể nhập mật khẩu mới
+        return "reset-password"; // Trả về trang nơi người dùng có thể nhập mật khẩu mới
     }
 }

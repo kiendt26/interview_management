@@ -500,7 +500,7 @@ public class InterviewServce {
 
         passwordResetTokenRepository.save(passwordResetToken);
 
-        String resetLink = "http://localhost:8080/reset-password?token=" + token;
+        String resetLink = "http://localhost:8080/reset/reset-password/" + token;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
