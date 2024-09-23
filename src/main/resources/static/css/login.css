@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+form {
+    width: 30%;
+    margin: 200px auto;
+    padding: 50px;
+    background: #eef1df;
+    align-items: center;
+
+
+;
+}
+input{
+    width: 70%;
+    border-radius: 5px;
+    border: none;
+
+}
+/* input[type="submit"]{
+    background-color: ;
+}
+
+input[type="submit"]:hover{
+    color: ;
+} */
+
+input:focus{
+
+    border: 1px solid blue;
+    outline: none;
+}
+body{
+    line-height: 30px;
+
+}
+h2 {
+    text-align: center;
+}
