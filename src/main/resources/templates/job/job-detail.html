@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
       th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/job.css},@{/js/job.js})}">
 <head>
     <meta charset="UTF-8">
@@ -94,7 +94,7 @@
             <textarea placeholder="Type a Description" cols="42" rows="4" style="border: none" class="ms-3" name="description" id="description" th:field="*{description}" disabled></textarea>
         </div>
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
-            <a th:href="@{'/job/job-edit/' + ${dto.jobId}}">
+            <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  th:href="@{'/job/job-edit/' + ${dto.jobId}}">
                 <button class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600" type="button">Edit</button>
 
             </a>

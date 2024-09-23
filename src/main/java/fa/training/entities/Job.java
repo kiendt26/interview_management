@@ -55,7 +55,7 @@ public class Job implements Serializable {
     @NotEmpty(message = "Level must not empty")
     private String level;
     private String description;
-    private Boolean status;
+    private String status;
 
 
 }

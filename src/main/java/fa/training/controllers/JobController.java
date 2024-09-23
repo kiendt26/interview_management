@@ -2,10 +2,13 @@ package fa.training.controllers;
 
 import fa.training.dto.JobDTO;
 import fa.training.entities.Job;
+import fa.training.entities.User;
 import fa.training.repositories.JobRepository;
 import fa.training.services.JobService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,20 +41,26 @@ public class JobController {
 
 
     @GetMapping("/job/job-list")
-    public String jobList(Model model) {
-        List<JobDTO> jobs = jobService.getAll();
-//        jobs.forEach(j -> j.setSkillsDTO(new String[]{Arrays.toString(j.getSkillsDTO())}));
-//        jobs.forEach(j -> j.setLevelDTO(new String[]{Arrays.toString(j.getLevelDTO())}));
-//        jobs.forEach(j -> j.setBenefitDTO(new String[]{Arrays.toString(j.getBenefitDTO())}));
+    public String jobList(Model model,@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size,
+                          @RequestParam(value = "keyword",required = false) String keyword,
+                          @RequestParam(value = "status",required = false) String status) {
+        if (keyword != null && !keyword.isEmpty()) {
+            keyword = keyword.trim().replaceAll("\\s+", " ");
+        }
 
+        Page<JobDTO> jobDTOS = jobService.searchJob(keyword,status,page,size);
+        model.addAttribute("jobDTOS", jobDTOS);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("status", status);
 
-        model.addAttribute("listJobs",jobs);
         return "job/job-list";
     }
 
     @GetMapping("/job/job-create")
     public String jobCreate(Model model,@ModelAttribute("dto") JobDTO jobDTO) {
         model.addAttribute("job", new Job());
+        jobDTO.setStatus("Open");
+
         return "job/job-create";
     }
     @PostMapping("/job/create")
@@ -59,6 +68,7 @@ public class JobController {
         if (result.hasErrors()) {
             return "job/job-create";
         }
+        jobDTO.setStatus("Open");
         jobService.save(jobDTO);
         return "redirect:/job/job-list";
     }
@@ -89,6 +99,17 @@ public class JobController {
         }
         jobService.save(jobDTO);
         return "redirect:/job/job-list";
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/login";
+    }
+    @GetMapping("/login")
+    public String login(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "login";
     }
 }
 

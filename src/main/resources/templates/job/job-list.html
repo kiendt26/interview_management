@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
       th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/job.css},@{/js/job.js})}">
 <head>
     <meta charset="UTF-8">
@@ -15,33 +15,34 @@
 <main class="col-12 mt-5">
     <h4>Job list</h4>
     <div class="row">
-        <div class="col-4 input-group mb-3" style="width:33.33333333% ">
-            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <span class="input-group-text" id="basic-addon2" style="background: none; border-top:1px solid #ced4da;border-right:1px solid #ced4da;border-bottom:1px solid #ced4da;border-left:none  ">
+        <form th:action="@{/job/job-list}" class="formSearch" style="display: flex;padding: 0px" method="GET">
+            <div class="col-4 input-group mb-3" style="width:33.33333333% ">
+                <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2" name="keyword" th:value="${keyword}">
+                <span class="input-group-text" id="basic-addon2" style="background: none; border-top:1px solid #ced4da;border-right:1px solid #ced4da;border-bottom:1px solid #ced4da;border-left:none  ">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </span>
-        </div>
+            </div>
 
-        <div class="col-4 input-group mb-3" style="width:33.33333333% ">
-            <select class="form-select" id="inputGroupSelect01">
-                <option selected>Status</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-        </div>
-        <div class="col-3">
-            <button class="btn ms-5" style="background: #e1dfdf;font-weight: 600">Search</button>
+            <div class="col-4 input-group mb-3" style="width:33.33333333% ">
+                <select class="form-select" id="inputGroupSelect01">
+                    <option selected>Status</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="col-3 d-flex">
+                <button class="btn ms-5" style="background: #e1dfdf;font-weight: 600">Search</button>
 
-        </div>
+            </div>
 
-        <div class="col-12 d-flex mb-3" style="justify-content: flex-end;">
-            <a th:href="@{/job/job-create}"><button class="btn" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600" >Add new</button>
-
-            </a>
-            <button class="btn ms-3 me-3" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600">Import</button>
-
-        </div>
+<!--            <div class="col-12 d-flex mb-3" style="justify-content: flex-end;">-->
+<!--               -->
+<!--            </div>-->
+        </form>
+        <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  th:href="@{/job/job-create}" style="display: flex;flex-direction:row-reverse;text-decoration: none">
+            <button class="btn" style="background: #e1dfdf;padding: 7px 30px;font-weight: 600">Add new</button>
+        </a>
 
     </div>
     <table class="table table-striped">
@@ -59,7 +60,7 @@
         </thead>
 
         <tbody>
-            <tr th:each="job : ${listJobs}">
+            <tr th:each="job : ${jobDTOS}">
                 <td th:text="${job.jobTitle}"></td>
                 <td th:text="${#strings.arrayJoin(job.skillsDTO, ', ')}"></td>
                 <td th:text="${job.startDate}"></td>
@@ -71,18 +72,41 @@
                         <i class="fa-regular fa-eye"></i>
                     </a>
 
-                    <a th:href="@{'/job/job-edit/' + ${job.jobId}}" class="ms-2 me-2">
+                    <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  th:href="@{'/job/job-edit/' + ${job.jobId}}" class="ms-2 me-2">
                         <i class="fa-solid fa-file-pen"></i>
                     </a>
 
-                    <a th:href="@{'/job/job-delete/' + ${job.jobId}}">
-                        <i class="fa-regular fa-trash-can"></i>
+                    <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  th:href="@{'/job/job-delete/' + ${job.jobId}}" onclick="return confirmJob()">
+                        <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
                     </a>
                 </td>
 
             </tr>
         </tbody>
+        <div class="row">
+            <nav class="d-flex justify-content-end align-items-baseline">
+                <span th:text="${jobDTOS.numberOfElements * (jobDTOS.number+1) } + '/' + ${jobDTOS.totalElements} + ' rows'"></span>
+                <ul class="pagination">
+                    <!-- Previous button -->
+                    <!--               -->
+                    <li  th:if="${jobDTOS.hasPrevious()}" class="page-item p-0">
+                        <a class="page-link border-0" th:href="@{job-list(page=${jobDTOS.getNumber()}, keyword=${param.keyword})}"><i class="fa-solid fa-chevron-left " style="color: #000000;"></i></a>
+                    </li>
+
+                    <!-- Next button -->
+                    <!--                -->
+                    <li th:if="${jobDTOS.hasNext()}" class="page-item p-0">
+                        <a class="page-link border-0 " th:href="@{job-list(page=${jobDTOS.getNumber() + 2}, keyword=${param.keyword})}"><i class="fa-solid fa-chevron-right" style="color: #000000;"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </table>
 </main>
+<script>
+    function confirmJob(){
+        return confirm("Are you sure you want delete this job?")
+    }
+</script>
 </body>
 </html>

@@ -69,11 +69,11 @@ th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},
                     <i class="fa-regular fa-eye"></i>
                 </a>
 
-                <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}"  href="" class="ms-2 me-2">
+                <a th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}"  href="" class="ms-2 me-2"  >
                     <i class="fa-solid fa-file-pen"></i>
                 </a>
 
-                <a th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}">
+                <a th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" >
                     <i class="fa-regular fa-trash-can"></i>
                 </a>
             </td>

@@ -2,7 +2,9 @@ package fa.training.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobDTO {
 
 
@@ -50,7 +54,8 @@ public class JobDTO {
     @NotEmpty(message = "Level must not empty")
     private String[] levelDTO;
     private String description;
-    private Boolean status;
+    private String status;
+
 
 
 }
