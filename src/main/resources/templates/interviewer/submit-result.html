@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/interview.css},@{/js/interview.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+
+
+
+    </style>
+</head>
+<body>
+<main class="col-12 mt-5">
+    <div class="mb-4">
+        <h1>Interview Schedule</h1>
+        <a th:href="@{/list-interview}">Interview Schedule List</a>
+        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+        <span><i class="ps-3">New Interview Schedule</i></span>
+    </div>
+
+
+
+    <form method="post" th:action="@{/interview/submit-schedule}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
+        <input type="hidden" name="id" th:field="${scheduleDetail.interviewId}">
+        <div class="col-6 mt-3">
+            <div>
+                <label class="me-4" >Schedule title  </label>
+                <label  name="" th:text="${scheduleDetail.title}"  class=" input-left"></label>
+            </div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Job</label>
+            <label  th:text="${scheduleDetail.jobName}"  class="ms-5 input-left"></label>
+        </div>
+
+        <div class="col-6 mt-3 d-flex align-items-center">
+            <label class="me-3" >Candidate name </label>
+            <label  th:text="${scheduleDetail.candidateName}"  class="input-left"></label>
+        </div>
+
+        <div class="col-6 mt-3">
+            <div >
+                <label >Interviewer</label>
+                <label  th:text="${#strings.listJoin(scheduleDetail.userNames, ', ')}" class="ms-5 input-left" ></label>
+
+                <!--                <select id="mySelect" name="userNames" class="form-select" multiple="multiple">-->
+                <!--                    <option th:each="id : ${idInterviewer}"-->
+                <!--                            th:value="${id.id}"-->
+                <!--                            th:text="${id.name}"-->
+                <!--                            th:selected="${scheduleDetail.userNames.contains(id.name)}"></option>-->
+                <!--                </select>-->
+            </div>
+
+            <div class="mt-3">
+                <label>Location</label>
+                <label type="text" name="" th:text="${scheduleDetail.location}" class="input-left"></label>
+            </div>
+        </div>
+
+        <div class="col-6 mt-3 d-flex align-items-center" >
+            <label class="me-5">Schedule Time</label>
+            <div  class="date-input-container me-5 ">
+                <label  th:text="${ #temporals.format(scheduleDetail.schedudate, 'dd/MM/yyyy')}" class="w-100" ></label>
+                <label>From</label>
+                <label  th:text="${#temporals.format(scheduleDetail.schedudateFrom, 'HH:mm')}" name=""  ></label>
+                <label>To</label>
+                <label  th:text="${#temporals.format(scheduleDetail.schedudateTo, 'HH:mm')}" name=""></label>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="col-6 mt-3">
+            <div >
+                <label>Recruiter owner</label>
+                <label th:text="${scheduleDetail.recruiter}" class="input-left"></label>
+            </div>
+
+
+            <div class="form-group mt-3">
+                <label for="meeting-id">Meeting ID</label>
+                <label th:text="${scheduleDetail.meetingId}" class=" input-left text-decoration-underline" id="meeting-id" ></label>
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-3">
+            <label>Notes</label>
+            <textarea name="" id="" cols="30" rows="5" th:field="${scheduleDetail.note}"  style="resize: none" class="input-left p-1"></textarea>
+        </div>
+        <div class="col-md-6 mt-3">
+            <div >
+                <label>Result</label>
+                <select class="input-left p-1" name="" th:field="*{result}">
+                    <option th:each="result1 : ${results}"
+                            th:value="${result1}"
+                            th:text="${result1.displayName}"
+                            th:if="${result1.name() != 'NA'}"
+                            th:selected="${scheduleDetail.result.equals(result1)}"
+                    ></option>
+
+                    <option th:if="${scheduleDetail.result.name() == 'NA'}"
+                            th:value="'NA'"
+                            th:text="'N/A'"
+                            th:selected="true"
+                            style="display:none;"
+                    ></option>
+
+
+                </select>
+            </div>
+
+
+            <div class="mt-3">
+                <label> Status</label>
+                <label th:text="${scheduleDetail.status}" class="input-left"></label>
+            </div>
+
+        </div>
+
+
+        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+            <div class="col-md-6">
+
+                <input type="submit"  class="btn btn-light ms-5 ps-3 pe-3" value="Submit Result">
+            </div>
+
+            <div class="col-md-6">
+
+                <a th:href="@{/list-interview}" class="btn btn-light ms-5 ps-4 pe-4" >Cancel</a>
+            </div>
+
+
+        </div>
+    </form>
+</main>
+
+
+
+</body>
+
+</html>

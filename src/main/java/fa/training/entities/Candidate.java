@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "candidate_id")
     private Long candidateId;
 
     @NotBlank(message = "Full name is required")
@@ -53,10 +52,11 @@ public class Candidate {
     @Column(name = "attachment", length = 255)
     private String attachment;
 
+    @NotNull(message = "At least one skill is required")
     @Column(name = "skills", columnDefinition = "TEXT")
     private String skillsAsString;
 
-    @NotEmpty(message = "At least one skill is required")
+
     @Transient
     private List<Skills> skills = new ArrayList<>();
 
@@ -77,6 +77,10 @@ public class Candidate {
     @Column(name = "year_of_exp")
     private Integer yearOfExp;
 
+    @ManyToOne
+    @JoinColumn(name = "Recuiter_Id")
+    private User recruiter;
+
     @NotNull(message = "Highest level is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "highest_level")
@@ -95,6 +99,4 @@ public class Candidate {
                 .map(Skills::valueOf)
                 .collect(Collectors.toList());
     }
-
-
 }

@@ -18,6 +18,7 @@ public class AppConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/js/")
                 .setCachePeriod(3600)
                 .resourceChain(true);
+        registry.addResourceHandler("/attachments/**").addResourceLocations("file:attachments/");
     }
 
 }

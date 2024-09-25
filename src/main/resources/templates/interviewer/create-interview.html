@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/interview.css},@{/js/interview.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+
+
+
+    </style>
+</head>
+<body>
+<main class="col-12 mt-5">
+    <div class="mb-4">
+        <h1>Interview Schedule</h1>
+        <a th:href="@{/list-interview}">Interview Schedule List</a>
+        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+        <span><i class="ps-3">New Interview Schedule</i></span>
+    </div>
+
+
+    <form method="post" th:object="${addInterview}" th:action="@{/create-interview}"  style="background: #f1f6fb" class="row">
+        <div class="col-6 mt-3">
+            <div>
+                <label >Schedule title <span style="color: red">*</span> </label>
+                <div class="input-left">
+                    <input type="text" class="w-100" name="scheduleTitle" placeholder="Type a title"  th:field="*{scheduleTitle}">
+                    <div th:if="${#fields.hasErrors('scheduleTitle')}" th:errorclass="error"  th:errors="*{scheduleTitle}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Job <span style="color: red">*</span> </label>
+            <div class="input-left">
+                <select name="" class="w-100 p-1" th:field="*{job.jobId}"   >
+                    <option value="" >Select a job...</option>
+                    <option
+                            th:each="job : ${jobs}"
+                            th:value="${job.id}"
+                            th:text="${job.name}"
+                    ></option>
+                </select>
+                <div>
+                    <span th:if="${#fields.hasErrors('job')}" th:errorclass="error" th:errors="*{job}"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Candidate name <span style="color: red">*</span> </label>
+            <div class="input-left">
+                <select name="candidateName" class="w-100 p-1"  th:field="*{candidate.candidateId}">
+                    <option value="" >Select candidate...</option>
+                    <option th:each="candidate : ${candidateName}"
+                            th:value="${candidate.id}"
+                            th:text="${candidate.name}"
+                    ></option>
+                </select>
+                <div>
+                    <span th:if="${#fields.hasErrors('candidate')}" th:errorclass="error" th:errors="*{candidate}"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Interviewer <span style="color: red">*</span> </label>
+            <div class="input-left" >
+                <select name="idInterviewer" class="w-100"   id="skillSelectTag" multiple="multiple" >
+                    <option th:each="id : ${idInterviewer}"
+                            th:value="${id.id}"
+                            th:text="${id.name}"
+                    ></option>
+                </select>
+                <div>
+                    <span th:if="${#fields.hasErrors('interviewScheduleList')}" th:errorclass="error" th:errors="*{interviewScheduleList}"></span>
+                </div>
+            </div>
+
+
+            <div class="error" id="interviewer-error"></div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Schedule Time <span style="color: red">*</span></label>
+            <div  class="date-input-container input-left">
+<!--                <i class="fa-regular fa-calendar"></i>-->
+                <input type="date" name="" th:field="*{scheduledDate}" class="w-100" >
+                <div>
+                    <span th:if="${#fields.hasErrors('scheduledDate')}" th:errorclass="error" th:errors="*{scheduledDate}"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Location</label>
+            <input type="text" name="" placeholder="Type a location" th:field="*{location}" class="input-left">
+        </div>
+
+        <div class="col-6 mt-3">
+            <div class="input-left">
+                <div class="d-inline-block date-input-container ">
+                    <label>From</label>
+                    <i class="fa-solid fa-business-time"></i>
+                    <input type="time" name="" th:field="*{scheduleDateFrom}"  >
+
+                </div>
+
+                <div class="d-inline-block date-input-container">
+                    <label>To</label>
+                    <i class="fa-solid fa-business-time"></i>
+                    <input type="time" name="" th:field="*{scheduleDateTo}">
+                </div>
+
+                <div >
+                    <p th:if="${#fields.hasErrors('scheduleDateFrom')}"  th:errorclass="error" th:errors="*{scheduleDateFrom}"></p>
+                    <p th:if="${#fields.hasErrors('scheduleDateTo')}" th:errorclass="error" th:errors="*{scheduleDateTo}"></p>
+                    <p th:if="${#fields.hasErrors()}" class="error">
+                <span th:each="err : ${#fields.errors()}"
+                      th:if="${err.contains('*Time To must >= Time From')}"
+                      th:text="${err}"></span>
+            </p>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Recruiter owner <span style="color: red">*</span></label>
+            <div class="input-left">
+                <select th:field="*{recruiter.userId}" class="w-100 p-1">
+                    <option value=""  selected>Select recruiter ...</option>
+                    <option th:each="recruiter : ${recruiters}"
+                            th:value="${recruiter.id}"
+                            th:text="${recruiter.name}"
+                    ></option>
+                </select>
+                <div>
+                    <span th:if="${#fields.hasErrors('recruiter')}" th:errorclass="error" th:errors="*{recruiter}"></span>
+                </div>
+
+            </div>
+
+            <div >
+                <a href="#" id="assignLink" class="ms-5 mb-3 input-left"
+                   th:attr="data-user-id=${#authentication.principal.userDB.userId}">Assign me</a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Notes</label>
+            <textarea name="" id="" cols="30" rows="5" placeholder="Type schedule notes..." class="input-left"></textarea>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group mb-5">
+                <label for="meeting-id">Meeting ID</label>
+                <input type="text" class=" input-left" id="meeting-id" placeholder="meet.google.com/url-123">
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+            <div class="col-md-6">
+                <button class="btn ms-5 ps-4 pe-4 float-end me-5" style="background: #e1dfdf;font-weight: 600">Submit</button>
+            </div>
+            <div class="col-md-6">
+
+                <a class="btn ps-4 pe-4   " th:href="@{/list-interview}" style="background: #e1dfdf;font-weight: 600">Cancel</a>
+            </div>
+
+
+        </div>
+    </form>
+</main>
+
+
+
+</body>
+
+</html>

@@ -16,6 +16,7 @@ input:hover{
 }
 
 .select2-container--default .select2-selection--multiple {
+
     border: none;
     /*border: 1px solid #d1d5db;*/
     /*padding: 4px;*/
@@ -44,4 +45,8 @@ li{
 }
 .select2-search .select2-search--inline{
     padding: 0px;
+}
+.error{
+    color: red;
+    display: block;
 }

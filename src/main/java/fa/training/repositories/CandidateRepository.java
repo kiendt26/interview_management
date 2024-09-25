@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
 
+
     @Query("SELECT c FROM Candidate c WHERE " +
             "(LOWER(c.fullname) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(c.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
@@ -27,6 +28,4 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     List<Candidate> findByKeywordAndStatus(@Param("keyword") String keyword, @Param("status") String status);
 
 
-
 }
-

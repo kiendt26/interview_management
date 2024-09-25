@@ -4,14 +4,12 @@ import fa.training.enums.Benefit;
 import fa.training.enums.Level;
 import fa.training.enums.Skills;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Job implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
@@ -31,8 +30,8 @@ public class Job implements Serializable {
 
     @Future(message = "Date must be in future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private LocalDate startDate;
 
     @Positive(message = "Salary must be positive")
     private Double salaryFrom;
@@ -46,8 +45,8 @@ public class Job implements Serializable {
     private String skills;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    @Temporal(TemporalType.DATE)
+    private LocalDate endDate;
 
     @NotEmpty(message = "Benefit must not empty")
     private String benefit;
@@ -55,7 +54,7 @@ public class Job implements Serializable {
     @NotEmpty(message = "Level must not empty")
     private String level;
     private String description;
-    private Boolean status;
+    private String status;
 
 
 }
