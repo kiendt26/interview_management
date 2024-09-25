@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/candidate.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../../static/css/main.css">
+</head>
+<body>
+<main class="col-12 mt-5">
+
+    <div class="mb-4">
+        <h1>Users Create</h1>
+        <a th:href="@{/users}">Users List</a>
+        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+        <span><i class="ps-3">Create Users</i></span>
+    </div>
+
+    <form th:action="@{/users/update/{id}(id=${user.userId})}" th:object="${user}" method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
+
+        <div class="col-6 mt-3">
+            <label >Username <span style="color: red">*</span> </label>
+            <input type="text" id="userName" th:field="*{userName}" placeholder="Type a username..." style="border: none;width: 65%;margin-left: 29px" >
+            <div class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Email <span style="color: red">*</span> </label>
+            <input type="text" id="email" th:field="*{email}" placeholder="Type a email..." style="border: none;width: 65%;margin-left: 29px" >
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Password <span style="color: red">*</span> </label>
+            <input type="password" id="password" th:field="*{passwordHash}" style="border: none;width: 65%;margin-left: 29px" >
+            <div class="text-danger" th:if="${#fields.hasErrors('passwordHash')}" th:errors="*{passwordHash}"></div>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Role <span style="color: red">*</span></label>
+            <select id="role" th:field="*{role}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 43px">
+                <option th:each="role : ${T(fa.training.enums.Role).values()}"
+                        th:value="${role}" th:text="${role}">Role</option>
+            </select>
+        </div>
+
+        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+            <button sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
+            <a th:href="@{/users}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
