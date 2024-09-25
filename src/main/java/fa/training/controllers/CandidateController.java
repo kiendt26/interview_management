@@ -1,6 +1,5 @@
 package fa.training.controllers;
 
-import fa.training.dto.CandidateDTO;
 import fa.training.entities.Candidate;
 import fa.training.enums.Status;
 import fa.training.services.CandidateService;
@@ -43,6 +42,7 @@ public class CandidateController {
 
     @GetMapping("/create")
     public String newCandidateForm(Model model) {
+        model.addAttribute("recruiters", candidateService.selectByRecruiter());
         model.addAttribute("candidate", new Candidate());
         return "candidates/create";
     }

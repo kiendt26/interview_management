@@ -118,7 +118,9 @@
                         th:text="${skill.displayName}"
                         th:selected="${candidate.skills.contains(skill)}">Skill</option>
             </select>
-            <div class="text-danger" th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}"></div>
+            <div>
+                <span th:if="${#fields.hasErrors('skills')}" th:errorclass="error" th:errors="*{skills}"></span>
+            </div>
 
         </div>
 
@@ -128,14 +130,34 @@
             <div class="text-danger" th:if="${#fields.hasErrors('yearOfExp')}" th:errors="*{yearOfExp}"></div>
         </div>
 
+<!--        <div class="col-6 mt-3">-->
+<!--            <label >Recruiter</label>-->
+<!--            &lt;!&ndash;            <input type="text" name="" id="" placeholder="Type a title" >&ndash;&gt;-->
+<!--            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 36px" >-->
+<!--                <option value="">Manager</option>-->
+<!--                <option value="">Recruiter</option>-->
+<!--            </select>-->
+<!--        </div>-->
+
         <div class="col-6 mt-3">
-            <label >Recruiter</label>
-            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 36px" >
-                <option value="">Manager</option>
-                <option value="">Recruiter</option>
-            </select>
+            <label>Recruiter owner <span style="color: red">*</span></label>
+                <select th:field="*{recruiter.userId}" class="form-control" style="margin-top: -31px;border: none;width: 63%;padding: 8px 0px;margin-left: 130px">
+                    <option value=""  selected>Select recruiter ...</option>
+                    <option th:each="recruiter : ${recruiters}"
+                            th:value="${recruiter.id}"
+                            th:text="${recruiter.name}"
+                    ></option>
+                </select>
+                <div>
+                    <span th:if="${#fields.hasErrors('recruiter')}" th:errorclass="error" th:errors="*{recruiter}"></span>
+                </div>
+
+            <div >
+                <a href="#" id="assignLink" class="ms-5 mb-3 input-left"
+                   th:attr="data-user-id=${#authentication.principal.userDB.userId}">Assign me</a>
+            </div>
         </div>
+
         <div class="col-6 mt-3">
             <label >Highest level<span style="color: red">*</span> </label>
             <select th:field="*{highestLevel}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 44px" >

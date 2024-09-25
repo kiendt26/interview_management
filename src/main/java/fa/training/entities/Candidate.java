@@ -77,6 +77,10 @@ public class Candidate {
     @Column(name = "year_of_exp")
     private Integer yearOfExp;
 
+    @ManyToOne
+    @JoinColumn(name = "Recuiter_Id")
+    private User recruiter;
+
     @NotNull(message = "Highest level is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "highest_level")
