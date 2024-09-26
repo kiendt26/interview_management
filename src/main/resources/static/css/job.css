@@ -23,7 +23,7 @@ input:hover{
     min-height: 10px;
     border-radius: 5px;
     margin-left: 44px;
-    width: 100%;
+    margin-bottom: 30px;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -50,3 +50,19 @@ li{
     color: red;
     display: block;
 }
+.error1{
+    color: red;
+}
+.select2-container {
+    width: 100% !important;
+    display: block;
+
+}
+.skills-select{
+    display: flex;
+    flex-direction: column;
+}
+.skills-container{
+    display: inline-block;
+}
+

@@ -43,7 +43,7 @@ public class JobController {
 
 
     @GetMapping("/job/job-list")
-    public String jobList(Model model,@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size,
+    public String jobList(Model model,@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "3") int size,
                           @RequestParam(value = "keyword",required = false) String keyword,
                           @RequestParam(value = "status",required = false) String status) {
 
@@ -52,6 +52,7 @@ public class JobController {
         }
 
         Page<JobDTO> jobDTOS = jobService.searchJob(keyword,status,page,size);
+        model.addAttribute("image","/images/notFound.jpg");
         model.addAttribute("jobDTOS", jobDTOS);
         model.addAttribute("keyword", keyword);
         model.addAttribute("status", status);
@@ -69,21 +70,20 @@ public class JobController {
     public String jobCreate(@Validated @ModelAttribute("dto") JobDTO jobDTO,BindingResult result, Model model) {
         LocalDate localDate = LocalDate.now();
 
-        if(jobDTO.getEndDate().isBefore(localDate)) {
+        if(!(jobDTO.getStartDate() != null) &&  jobDTO.getStartDate().isAfter(localDate)) {
+            jobDTO.setStatus("Open");
+            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
+        }
+        if(jobDTO.getEndDate() != null &&  jobDTO.getEndDate().isBefore(localDate)) {
             jobDTO.setStatus("Closed");
             result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
 
         }
-        if(!jobDTO.getStartDate().isAfter(localDate)) {
-            jobDTO.setStatus("Open");
-            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
-        }
-
         if (result.hasErrors()) {
             return "job/job-create";
         }
 
-        jobDTO.setStatus("Draft");
+        jobDTO.setStatus("Open");
         jobService.save(jobDTO);
         return "redirect:/job/job-list";
     }

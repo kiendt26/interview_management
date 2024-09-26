@@ -4,8 +4,6 @@ import fa.training.dto.JobDTO;
 import fa.training.entities.Job;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface JobService {
     Job convertDTO2Entity(JobDTO jobDTO, Job job);
     JobDTO convertEntity2DTO(Job job, JobDTO jobDTO);
