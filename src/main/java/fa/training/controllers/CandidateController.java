@@ -31,7 +31,7 @@ public class CandidateController {
             @RequestParam(value = "keyword", required = false) String keyword,
             Model model)
     {
-        int pageSize = 2;
+        int pageSize = 5;
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
         if (keyword != null && !keyword.isEmpty()) {
             keyword = keyword.trim().replaceAll("\\s+", " ");
@@ -131,7 +131,7 @@ public class CandidateController {
             @RequestParam(value = "page", defaultValue = "1") Integer pageNumber,
             Model model)
     {
-        int pageSize = 1;
+        int pageSize = 5;
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
         Page<Candidate> candidates = candidateService.searchCandidates(keyword, pageable);
         model.addAttribute("candidates", candidates);

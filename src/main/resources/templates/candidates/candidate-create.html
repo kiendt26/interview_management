@@ -18,23 +18,22 @@
 
     <form th:action="@{/candidates/addNew}" th:object="${candidate}" method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
         <h4 style="font-size: 18px">I. Personal information</h4>
-        <input type="hidden"  th:field="*{candidateId}"/>
-
         <div class="col-6 mt-3">
             <label >Full name <span style="color: red">*</span> </label>
-            <input type="text" th:field="*{fullname}" placeholder="Type a title..." style="border: none;width: 65%;margin-left: 29px" >
-            <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}" style="margin-left: 105px"></div>
+            <input type="text" th:field="*{fullname}" placeholder="Type a title..." style="border: none;width: 65%;margin-left: 60px" >
+            <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}" style="margin-left: 135px"></div>
         </div>
+
         <div class="col-6 ps-3 mt-3">
             <label >Email <span style="color: red">*</span> </label>
-            <input type="email" th:field="*{email}" placeholder="Type an email..." style="border: none;width: 65%;margin-left: 83px">
-            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="margin-left: 130px"></div>
+            <input type="email" th:field="*{email}" placeholder="Type an email..." style="border: none;width: 65%;margin-left: 89px">
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="margin-left: 137px"></div>
         </div>
 
         <div class="col-6 mt-3">
             <label>D.O.B</label>
-            <input type="date" th:field="*{dob}" style="border: none;width: 65%;margin-left: 53px">
-            <div class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></div>
+            <input type="date" th:field="*{dob}" style="border: none;width: 65%;margin-left: 91px">
+            <div class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" style="margin-left: 135px;"></div>
         </div>
 
         <div class="col-6 ps-3 mt-3">
@@ -44,19 +43,19 @@
 
         <div class="col-6 mt-3">
             <label class="">Phone Number</label>
-            <input type="text" th:field="*{phone}" placeholder="Type a number..." style="border: none;width: 65%;margin-left: 7px">
+            <input type="text" th:field="*{phone}" placeholder="Type a number..." style="border: none;width: 65%;margin-left: 35px">
             <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
         </div>
 
         <div class="col-6 mt-3">
             <label >Gender</label>
-            <select th:field="*{gender}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 75px">
+            <select th:field="*{gender}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 91px">
                 <option value="">Select a gender </option>
                 <option th:each="gender : ${T(fa.training.enums.Gender).values()}"
                         th:value="${gender}"
                         th:text="${gender.displayName}">Level</option>
             </select>
-            <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" style="margin-left: 135px"></div>
+            <div class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" style="margin-left: 141px"></div>
         </div>
 
         <h4 class="mt-5" style="font-size: 18px">II. Professional information</h4>
@@ -74,24 +73,24 @@
 
         <div class="col-6 ps-3 mt-3">
             <label >Note</label>
-            <textarea th:field="*{note}" placeholder="N/A" style="border: none;width: 65%;margin-left: 90px" ></textarea>
+            <textarea th:field="*{note}" placeholder="N/A" style="border: none;width: 65%;margin-left: 104px" ></textarea>
 
         </div>
 
         <div class="col-6 mt-3">
             <label >Position <span style="color: red">*</span></label>
-            <select th:field="*{position}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 43px">
+            <select th:field="*{position}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 70px">
                 <option value="">Select a position </option>
                 <option th:each="position : ${T(fa.training.enums.CurrentPosition).values()}"
                         th:value="${position}"
                         th:text="${position.displayName}">Position</option>
             </select>
-            <div class="text-danger" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></div>
+            <div class="text-danger" th:if="${#fields.hasErrors('position')}" th:errors="*{position}" style="margin-left: 135px"></div>
         </div>
 
         <div class="col-6 ps-3 mt-3">
             <label >Status</label>
-            <select th:field="*{status}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 80px">
+            <select th:field="*{status}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 93px">
                 <option th:each="status : ${T(fa.training.enums.Status).values()}"
                 th:value="${status}"
                 th:text="${status.displayName}">Status</option>
@@ -100,8 +99,8 @@
         </div>
 
         <div class="col-6 mt-3">
-            <label>Skills<span style="color: red">*</span> </label>
-            <select id="skillSelectTag" th:field="*{skills}" class="form-control" style="border: none;width: 65%;padding: 8px 0px;margin-left: 60px" multiple>
+            <label style="margin-right:35px;">Skills</label>
+            <select id="skillSelectTag" th:field="*{skills}" class="form-control" style="border: none;width: 65%;padding: 8px 0px;margin-left: 96px;" multiple>
                 <option th:each="skill : ${T(fa.training.enums.Skills).values()}"
                         th:value="${skill}"
                         th:text="${skill.displayName}"
@@ -116,12 +115,12 @@
         <div class="col-6 mt-3">
             <label >Year of Experience</label>
             <input type="number" th:field="*{yearOfExp}" placeholder="N/A" style="border: none;width: 65%" class="ms-3">
-            <div class="text-danger" th:if="${#fields.hasErrors('yearOfExp')}" th:errors="*{yearOfExp}"></div>
+            <div class="text-danger" th:if="${#fields.hasErrors('yearOfExp')}" th:errors="*{yearOfExp}" style="margin-left: 138px;"></div>
         </div>
 
         <div class="col-6 mt-3">
             <label>Recruiter owner <span style="color: red">*</span></label>
-                <select th:field="*{recruiter.userId}" class="form-control" style="margin-top: -31px;border: none;width: 63%;padding: 8px 0px;margin-left: 130px">
+                <select th:field="*{recruiter.userId}" class="form-control" style="margin-top: -31px;border: none;width: 65%;padding: 8px 0px;margin-left: 136px;">
                     <option value=""  selected>Select recruiter ...</option>
                     <option th:each="recruiter : ${recruiters}"
                             th:value="${recruiter.id}"
@@ -132,13 +131,13 @@
                     <span th:if="${#fields.hasErrors('recruiter')}" th:errorclass="error" th:errors="*{recruiter}"></span>
                 </div>
 
-            <div >
+            <div style="margin-left: 89px">
                 <a href="#" id="assignLink" class="ms-5 mb-3 input-left"
                    th:attr="data-user-id=${#authentication.principal.userDB.userId}">Assign me</a>
             </div>
         </div>
 
-        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+        <div style="margin-top: 65px;margin-bottom: 50px" class="d-flex justify-content-center">
             <button sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
             <a th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</a>
         </div>
