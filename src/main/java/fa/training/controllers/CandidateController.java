@@ -6,6 +6,8 @@ import fa.training.services.CandidateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,15 +27,24 @@ public class CandidateController {
 
     @GetMapping("/list")
     public String listCandidates(
+            @RequestParam(value = "page", defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "keyword", required = false) String keyword,
-            Model model) {
-
+            Model model)
+    {
+        int pageSize = 2;
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
         if (keyword != null && !keyword.isEmpty()) {
             keyword = keyword.trim().replaceAll("\\s+", " ");
         }
 
-        List<Candidate> candidates = candidateService.searchCandidates(keyword);
+        Page<Candidate> candidates = candidateService.searchCandidates(keyword, pageable);
 
+        int totalPages = candidates.getTotalPages();
+        List<Integer> pageNums = new ArrayList<>();
+        for (int i = 1; i <= totalPages; i++) {
+            pageNums.add(i);
+        }
+        model.addAttribute("pageNums", pageNums);
         model.addAttribute("candidates", candidates);
         model.addAttribute("keyword", keyword);
 
@@ -116,9 +128,12 @@ public class CandidateController {
     @GetMapping("/candidates/search")
     public String searchCandidates(
             @RequestParam(value = "keyword", required = false) String keyword,
-            Model model) {
-
-        List<Candidate> candidates = candidateService.searchCandidates(keyword);
+            @RequestParam(value = "page", defaultValue = "1") Integer pageNumber,
+            Model model)
+    {
+        int pageSize = 1;
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+        Page<Candidate> candidates = candidateService.searchCandidates(keyword, pageable);
         model.addAttribute("candidates", candidates);
 
         return "candidates/candidate-list";

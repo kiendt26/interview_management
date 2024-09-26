@@ -64,7 +64,7 @@ public class InterviewController {
 
         Page<InterviewDTO> page = null;
         // số hàng hiện trên 1 trang
-        int pageSize = 1;
+        int pageSize = 2;
 
         Page<InterviewDTO> interviewDTOPage = getInterviewListPage(keyword, interviewSearch, statusSearch, pageNumber, pageSize);
 

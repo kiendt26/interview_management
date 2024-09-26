@@ -1,6 +1,8 @@
 package fa.training.auth;
 
 import fa.training.entities.User;
+import fa.training.enums.StatusUser;
+import fa.training.exception.CustomUserNotFoundException;
 import fa.training.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,9 +25,12 @@ public class CustomUserDetailService implements UserDetailsService {
         Optional<User> user = Optional.ofNullable(usersRepository.findByUserName(username));
 
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
+            throw new CustomUserNotFoundException("User not found");
         }
 
+        if (user.get().getStatus() == null || !user.get().getStatus().equals(StatusUser.Active) ) {
+            throw new CustomUserNotFoundException("User is not active");
+        }
         User userDB = user.get();
 
         return new CustomUserDetail(userDB);

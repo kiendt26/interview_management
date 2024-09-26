@@ -36,7 +36,7 @@
         </thead>
 
         <tbody>
-        <tr th:each="candidate : ${candidates}">
+        <tr th:each="candidate : ${candidates.content}">
             <td th:text="${candidate.fullname}"></td>
             <td th:text="${candidate.email}"></td>
             <td th:text="${candidate.phone}"></td>
@@ -64,28 +64,28 @@
 
     </table>
 
-<!--    <div class="row">-->
-<!--        <nav class="d-flex justify-content-end align-items-baseline">-->
-<!--            <span th:text="${interviewListPage.numberOfElements + (interviewListPage.number * interviewListPage.size) } + '/' + ${interviewListPage.totalElements} + ' rows'"></span>-->
-<!--            <ul class="pagination">-->
-<!--                &lt;!&ndash; Previous button &ndash;&gt;-->
-<!--                &lt;!&ndash;               &ndash;&gt;-->
-<!--                <li  th:if="${interviewListPage.hasPrevious()}" class="page-item p-0">-->
-<!--                    <a class="page-link border-0" th:href="@{/list-interview(page=${interviewListPage.getNumber()}, interview=${param.interview}, status=${param.status})}">-->
-<!--                        <i class="fa-solid fa-chevron-left " style="color: #000000;"></i>-->
-<!--                    </a>-->
-<!--                </li>-->
+    <div class="row">
+        <nav class="d-flex justify-content-end align-items-baseline">
+            <span th:text="${candidates.numberOfElements + (candidates.number * candidates.size) } + '/' + ${candidates.totalElements} + ' rows'"></span>
+            <ul class="pagination">
+                <!-- Previous button -->
+                <!--               -->
+                <li  th:if="${candidates.hasPrevious()}" class="page-item p-0">
+                    <a class="page-link border-0" th:href="@{/candidates/list(page=${candidates.getNumber()})}">
+                        <i class="fa-solid fa-chevron-left " style="color: #000000;"></i>
+                    </a>
+                </li>
 
-<!--                &lt;!&ndash; Next button &ndash;&gt;-->
-<!--                &lt;!&ndash;                &ndash;&gt;-->
-<!--                <li th:if="${interviewListPage.hasNext()}" class="page-item p-0">-->
-<!--                    <a class="page-link border-0 " th:href="@{/list-interview(page=${interviewListPage.getNumber() + 2}, interview=${param.interview}, status=${param.status})}">-->
-<!--                        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </nav>-->
-<!--    </div>-->
+                <!-- Next button -->
+                <!--                -->
+                <li th:if="${candidates.hasNext()}" class="page-item p-0">
+                    <a class="page-link border-0 " th:href="@{/candidates/list(page=${candidates.getNumber() + 2})}">
+                        <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
 </main>
 </body>

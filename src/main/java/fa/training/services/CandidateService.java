@@ -7,6 +7,9 @@ import fa.training.enums.Status;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +24,8 @@ public class CandidateService {
     @Autowired
     private InterviewRepository interviewRepository;
 
-    public List<Candidate> findAll() {
-        return candidateRepository.findAll();
+    public Page<Candidate> findAll(Pageable pageable) {
+        return candidateRepository.findAll(pageable);
     }
 
     public Optional<Candidate> findById(Long id) {
@@ -38,11 +41,11 @@ public class CandidateService {
         candidateRepository.deleteById(id);
     }
 
-    public List<Candidate> searchCandidates(String keyword) {
+    public Page<Candidate> searchCandidates(String keyword, Pageable pageable) {
         if ((keyword == null || keyword.isEmpty())) {
-            return candidateRepository.findAll();
+            return findAll(pageable);
         }   else {
-            return candidateRepository.findByKeyword(keyword);
+            return candidateRepository.findByKeyword(pageable, keyword);
         }
     }
 
