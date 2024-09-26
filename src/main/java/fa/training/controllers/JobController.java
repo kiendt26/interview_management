@@ -69,21 +69,20 @@ public class JobController {
     public String jobCreate(@Validated @ModelAttribute("dto") JobDTO jobDTO,BindingResult result, Model model) {
         LocalDate localDate = LocalDate.now();
 
-        if(jobDTO.getEndDate().isBefore(localDate)) {
+        if(jobDTO.getStartDate() != null &&  jobDTO.getStartDate().isAfter(localDate)) {
+            jobDTO.setStatus("Open");
+            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
+        }
+        if(jobDTO.getEndDate() != null &&  jobDTO.getEndDate().isBefore(localDate)) {
             jobDTO.setStatus("Closed");
             result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
 
         }
-        if(jobDTO.getStartDate().isAfter(localDate)) {
-            jobDTO.setStatus("Open");
-            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
-        }
-
         if (result.hasErrors()) {
             return "job/job-create";
         }
 
-        jobDTO.setStatus("Draft");
+        jobDTO.setStatus("Open");
         jobService.save(jobDTO);
         return "redirect:/job/job-list";
     }
@@ -120,12 +119,7 @@ public class JobController {
         session.invalidate();
         return "redirect:/login";
     }
-    @GetMapping("/login")
-    public String login(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "login";
-    }
+
 }
 
 

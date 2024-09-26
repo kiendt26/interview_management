@@ -132,7 +132,6 @@ public class JobDTOImpl implements JobService {
     public JobDTO save(JobDTO jobDTO) {
         Job job = convertDTO2Entity(jobDTO,null);
         jobRepository.save(job);
-        jobDTO.setStatus("Open");
         jobDTO.setJobId(job.getJobId());
         return jobDTO;
     }

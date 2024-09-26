@@ -18,18 +18,21 @@
         <input type="text" name="jobTitle" id="jobTitle" placeholder="Type a title" style="border: none;width: 75%" class="ms-5" th:field="*{jobTitle}" disabled>
         </div>
         <div class="col-6 ps-3 mt-3 skills-container">
-            <label  class="skills-label">Skills <span style="color: red">*</span> </label>
-            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 0px" multiple="multiple" id="skillsDTO" name="skillsDTO" class="skills-select" th:field="*{skillsDTO}" disabled>
-                <option th:value="Java">Java</option>
-                <option th:value="Nodejs">Nodejs</option>
-                <option th:value=".net">.net</option>
-                <option th:value="C">C++</option>
-                <option th:value="BusinessAnalysis">Business analysis</option>
-                <option th:value="Communication">Communication</option>
+            <div class="d-flex">
+                <label  class="skills-label">Skills <span style="color: red">*</span> </label>
+                <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+                <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 0px" multiple="multiple" id="skillsDTO" name="skillsDTO" class="skills-select" th:field="*{skillsDTO}" disabled>
+                    <option th:value="Java">Java</option>
+                    <option th:value="Nodejs">Nodejs</option>
+                    <option th:value=".net">.net</option>
+                    <option th:value="C">C++</option>
+                    <option th:value="BusinessAnalysis">Business analysis</option>
+                    <option th:value="Communication">Communication</option>
 
 
-            </select>
+                </select>
+            </div>
+
         </div>
 
 

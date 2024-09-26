@@ -19,7 +19,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Job implements Serializable {
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;

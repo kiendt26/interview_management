@@ -43,16 +43,17 @@ public class JobDTO {
     private String[] skillsDTO;
 
     @NotNull(message = "End Date must not be blank")
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDate endDate;
-
+    
     @NotEmpty(message = "Benefit must not empty")
     private String[] benefitDTO;
 
+
     @NotEmpty(message = "Level must not empty")
     private String[] levelDTO;
+
     private String description;
     private String status;
 

@@ -12,11 +12,8 @@
 <body>
 <main class="col-12 mt-5 ">
     <h4>Job Edit</h4>
-    <form method="post" style="background: #f1f6fb" class="pt-3 pb-3 row" th:object="${dto}" th:action="@{/job/job-edit}">
-<!--        <div class="col-6 mt-3">-->
-<!--            <label >Job title <span style="color: red">*</span> </label>-->
-<!--            <input type="text" name="jobId" id="jobId" placeholder="Type a title" style="border: none;width: 75%" class="ms-5" th:field="*{jobId}" >-->
-<!--        </div>-->
+    <form method="post" style="background: #f1f6fb" class="pt-3 pb-3 row" th:object="${dto}" th:action="@{/job/job-edit}" onsubmit="return validateDates()">
+            <input type="hidden" name="jobId" id="jobId" placeholder="Type a title" style="border: none;width: 75%" class="ms-5" th:field="*{jobId}">
         <div class="col-6 mt-3">
         <label >Job title <span style="color: red">*</span> </label>
         <input type="text" name="jobTitle" id="jobTitle" placeholder="Type a title" style="border: none;width: 75%" class="ms-5" th:field="*{jobTitle}" >
@@ -24,18 +21,24 @@
 
         </div>
         <div class="col-6 ps-3 mt-3 skills-container">
-            <label  class="skills-label">Skills <span style="color: red">*</span> </label>
-            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+            <div class="d-flex h-30">
+                <label  class="skills-label">Skills <span style="color: red">*</span> </label>
+                <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
 
 
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 0px" multiple="multiple" id="skillsDTO" name="skillsDTO" class="skills-select" th:field="*{skillsDTO}" >
-                <option th:value="Java">Java</option>
-                <option th:value="Nodejs">Nodejs</option>
-                <option th:value=".net">.net</option>
-                <option th:value="C">C++</option>
-                <option th:value="BusinessAnalysis">Business analysis</option>
-                <option th:value="Communication">Communication</option>
-            </select>
+                <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 0px" multiple="multiple" id="skillsDTO" name="skillsDTO" class="skills-select" th:field="*{skillsDTO}" >
+                    <option th:value="Java">Java</option>
+                    <option th:value="Nodejs">Nodejs</option>
+                    <option th:value=".net">.net</option>
+                    <option th:value="C">C++</option>
+                    <option th:value="BusinessAnalysis">Business analysis</option>
+                    <option th:value="Communication">Communication</option>
+                </select>
+            </div>
+
+            <div>
+                <small th:errors="*{skillsDTO}" th:errorclass="error"></small>
+            </div>
         </div>
 
 
@@ -69,18 +72,24 @@
 
         </div>
         <div class="col-6 mt-3 skills-container">
-            <label class="skills-label">Benefits <span style="color: red">*</span> </label>
-<!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px" class="ms-4 skills-select" name="benefitDTO" id="benefitDTO" multiple="multiple" th:field="*{benefitDTO}" >
+                <div class="d-flex h-30">
+                    <label class="skills-label">Benefits <span style="color: red">*</span> </label>
+                    <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+                    <select style="border: none;width: 75%;padding: 8px 0px" class="ms-4 skills-select" name="benefitDTO" id="benefitDTO" multiple="multiple" th:field="*{benefitDTO}" >
 
-                <option th:value="Travel">Travel</option>
-                <option th:value="25LeaveOff">25 leave off</option>
-                <option th:value="HybridWorking">Hybrid working</option>
-                <option th:value="Lunch">Lunch</option>
-                <option th:value="HealthcareInsurance">Healthcare insurance</option>
+                        <option th:value="Travel">Travel</option>
+                        <option th:value="25LeaveOff">25 leave off</option>
+                        <option th:value="HybridWorking">Hybrid working</option>
+                        <option th:value="Lunch">Lunch</option>
+                        <option th:value="HealthcareInsurance">Healthcare insurance</option>
 
-            </select>
-<!--            <small th:errors="*{benefitDTO}" th:errorclass="error1"></small>-->
+                    </select>
+                </div>
+
+          <div>
+              <small th:errors="*{benefitDTO}" th:errorclass="error1"></small>
+
+          </div>
 
         </div>
 
@@ -89,20 +98,26 @@
             <input type="text" name="workingAddress" id="workingAddress" placeholder="Type a title" style="border: none;width: 75%;margin-left: 15px" th:field="*{workingAddress}" >
         </div>
         <div class="col-6  mt-3 skills-container">
-            <label class="skills-label">Level <span style="color: red">*</span> </label>
-            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 50px" name="levelDTO" id="levelDTO" multiple="multiple" class="skills-select" th:field="*{levelDTO}" >
+            <div class="d-flex h-30">
+                <label class="skills-label">Level <span style="color: red">*</span> </label>
+                <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+                <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 50px" name="levelDTO" id="levelDTO" multiple="multiple" class="skills-select" th:field="*{levelDTO}" >
 
-                <option th:value="Fresher">Fresher</option>
-                <option th:value="Junior">Junior</option>
-                <option th:value="Senior">Senior</option>
-                <option th:value="Leader">Leader</option>
-                <option th:value="Manager">Manager</option>
-                <option th:value="ViceHead">Vice Head</option>
+                    <option th:value="Fresher">Fresher</option>
+                    <option th:value="Junior">Junior</option>
+                    <option th:value="Senior">Senior</option>
+                    <option th:value="Leader">Leader</option>
+                    <option th:value="Manager">Manager</option>
+                    <option th:value="ViceHead">Vice Head</option>
 
 
-            </select>
-<!--            <small th:errors="*{levelDTO}" th:errorclass="error1"></small>-->
+                </select>
+            </div>
+
+            <div>
+                <small th:errors="*{levelDTO}" th:errorclass="error1"></small>
+
+            </div>
 
         </div>
 
