@@ -120,10 +120,10 @@
                     <p th:if="${#fields.hasErrors('scheduleDateFrom')}"  th:errorclass="error" th:errors="*{scheduleDateFrom}"></p>
                     <p th:if="${#fields.hasErrors('scheduleDateTo')}" th:errorclass="error" th:errors="*{scheduleDateTo}"></p>
                     <p th:if="${#fields.hasErrors()}" class="error">
-                <span th:each="err : ${#fields.errors()}"
+                    <span th:each="err : ${#fields.errors()}"
                       th:if="${err.contains('*Time To must >= Time From')}"
                       th:text="${err}"></span>
-            </p>
+                    </p>
                 </div>
             </div>
 

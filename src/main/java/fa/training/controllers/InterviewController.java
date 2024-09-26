@@ -219,11 +219,11 @@ public class InterviewController {
             model.addAttribute("userNames", userNames);
             model.addAttribute("idInterviewer", interviewServce.searchByInterview());
             model.addAttribute("candidateName", interviewServce.selectByCandidate());
-            model.addAttribute("scheduleDetail", scheduleDB);
+            model.addAttribute("scheduleDetail", schedule);
             model.addAttribute("jobs", interviewServce.selectByJob());
             model.addAttribute("recruiters", interviewServce.selectByRecruiter());
 
-            return "interviewer/edit-detail";
+            return "/interviewer/edit-detail";
         }
         interviewServce.updateSchedule(schedule, idInterviewer);
         attributes.addFlashAttribute("message", "Interview Schedule edit success");
