@@ -502,6 +502,7 @@ public class InterviewServce {
     //tao token để lấy lại mật khẩu và gửi link để lấy lại mat khau
     public void initiatePasswordReset(String email){
         User user = userRepository.findByEmail(email);
+        
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken passwordResetToken = new PasswordResetToken();
@@ -525,9 +526,6 @@ public class InterviewServce {
     //set lại password
     public void resetPassword(String token, String newPass){
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
-        if (passwordResetToken == null){
-           throw new InvalidTokenException("Link not valid");
-        }
         User userDB = userRepository.findById(passwordResetToken.getUser().getUserId()).orElse(null);
         String encodePass = passwordEncoder.encode(newPass);
         if (userDB!= null){

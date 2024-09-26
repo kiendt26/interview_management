@@ -304,8 +304,16 @@ public class InterviewController {
     @PostMapping("/send")
     public String sendForgot(
             @RequestParam(name = "email") String email,
-            RedirectAttributes attributes
+            RedirectAttributes attributes,
+            Model model
     ){
+        User user = usersRepository.findByEmail(email);
+        if (user == null) {
+            model.addAttribute("emailError", "Email  not exist!");
+            model.addAttribute("email", email);
+            return "forgot-password";
+        }
+
        interviewServce.initiatePasswordReset(email);
        attributes.addFlashAttribute("message","Send link reset password done, check your email");
         return "redirect:/login";

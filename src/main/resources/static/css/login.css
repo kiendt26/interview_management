@@ -1,5 +1,5 @@
 * {
-    margin: 0;
+    margin: 0 !important;
     padding: 0;
     box-sizing: border-box;
 }
@@ -11,9 +11,9 @@ ul{
     list-style: none;
 }
 form {
-    width: 30%;
-    margin: 200px auto;
-    padding: 50px;
+    width: 32%;
+    margin: auto !important;
+    padding: 50px !important;
     background: #eef1df;
     align-items: center;
 
@@ -25,6 +25,12 @@ input{
     border-radius: 5px;
     border: none;
 
+}
+.btn-reset-pass{
+    background: #b9aaaa;
+    border-radius: 3px;
+    margin: 17px 0 0 130px !important;
+    width: 20%;
 }
 /* input[type="submit"]{
     background-color: ;
@@ -45,4 +51,8 @@ body{
 }
 h2 {
     text-align: center;
+}
+.error{
+    margin-left: 130px;
+    color: red;
 }
