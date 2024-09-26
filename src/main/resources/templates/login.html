@@ -15,6 +15,7 @@
 
     <form th:action="@{/login-check}" method="post" th:object="${user}">
         <h2 class="mb-5">IMS Recruitment</h2>
+
         <label for="Username"  class=" mb-3 me-3 ms-1">Username:</label>
         <input type="text" name="userName" id="username" th:field="*{userName}">
         <br class=>

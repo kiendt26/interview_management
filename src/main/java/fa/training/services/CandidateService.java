@@ -36,15 +36,11 @@ public class CandidateService {
         candidateRepository.deleteById(id);
     }
 
-    public List<Candidate> searchCandidates(String keyword, String status) {
-        if ((keyword == null || keyword.isEmpty()) && (status == null || status.isEmpty())) {
+    public List<Candidate> searchCandidates(String keyword) {
+        if ((keyword == null || keyword.isEmpty())) {
             return candidateRepository.findAll();
-        } else if (status == null || status.isEmpty()) {
+        }   else {
             return candidateRepository.findByKeyword(keyword);
-        } else if (keyword == null || keyword.isEmpty()) {
-            return candidateRepository.findByStatus(status);
-        } else {
-            return candidateRepository.findByKeywordAndStatus(keyword, status);
         }
     }
 

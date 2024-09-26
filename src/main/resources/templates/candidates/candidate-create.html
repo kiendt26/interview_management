@@ -23,12 +23,12 @@
         <div class="col-6 mt-3">
             <label >Full name <span style="color: red">*</span> </label>
             <input type="text" th:field="*{fullname}" placeholder="Type a title..." style="border: none;width: 65%;margin-left: 29px" >
-            <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></div>
+            <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}" style="margin-left: 105px"></div>
         </div>
         <div class="col-6 ps-3 mt-3">
             <label >Email <span style="color: red">*</span> </label>
             <input type="email" th:field="*{email}" placeholder="Type an email..." style="border: none;width: 65%;margin-left: 83px">
-            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="margin-left: 130px"></div>
         </div>
 
         <div class="col-6 mt-3">
@@ -57,31 +57,23 @@
         <h4 class="mt-5" style="font-size: 18px">II. Professional information</h4>
 
         <div class="col-6  mt-3 " style="width: 50%">
-            <label>CV attachment</label>
-            <input type="file" th:field="*{attachment}" id="attachment" name="attachment" accept=".pdf, .doc, .docx" style="display: none">
-            <label for="attachment" class="ms-3">
-                <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>
-            </label>
-            <i class="fa fa-times-circle remove"></i>
-        </div>
+            <label >Highest level<span style="color: red">*</span> </label>
+            <select th:field="*{highestLevel}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 44px" >
+                <option value="">Select a highest level </option>
+                <option th:each="level : ${T(fa.training.enums.HighestLevel).values()}"
+                        th:value="${level}"
+                        th:text="${level.displayName}">Level</option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('highestLevel')}" th:errors="*{highestLevel}" style="margin-left: 135px"></div>
 
-<!--        <div class="col-6 mt-3" style="width: 50%;">-->
-<!--            <label>CV attachment</label>-->
-
-<!--            &lt;!&ndash; Input file ẩn &ndash;&gt;-->
-<!--            <input type="file" th:field="*{attachment}" id="attachment" name="attachment" accept=".pdf, .doc, .docx" style="display: none" onchange="showFileName()">-->
-
-<!--            &lt;!&ndash; Nhãn cho input file với biểu tượng paperclip &ndash;&gt;-->
-<!--            <label for="attachment" class="ms-3" style="cursor: pointer;">-->
+            <!--            <label>CV attachment</label>-->
+<!--            <input type="file" th:field="*{attachment}" id="attachment" name="attachment" accept=".pdf, .doc, .docx" style="display: none">-->
+<!--            <label for="attachment" class="ms-3">-->
 <!--                <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>-->
 <!--            </label>-->
+<!--            <i class="fa fa-times-circle remove"></i>-->
+        </div>
 
-<!--            &lt;!&ndash; Hiển thị tên file đã chọn &ndash;&gt;-->
-<!--            <span id="fileName" class="ms-3" style="font-style: italic; font-size: 14px;"></span>-->
-
-<!--            &lt;!&ndash; Biểu tượng xóa file &ndash;&gt;-->
-<!--            <i class="fa fa-times-circle remove" style="cursor: pointer;" onclick="removeFile()"></i>-->
-<!--        </div>-->
 
         <div class="col-6 ps-3 mt-3">
             <label >Note</label>
@@ -130,15 +122,6 @@
             <div class="text-danger" th:if="${#fields.hasErrors('yearOfExp')}" th:errors="*{yearOfExp}"></div>
         </div>
 
-<!--        <div class="col-6 mt-3">-->
-<!--            <label >Recruiter</label>-->
-<!--            &lt;!&ndash;            <input type="text" name="" id="" placeholder="Type a title" >&ndash;&gt;-->
-<!--            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 36px" >-->
-<!--                <option value="">Manager</option>-->
-<!--                <option value="">Recruiter</option>-->
-<!--            </select>-->
-<!--        </div>-->
-
         <div class="col-6 mt-3">
             <label>Recruiter owner <span style="color: red">*</span></label>
                 <select th:field="*{recruiter.userId}" class="form-control" style="margin-top: -31px;border: none;width: 63%;padding: 8px 0px;margin-left: 130px">
@@ -158,16 +141,8 @@
             </div>
         </div>
 
-        <div class="col-6 mt-3">
-            <label >Highest level<span style="color: red">*</span> </label>
-            <select th:field="*{highestLevel}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 44px" >
-                <option value="">Select a highest level </option>
-                <option th:each="level : ${T(fa.training.enums.HighestLevel).values()}"
-                        th:value="${level}"
-                        th:text="${level.displayName}">Level</option>
-            </select>
-            <div class="text-danger" th:if="${#fields.hasErrors('highestLevel')}" th:errors="*{highestLevel}"></div>
-        </div>
+<!--        <div class="col-6 mt-3">-->
+<!--             </div>-->
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <button sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
             <a th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</a>

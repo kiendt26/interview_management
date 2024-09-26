@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+
+      th:include="~{layout/template::areas(~{::title}, ~{::main}, @{/css/user.css},@{/js/user.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+
+</head>
+<body>
+<main class="col-12 mt-5">
+    <h1>Users</h1>
+    <p><i>User List</i></p>
+
+    <a  sec:authorize="hasAnyAuthority('Admin')" class="btn-add-interview" th:href="@{/users/new}">Add new</a>
+    <table class="table table-striped">
+        <thead>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th class="text-center">Action</th>
+        </thead>
+
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.userId}"></td>
+            <td th:text="${user.userName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.status}"></td>
+            <td class="d-flex justify-content-center">
+                <a sec:authorize="hasAnyAuthority('Admin')" th:href="@{/users/detail/{id}(id=${user.userId})}" class="ms-3">
+                    <i class="fa-regular fa-eye"></i>
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+</main>
+</body>
+</html>

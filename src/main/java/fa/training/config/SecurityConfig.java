@@ -23,12 +23,10 @@ public class SecurityConfig {
             "/login",
             "/forgot-password",
             "/register",
-            "/",
             "/css/**",
             "/js/**",
             "/send",
             "/reset/reset-password/*",
-
     };
 
     private static final String[] ADMIN_PERMIT_LINK = {

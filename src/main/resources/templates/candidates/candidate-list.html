@@ -47,7 +47,7 @@ th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},
             <th>Current Position</th>
             <th>Owner HR</th>
             <th>Status</th>
-            <th>Action</th>
+            <th class="text-center">Action</th>
 
         </tr>
         </thead>
@@ -60,16 +60,16 @@ th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},
             <td th:text="${candidate.position.displayName}">Current Position</td>
             <td>Owner HR</td> <!-- Replace with actual data if available -->
             <td th:text="${candidate.status.displayName}">Status</td>
-            <td class="d-flex justify-content-center">
-                <a  th:href="@{/candidates/detail/{id}(id=${candidate.candidateId})}" class="ms-2 me-2">
+            <td class="d-flex justify-content-center" >
+                <a  th:href="@{/candidates/detail/{id}(id=${candidate.candidateId})}">
                     <i class="fa-solid fa-eye"></i>
                 </a>
 
-                <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" class="ms-2 me-2">
+                <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/edit/{id}(id=${candidate.candidateId})}" class="ms-3">
                     <i class="fa-solid fa-file-pen"></i>
                 </a>
 
-                <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" onclick="return confirm('Are you sure you want to delete this candidate?');">
+                <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/candidates/delete/{id}(id=${candidate.candidateId})}" class="ms-3" onclick="return confirm('Are you sure you want to delete this candidate?');">
                     <i class="fa-regular fa-trash-can"></i>
                 </a>
             </td>

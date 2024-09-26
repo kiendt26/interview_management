@@ -1,6 +1,7 @@
 package fa.training.entities;
 
 import fa.training.enums.Role;
+import fa.training.enums.StatusUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -32,5 +33,8 @@ public class User {
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private StatusUser status;
 
 }
