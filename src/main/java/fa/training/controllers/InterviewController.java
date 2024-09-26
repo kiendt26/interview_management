@@ -1,6 +1,7 @@
 package fa.training.controllers;
 
 import fa.training.dto.Interview.InterviewDTO;
+import fa.training.dto.Interview.ResetPassDTO;
 import fa.training.entities.InterviewSchedule;
 import fa.training.entities.PasswordResetToken;
 import fa.training.entities.Schedule;
@@ -16,17 +17,17 @@ import fa.training.services.InterviewServce;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Controller
 public class InterviewController {
@@ -48,7 +49,7 @@ public class InterviewController {
     public String viewContent(
             Model model,
             @RequestParam(value = "page", defaultValue = "1") Integer pageNumber,
-            @RequestParam(value = "interview", required = false, defaultValue = "") String interviewSearch,
+            @RequestParam(value = "interview", required = false, defaultValue = "") Long interviewSearch,
             @RequestParam(value = "status", required = false, defaultValue = "") String statusSearch,
             @RequestParam(value = "keyword", required = false, defaultValue = "") String search
 
@@ -79,9 +80,9 @@ public class InterviewController {
     }
 
 
-    private Page<InterviewDTO> getInterviewListPage(String search, String interviewSearch, String status, int page, int pageSize ) {
+    private Page<InterviewDTO> getInterviewListPage(String search, Long interviewSearch, String status, int page, int pageSize ) {
 
-        if(!interviewSearch.isBlank() || !status.isBlank()){
+        if(interviewSearch != null || !status.isBlank()){
             return interviewServce.getAllInterviewsBySearch(interviewSearch, status, page, pageSize);
         }
         if(!"%%".equals(search)){
@@ -139,7 +140,7 @@ public class InterviewController {
             return "interviewer/create-interview";
         }
         interviewServce.createNewSchedule(schedule, idInterviewer);
-        redirectAttributes.addFlashAttribute("message", "Interview Schedule created successfully");
+        redirectAttributes.addFlashAttribute("message", "Interview Schedule created successfully!");
 
         return "redirect:/list-interview";
     }
@@ -157,18 +158,12 @@ public class InterviewController {
         return "interviewer/interview-detail";
     }
 
-
-
-
-
     //edit schedule
     @GetMapping("/interview/edit")
     public String editInterview(
             @RequestParam("id") Long idInterviewSchedule,
             Model model
     ){
-
-
         Schedule scheduleDB = interviewRepository.findById(idInterviewSchedule).orElse(null);
 
         List<String> userNames = new ArrayList<>();
@@ -254,12 +249,11 @@ public class InterviewController {
     @PostMapping("/interview/submit-schedule")
     public String submit(
             @ModelAttribute("scheduleDetail") InterviewDTO schedule,
-            RedirectAttributes attributes,
-            BindingResult result
+            RedirectAttributes attributes
     ) {
 
         interviewServce.submitSchedule(schedule);
-        attributes.addFlashAttribute("message", "Interview Schedule submit result success");
+        attributes.addFlashAttribute("message", "Interview Schedule submit result success!");
 
         return "redirect:/list-interview";
     }
@@ -273,7 +267,7 @@ public class InterviewController {
         InterviewDTO schedule = new InterviewDTO();
         schedule.setInterviewId(id);
         interviewServce.cancelSchedule(schedule);
-        attributes.addFlashAttribute("message","Status schedule change cancel done");
+        attributes.addFlashAttribute("message","Status schedule change cancel done!");
         return "redirect:/list-interview";
     }
 
@@ -309,35 +303,80 @@ public class InterviewController {
     //gửi mail lấy link để điền mk mới
     @PostMapping("/send")
     public String sendForgot(
-            @RequestParam(name = "email") String email
+            @RequestParam(name = "email") String email,
+            RedirectAttributes attributes
     ){
        interviewServce.initiatePasswordReset(email);
+       attributes.addFlashAttribute("message","Send link reset password done, check your email");
         return "redirect:/login";
     }
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
+//    @GetMapping("/test/{token}")
+//    public String test(
+//            @PathVariable("token") String token,
+//            Model model
+//    ){
+//        model.addAttribute("token", token);
+//        return "test";
+//    }
 
+    // thay doi pass moi
     @GetMapping("/reset/reset-password/{token}")
     public String showResetPasswordPage(
             @PathVariable("token") String token,
-            Model model
+            Model model,
+            @ModelAttribute("reset") ResetPassDTO reset,
+            RedirectAttributes attributes
     ) {
+        reset.setToken(token);
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
-
-        if (passwordResetToken == null) {
-            model.addAttribute("error", "Token không tồn tại.");
-            return "reset-password"; // Trả về trang với thông báo lỗi
+        if (passwordResetToken == null){
+            attributes.addFlashAttribute("error", "Không có đường dẫn này để reset mật khẩu của bạn!");
+            return "redirect:/forgot-password";
         }
 
-        // Kiểm tra xem token có hết hạn không
-//        if (userService.isTokenExpired(passwordResetToken)) {
-//            model.addAttribute("error", "Token đã hết hạn.");
-//            return "reset-password"; // Trả về trang với thông báo lỗi
-//        }
-
-        // Nếu token hợp lệ, truyền token đến view để sử dụng khi đặt lại mật khẩu
+        if (passwordResetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            attributes.addFlashAttribute("error", "Đường dẫn này đã hết hạn sử dụng!");
+            return "redirect:/forgot-password";
+        }
+        model.addAttribute("reset", reset);
         model.addAttribute("token", token);
-        return "reset-password"; // Trả về trang nơi người dùng có thể nhập mật khẩu mới
+        return "reset-password";
+    }
+
+    @PostMapping("/reset/reset-password-done")
+    public String resetPassword(
+            Model model,
+           @ModelAttribute("reset") ResetPassDTO reset,
+            BindingResult result,
+            RedirectAttributes attributes
+    ){
+        //chua it nhat 1 chu cai va 1 so va co it nhat 7 ky tu
+        String regex = "^(?=.*[a-zA-Z])(?=.*\\d).{7,}$";
+        boolean isValid = Pattern.matches(regex, reset.getNewPass());
+
+        if (reset.getNewPass().isEmpty()) {
+            result.rejectValue("newPass", "error.newPass", "*Must fill newPass");
+        }
+        if (reset.getReNewPass().isEmpty()) {
+            result.rejectValue("reNewPass", "error.reNewPass", "*Must fill reNewPass");
+        }
+        if (!reset.getNewPass().isEmpty() && !reset.getReNewPass().isEmpty() && !reset.getNewPass().equals(reset.getReNewPass())) {
+            result.rejectValue("reNewPass", "error.equal", "*Passwords do not match");
+        }
+        if (!isValid) {
+            result.rejectValue("newPass", "error.validatePass", "*Password does not meet criteria");
+        }
+
+        if (result.hasErrors()){
+            model.addAttribute("token", reset.getToken());
+            return "reset-password";
+        }
+
+        interviewServce.resetPassword(reset.getToken(),reset.getNewPass());
+        attributes.addFlashAttribute("message","Reset password done!");
+        return "redirect:/login";
     }
 }

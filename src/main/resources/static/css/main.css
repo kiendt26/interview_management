@@ -5,6 +5,7 @@
 .menu{
     background: #EEF1DF;
     width: 10%;
+    height: 100vh;
 
 }
 ul{
@@ -21,7 +22,6 @@ ul li a {
 
 }
 a{
-    font-weight: 700;
     color: black;
 }
 .menu-li{

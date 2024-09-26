@@ -43,11 +43,11 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
                     "JOIN s.interview u " +
                     "LEFT JOIN i.candidate c " +
                     "LEFT JOIN i.job j " +
-                    "WHERE (:interviewer IS NULL OR u.userName LIKE %:interviewer%) " +
+                    "WHERE (:interviewer IS NULL OR u.userId = :interviewer) " +
                     "AND (:status IS NULL OR i.status = :status )"
     )
     List<Object[]> findAllScheduleByIntereviewAndStatus(
-                        @Param("interviewer") String interviewer,
+                        @Param("interviewer") Long interviewer,
                         @Param("status") StatusInterview status
                 );
 

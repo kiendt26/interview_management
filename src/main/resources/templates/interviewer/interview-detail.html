@@ -17,15 +17,16 @@
         <h1>Interview Schedule</h1>
         <a th:href="@{/list-interview}">Interview Schedule List</a>
         <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
-        <span><i class="ps-3">New Interview Schedule</i></span>
+        <span><i class="ps-3">Detail Interview Schedule</i></span>
     </div>
 
 
 
     <form method="post" th:action="@{/interview-edit}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
 <!--        <input type="text" name="interviewId" th:field="${scheduleDetail.interviewId}">-->
-        <div>
-            <a  sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/send-email(userNames=${scheduleDetail.userNames}, interviewId=${scheduleDetail.interviewId})}" class="btn btn-primary mb-3 float-end">Send Reminder</a>
+
+        <div th:if="${scheduleDetail.status.name() == 'New'}" >
+            <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" th:href="@{/send-email(userNames=${scheduleDetail.userNames}, interviewId=${scheduleDetail.interviewId})}" class="btn btn-primary mb-3 float-end">Send Reminder</a>
         </div>
 
         <div class="col-6 mt-3">

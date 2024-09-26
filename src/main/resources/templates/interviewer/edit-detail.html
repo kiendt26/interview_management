@@ -23,7 +23,7 @@
 
 
     <form id="myForm" method="post" th:action="@{/interview/edit-schedule}" style="background: #f1f6fb" class="row" th:object="${scheduleDetail}">
-        <div>
+        <div th:if="${scheduleDetail.status.name() == 'New'}" >
             <a th:href="@{/interview/cancel(id=${scheduleDetail.scheduleId})}" id="cancelSchedule" type="button" class="btn btn-danger mb-3 float-end">Cancel Schedule</a>
         </div>
 
@@ -55,6 +55,7 @@
         <div class="col-6 mt-3 d-flex align-items-center">
             <label class="me-3" >Candidate name <span style="color: red">*</span> </label>
             <input type="text" th:field="*{candidate.fullname}" readonly class="input-left">
+            <input type="hidden" name="" th:field="*{candidate}">
 <!--            <select name="candidateName"  th:field="*{candidate.candidateId}" class="input-left">-->
 <!--                <option value="" >Select candidate...</option>-->
 <!--                <option th:each="candidate : ${candidateName}"-->

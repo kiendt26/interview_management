@@ -105,14 +105,16 @@ public class JobDTOImpl implements JobService {
 
 
         for (Job job : jobList) {
+            job.setStatus("Draft");
             if (job.getEndDate().isBefore(currentDate)) {
                 job.setStatus("Closed");
-            } else if (job.getStartDate().isAfter(currentDate)) {
+            }
+            if (job.getStartDate().isAfter(currentDate)) {
                 job.setStatus("Open");
 
-            } else {
-                job.setStatus("Draft");
             }
+
+
             // Lưu lại trạng thái mới nếu có thay đổi
             jobRepository.save(job);
         }

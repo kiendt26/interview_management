@@ -11,24 +11,25 @@
     <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-<div class="d-flex" style="align-items: center">
+    <div th:if="${message}" class="alert alert-success">
+        <h3 th:text="${message}"></h3>
+    </div>
+    <div class="d-flex" style="align-items: center">
+        <form th:action="@{/login-check}" method="post" th:object="${user}">
+            <h2 class="mb-5">IMS Recruitment</h2>
+            <label for="Username"  class=" mb-3 me-3 ms-1">Username:</label>
+            <input type="text" name="userName" id="username" th:field="*{userName}">
+            <br class=>
+            <label for="password" class=" mb-3 mt-3 me-3 ms-1">Password:</label>
+            <input type="password" name="password" id="password" class="ms-1" th:field="*{passwordHash}">
+            <br>
+            <input type="checkbox" style="width: 10%">Remember Me?
+            <a th:href="@{/forgot-password}" style="color: black;margin-left: 57px">Forgot password?</a>
 
-    <form th:action="@{/login-check}" method="post" th:object="${user}">
-        <h2 class="mb-5">IMS Recruitment</h2>
-        <label for="Username"  class=" mb-3 me-3 ms-1">Username:</label>
-        <input type="text" name="userName" id="username" th:field="*{userName}">
-        <br class=>
-        <label for="password" class=" mb-3 mt-3 me-3 ms-1">Password:</label>
-        <input type="password" name="password" id="password" class="ms-1" th:field="*{passwordHash}">
-        <br>
-        <input type="checkbox" style="width: 10%">Remember Me?
-        <a th:href="@{/forgot-password}" style="color: black;margin-left: 57px">Forgot password?</a>
+            <button class=" mt-3" type="submit" style="width: 20%;background: #ced4da;margin-left: 140px;border: none">Login</button>
 
-        <button class=" mt-3" type="submit" style="width: 20%;background: #ced4da;margin-left: 140px;border: none">Login</button>
-
-    </form>
-
-</div>
+        </form>
+    </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

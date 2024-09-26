@@ -18,6 +18,7 @@ public class SecurityConfig {
 
 
     private static final String[] PERMIT_ALL_LINK = {
+            "/reset/**",
             "/login",
             "/forgot-password",
             "/register",
@@ -25,7 +26,7 @@ public class SecurityConfig {
             "/css/**",
             "/js/**",
             "/send",
-            "/reset/reset-password/*",
+
 
     };
 
@@ -37,7 +38,6 @@ public class SecurityConfig {
     };
     private static final String[] INTERVIEW_PERMIT_LINK = {
             "/interview/submit"
-
     };
 
     @Bean

@@ -30,8 +30,32 @@ import java.util.*;
 
 @Service
 public class InterviewServce {
+    private final InterviewRepository interviewRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UsersRepository userRepository;
+    private final InterviewScheduleRepository interviewScheduleRepository;
+    private final CandidateRepository candidateRepository;
+    private final JavaMailSender mailSender;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+
     @Autowired
-    private InterviewRepository interviewRepository;
+    public  InterviewServce(
+            InterviewRepository interviewRepository,
+            PasswordEncoder passwordEncoder,
+            UsersRepository userRepository,
+            InterviewScheduleRepository interviewScheduleRepository,
+            CandidateRepository candidateRepository,
+            JavaMailSender mailSender,
+            PasswordResetTokenRepository passwordResetTokenRepository
+    ){
+        this.interviewRepository = interviewRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.interviewScheduleRepository = interviewScheduleRepository;
+        this.candidateRepository = candidateRepository;
+        this.mailSender = mailSender;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    }
     //read all
     public Page<InterviewDTO> getAllInterviews(int pageNumber, int pageSize ) {
 
@@ -145,7 +169,7 @@ public class InterviewServce {
     }
 
 
-    public Page<InterviewDTO> getAllInterviewsBySearch(String interviewer, String status, int pageNumber, int pageSize) {
+    public Page<InterviewDTO> getAllInterviewsBySearch(Long interviewer, String status, int pageNumber, int pageSize) {
 
         StatusInterview statusEnum = null;
         if (status != null && !status.isEmpty()) {
@@ -210,8 +234,7 @@ public class InterviewServce {
 
 
 
-    @Autowired
-    private UsersRepository userRepository;
+
 
     // selection interview
     public List<InterviewSearchByInterviewDTO> searchByInterview() {
@@ -272,8 +295,6 @@ public class InterviewServce {
 
     public Page<InterviewDTO> getAllInterviewsBySearchAll(String keyword, int pageNumber, int pageSize) {
 
-
-
         Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
         List<Object[]> rawResults = interviewRepository.findAllScheduleByKeyword(keyword);
         Map<String, InterviewDTO> interviewMap = new LinkedHashMap<>();
@@ -330,11 +351,6 @@ public class InterviewServce {
 
     }
 
-    @Autowired
-    private InterviewScheduleRepository interviewScheduleRepository;
-
-    @Autowired
-    private CandidateRepository candidateRepository;
 
     public void createNewSchedule(Schedule newSchedule, List<Long> interviewIds) {
         // Thêm schedule mới
@@ -369,7 +385,7 @@ public class InterviewServce {
         if (newSchedule != null){
             newSchedule.setStatus(StatusInterview.New);
             Candidate updateStatusCandidate = candidateRepository.findById(newSchedule.getCandidate().getCandidateId()).orElse(null);
-
+            updateStatusCandidate.setStatus(Status.WAITING_FOR_INTERVIEW);
             if (newSchedule.getResult() != ResultInterview.NA) {
                 newSchedule.setStatus(StatusInterview.Interviewed);
                 if (newSchedule.getResult().equals(ResultInterview.FAILDED)){
@@ -423,7 +439,6 @@ public class InterviewServce {
                 Candidate updateStatusCandidate = candidateRepository.findById(schedule.getCandidate().getCandidateId()).orElse(null);
                 if (newSchedule.getResult().equals(ResultInterview.FAILDED)){
                     updateStatusCandidate.setStatus(Status.FAILED_INTERVIEW);
-
                 }
                 if (newSchedule.getResult().equals(ResultInterview.PASS)){
                     updateStatusCandidate.setStatus(Status.PASSED_INTERVIEW);
@@ -438,27 +453,25 @@ public class InterviewServce {
     public void cancelSchedule(InterviewDTO schedule) {
         if (schedule != null){
             Schedule scheduleDB = interviewRepository.findById(schedule.getInterviewId()).orElse(null);
-            scheduleDB.setStatus(StatusInterview.Cancelled);
-            interviewRepository.save(scheduleDB);
-            Candidate updateStatusCandidate = candidateRepository.findById(scheduleDB.getCandidate().getCandidateId()).orElse(null);
-            updateStatusCandidate.setStatus(Status.CANCELLED_INTERVIEW);
-            candidateRepository.save(updateStatusCandidate);
+            if (scheduleDB != null){
+                scheduleDB.setStatus(StatusInterview.Cancelled);
+                interviewRepository.save(scheduleDB);
+                Candidate updateStatusCandidate = candidateRepository.findById(scheduleDB.getCandidate().getCandidateId()).orElse(null);
+                if (updateStatusCandidate != null){
+                    updateStatusCandidate.setStatus(Status.CANCELLED_INTERVIEW);
+                    candidateRepository.save(updateStatusCandidate);
+                }
+
+            }
+
+
         }
 
-    }
-
-    public Map<String, String> getAllResults() {
-        Map<String, String> resultsMap = new HashMap<>();
-        for (ResultInterview result : ResultInterview.values()) {
-            resultsMap.put(result.name(), result.getDisplayName());
-        }
-        return resultsMap;
     }
 
 
     //send mail to interviewer
-    @Autowired
-    private JavaMailSender mailSender;
+
 
     public void sendEmail(List<String> interviewer, Long interviewID) {
 
@@ -467,7 +480,7 @@ public class InterviewServce {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("Schedule Interview");
 
-        String linkSchedule = "http://localhost:8080/interview/detail?id="+interviewID;
+        String linkSchedule = "Link view schedule detail: http://localhost:8080/interview/detail?id="+interviewID;
         message.setText(linkSchedule);
 //        message.setFrom("recruiter1.com"); // Địa chỉ email của bạn
 
@@ -479,14 +492,12 @@ public class InterviewServce {
 
         // Cập nhật status
         Schedule schedule = interviewRepository.findById(interviewID).orElse(null);
-        schedule.setStatus(StatusInterview.Invited);
-        interviewRepository.save(schedule);
+        if (schedule != null){
+            schedule.setStatus(StatusInterview.Invited);
+            interviewRepository.save(schedule);
+        }
+
     }
-
-
-    @Autowired
-    private PasswordResetTokenRepository passwordResetTokenRepository;
-
 
     //tao token để lấy lại mật khẩu và gửi link để lấy lại mat khau
     public void initiatePasswordReset(String email){
@@ -510,21 +521,23 @@ public class InterviewServce {
 
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
     //set lại password
     public void resetPassword(String token, String newPass){
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
         if (passwordResetToken == null){
-           throw new InvalidTokenException("Link not va");
+           throw new InvalidTokenException("Link not valid");
         }
         User userDB = userRepository.findById(passwordResetToken.getUser().getUserId()).orElse(null);
         String encodePass = passwordEncoder.encode(newPass);
-        userDB.setPasswordHash(encodePass);
-        userRepository.save(userDB);
+        if (userDB!= null){
+            userDB.setPasswordHash(encodePass);
+            userRepository.save(userDB);
+        }
 
-        passwordResetToken.setToken(null);
+
         passwordResetToken.setExpiryDate(LocalDateTime.now().minusDays(1));
+        passwordResetTokenRepository.save(passwordResetToken);
     }
 }
 
