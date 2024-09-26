@@ -1,5 +1,19 @@
 $('document').ready(function(){
 
+    $('#assignLink').on('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định
+
+        const selectElement = $('select[name="recruiter.userId"]'); // Lấy dropdown
+        const userId = $(this).data('user-id'); // Lấy ID người dùng từ thuộc tính data-user-id
+
+        // Tìm option theo giá trị
+        // const option = selectElement.find(`option[value="${userId}"]`);
+
+
+        selectElement.val(userId);
+
+    });
+
     var $file = $('#file-input'),
         $label = $file.next('label'),
         $labelText = $label.find('span'),

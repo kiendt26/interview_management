@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
       th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/candidate.js})}">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Candidate</title>
+  <title>Home page</title>
   <link rel="stylesheet" href="../../static/css/main.css">
 </head>
 <body>
 <main class="col-12 mt-5">
-  <h4>Edit Candidate</h4>
-  <form th:action="@{/candidates/edit/{id}(id=${candidate.candidateId})}" th:object="${candidate}" method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
+
+  <div class="mb-4">
+    <h1>Candidate Create</h1>
+    <a th:href="@{/candidates/list}">Interview Schedule List</a>
+    <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
+    <span><i class="ps-3">Create Candidate</i></span>
+  </div>
+
+  <form th:action="@{/candidates/addNew}" th:object="${candidate}" method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
     <h4 style="font-size: 18px">I. Personal information</h4>
     <input type="hidden"  th:field="*{candidateId}"/>
 
@@ -18,7 +25,6 @@
       <input type="text" th:field="*{fullname}" placeholder="Type a title..." style="border: none;width: 65%;margin-left: 29px" >
       <div class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></div>
     </div>
-
     <div class="col-6 ps-3 mt-3">
       <label >Email <span style="color: red">*</span> </label>
       <input type="email" th:field="*{email}" placeholder="Type an email..." style="border: none;width: 65%;margin-left: 83px">
@@ -42,25 +48,40 @@
       <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
     </div>
     <div class="col-6 mt-3">
-      <label >Gender <span style="color: red">*</span> </label>
+      <label >Gender</label>
       <select th:field="*{gender}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 75px">
         <option value="true">Male</option>
         <option value="false">Female</option>
-        <option value="">Other...</option>
       </select>
     </div>
     <h4 class="mt-5" style="font-size: 18px">II. Professional information</h4>
 
-<!--    <div class="col-6  mt-3 " style="width: 50%">-->
-<!--      <label>CV attachment</label>-->
-<!--      <input type="file" th:field="*{attachment}" id="file-input" style="display: none">-->
-<!--      <label for="file-input" class="ms-3">-->
-<!--        <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>-->
-<!--        <span></span>-->
-<!--      </label>-->
-<!--      <i class="fa fa-times-circle remove"></i>-->
-<!--    </div>-->
+    <div class="col-6  mt-3 " style="width: 50%">
+      <label>CV attachment</label>
+      <input type="file" th:field="*{attachment}" id="attachment" name="attachment" accept=".pdf, .doc, .docx" style="display: none">
+      <label for="attachment" class="ms-3">
+        <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>
+      </label>
+      <i class="fa fa-times-circle remove"></i>
+    </div>
 
+    <!--        <div class="col-6 mt-3" style="width: 50%;">-->
+    <!--            <label>CV attachment</label>-->
+
+    <!--            &lt;!&ndash; Input file ẩn &ndash;&gt;-->
+    <!--            <input type="file" th:field="*{attachment}" id="attachment" name="attachment" accept=".pdf, .doc, .docx" style="display: none" onchange="showFileName()">-->
+
+    <!--            &lt;!&ndash; Nhãn cho input file với biểu tượng paperclip &ndash;&gt;-->
+    <!--            <label for="attachment" class="ms-3" style="cursor: pointer;">-->
+    <!--                <i class="fa fa-paperclip fa-2x" style="font-size: 22px"></i>-->
+    <!--            </label>-->
+
+    <!--            &lt;!&ndash; Hiển thị tên file đã chọn &ndash;&gt;-->
+    <!--            <span id="fileName" class="ms-3" style="font-style: italic; font-size: 14px;"></span>-->
+
+    <!--            &lt;!&ndash; Biểu tượng xóa file &ndash;&gt;-->
+    <!--            <i class="fa fa-times-circle remove" style="cursor: pointer;" onclick="removeFile()"></i>-->
+    <!--        </div>-->
 
     <div class="col-6 ps-3 mt-3">
       <label >Note</label>
@@ -69,16 +90,18 @@
     </div>
 
     <div class="col-6 mt-3">
-      <label >Position <span style="color: red">*</span> </label>
+      <label >Position <span style="color: red">*</span></label>
       <select th:field="*{position}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 43px">
+        <option value="">Select a position </option>
         <option th:each="position : ${T(fa.training.enums.CurrentPosition).values()}"
                 th:value="${position}"
                 th:text="${position.displayName}">Position</option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></div>
     </div>
 
     <div class="col-6 ps-3 mt-3">
-      <label >Status <span style="color: red">*</span>    </label>
+      <label >Status</label>
       <select th:field="*{status}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 80px">
         <option th:each="status : ${T(fa.training.enums.Status).values()}"
                 th:value="${status}"
@@ -88,14 +111,17 @@
     </div>
 
     <div class="col-6 mt-3">
-      <label>Skills <span style="color: red">*</span></label>
+      <label>Skills<span style="color: red">*</span> </label>
       <select id="skillSelectTag" th:field="*{skills}" class="form-control" style="border: none;width: 65%;padding: 8px 0px;margin-left: 60px" multiple>
         <option th:each="skill : ${T(fa.training.enums.Skills).values()}"
                 th:value="${skill}"
                 th:text="${skill.displayName}"
                 th:selected="${candidate.skills.contains(skill)}">Skill</option>
       </select>
-      <div class="text-danger" th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}"></div>
+      <div>
+        <span th:if="${#fields.hasErrors('skills')}" th:errorclass="error" th:errors="*{skills}"></span>
+      </div>
+
     </div>
 
     <div class="col-6 mt-3">
@@ -104,27 +130,47 @@
       <div class="text-danger" th:if="${#fields.hasErrors('yearOfExp')}" th:errors="*{yearOfExp}"></div>
     </div>
 
+    <!--        <div class="col-6 mt-3">-->
+    <!--            <label >Recruiter</label>-->
+    <!--            &lt;!&ndash;            <input type="text" name="" id="" placeholder="Type a title" >&ndash;&gt;-->
+    <!--            <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 36px" >-->
+    <!--                <option value="">Manager</option>-->
+    <!--                <option value="">Recruiter</option>-->
+    <!--            </select>-->
+    <!--        </div>-->
+
     <div class="col-6 mt-3">
-      <label >Recruiter <span style="color: red">*</span> </label>
-      <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-      <select style="border: none;width: 65%;padding: 8px 0px;margin-left: 36px" >
-        <option value="">Manager</option>
-        <option value="">Recruiter</option>
+      <label>Recruiter owner <span style="color: red">*</span></label>
+      <select th:field="*{recruiter.userId}" class="form-control" style="margin-top: -31px;border: none;width: 63%;padding: 8px 0px;margin-left: 130px">
+        <option value=""  selected>Select recruiter ...</option>
+        <option th:each="recruiter : ${recruiters}"
+                th:value="${recruiter.id}"
+                th:text="${recruiter.name}"
+        ></option>
       </select>
+      <div>
+        <span th:if="${#fields.hasErrors('recruiter')}" th:errorclass="error" th:errors="*{recruiter}"></span>
+      </div>
+
+      <div >
+        <a href="#" id="assignLink" class="ms-5 mb-3 input-left"
+           th:attr="data-user-id=${#authentication.principal.userDB.userId}">Assign me</a>
+      </div>
     </div>
+
     <div class="col-6 mt-3">
-      <label >Highest level  <span style="color: red">*</span> </label>
+      <label >Highest level<span style="color: red">*</span> </label>
       <select th:field="*{highestLevel}" style="border: none;width: 65%;padding: 8px 0px;margin-left: 44px" >
+        <option value="">Select a highest level </option>
         <option th:each="level : ${T(fa.training.enums.HighestLevel).values()}"
                 th:value="${level}"
                 th:text="${level.displayName}">Level</option>
       </select>
       <div class="text-danger" th:if="${#fields.hasErrors('highestLevel')}" th:errors="*{highestLevel}"></div>
     </div>
-
     <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
-      <button class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Update</button>
-      <a th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Cancel</a>
+      <button sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')" class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600">Submit</button>
+      <a th:href="@{/candidates/list}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</a>
     </div>
   </form>
 </main>
