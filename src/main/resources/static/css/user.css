@@ -1,0 +1,72 @@
+.search{
+    background: #f0f3fb;
+    margin-right: 40px;
+    width: 200px;
+    height: 30px;
+    border: none;
+}
+
+.btn-search{
+    font-weight: bold;
+    background: #d9d9d9;
+    padding: 3px 20px 3px 30px;
+    border: none;
+}
+
+.btn-add-interview{
+    float: right;
+    background: #d9d9d9;
+    padding: 3px 15px 3px 20px;
+    text-decoration: none;
+}
+
+.date-input-container {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+/*input[type="date"]::-webkit-calendar-picker-indicator{*/
+/*    opacity: 0;*/
+/*}*/
+
+input[type="time"]::-webkit-calendar-picker-indicator{
+    opacity: 0;
+}
+.date-input-container .fa-calendar,
+.date-input-container .fa-business-time {
+    position: absolute;
+    left: 80%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.input-left {
+    width: 50%;
+    margin-right: 32%;
+    float: right;
+}
+textarea:focus {
+    border: none;
+    outline: none;
+}
+.select2-container{
+    /*width: 100% !important;*/
+    /*margin-right: 32% !important;*/
+    /*float: right;*/
+}
+.btn-danger{
+    margin-top: -50px;
+}
+.btn-primary{
+    margin-top: -50px;
+}
+.fa-magnifying-glass:before{
+    margin-left: -70px;
+}
+.error{
+    color: red;
+    font-size: 13px;
+}

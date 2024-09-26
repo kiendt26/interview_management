@@ -1,6 +1,7 @@
 package fa.training.controllers;
 
 import fa.training.entities.Candidate;
+import fa.training.enums.Status;
 import fa.training.services.CandidateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -21,34 +24,34 @@ public class CandidateController {
     @GetMapping("/list")
     public String listCandidates(
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "status", required = false) String status,
             Model model) {
 
         if (keyword != null && !keyword.isEmpty()) {
             keyword = keyword.trim().replaceAll("\\s+", " ");
         }
 
-        List<Candidate> candidates = candidateService.searchCandidates(keyword, status);
+        List<Candidate> candidates = candidateService.searchCandidates(keyword);
 
         model.addAttribute("candidates", candidates);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("status", status);
 
-        return "candidates/list";
+        return "candidates/candidate-list";
     }
 
     @GetMapping("/create")
     public String newCandidateForm(Model model) {
+        model.addAttribute("recruiters", candidateService.selectByRecruiter());
         model.addAttribute("candidate", new Candidate());
-        return "candidates/create";
+        return "candidates/candidate-create";
     }
 
     @PostMapping("/addNew")
-    public String saveCandidate(@Valid @ModelAttribute Candidate candidate, BindingResult result) {
-
-
+    public String saveCandidate(@Valid @ModelAttribute Candidate candidate,
+                                BindingResult result,
+                                RedirectAttributes redirectAttributes
+                                ) {
         if (result.hasErrors()) {
-            return "candidates/create";
+            return "candidates/candidate-create";
         }
 
         if (candidate.getSkills() != null) {
@@ -66,7 +69,7 @@ public class CandidateController {
             Candidate c = candidate.get();
             c.setSkillsAsString(c.getSkillsAsString());
             model.addAttribute("candidate", c);
-            return "candidates/create";
+            return "candidates/candidate-create";
         }
         return "redirect:/candidates/list";
     }
@@ -78,8 +81,7 @@ public class CandidateController {
             Candidate c = candidate.get();
             c.setSkillsAsString(c.getSkillsAsString());
             model.addAttribute("candidate", c);
-            model.addAttribute("readonly", true); // Thêm thuộc tính để hiển thị form chỉ đọc
-            return "candidates/detail"; // Sử dụng template riêng cho detail
+            return "candidates/candidate-detail";
         }
         return "redirect:/candidates/list";
     }
@@ -94,14 +96,25 @@ public class CandidateController {
     @GetMapping("/candidates/search")
     public String searchCandidates(
             @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "status", required = false) String status,
             Model model) {
 
-        List<Candidate> candidates = candidateService.searchCandidates(keyword, status);
+        List<Candidate> candidates = candidateService.searchCandidates(keyword);
         model.addAttribute("candidates", candidates);
 
-        return "candidates/list";
+        return "candidates/candidate-list";
     }
+
+    @PostMapping("/ban/{id}")
+    public String banCandidate(@PathVariable Long id) {
+        Optional<Candidate> candidateOpt = candidateService.findById(id);
+        if (candidateOpt.isPresent()) {
+            Candidate candidate = candidateOpt.get();
+            candidate.setStatus(Status.BANNED);
+            candidateService.save(candidate);
+        }
+        return "redirect:/candidates/detail/" + id;
+    }
+
 
 
 }

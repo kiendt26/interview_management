@@ -1,5 +1,19 @@
 $('document').ready(function(){
 
+    $('#assignLink').on('click', function(event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định
+
+        const selectElement = $('select[name="recruiter.userId"]'); // Lấy dropdown
+        const userId = $(this).data('user-id'); // Lấy ID người dùng từ thuộc tính data-user-id
+
+        // Tìm option theo giá trị
+        // const option = selectElement.find(`option[value="${userId}"]`);
+
+
+        selectElement.val(userId);
+
+    });
+
     var $file = $('#file-input'),
         $label = $file.next('label'),
         $labelText = $label.find('span'),
@@ -43,4 +57,25 @@ function confirmDelete(url) {
             window.location.href = url;
         }
     });
+    }
+
+function showFileName() {
+    const fileInput = document.getElementById('attachment');
+    const fileNameSpan = document.getElementById('fileName');
+
+    if (fileInput.files.length > 0) {
+        fileNameSpan.textContent = fileInput.files[0].name;
+    } else {
+        fileNameSpan.textContent = '';
+    }
+}
+
+
+function removeFile() {
+    const fileInput = document.getElementById('attachment');
+    const fileNameSpan = document.getElementById('fileName');
+
+    // Xóa file đã chọn
+    fileInput.value = '';
+    fileNameSpan.textContent = '';
 }

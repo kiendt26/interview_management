@@ -16,11 +16,9 @@ import fa.training.services.InterviewServce;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -156,6 +154,10 @@ public class InterviewController {
 
         return "interviewer/interview-detail";
     }
+
+
+
+
 
     //edit schedule
     @GetMapping("/interview/edit")
@@ -314,8 +316,11 @@ public class InterviewController {
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
-    @GetMapping("/reset-password")
-    public String showResetPasswordPage(@RequestParam String token, Model model) {
+    @GetMapping("/reset/reset-password/{token}")
+    public String showResetPasswordPage(
+            @PathVariable("token") String token,
+            Model model
+    ) {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
 
         if (passwordResetToken == null) {
@@ -331,6 +336,6 @@ public class InterviewController {
 
         // Nếu token hợp lệ, truyền token đến view để sử dụng khi đặt lại mật khẩu
         model.addAttribute("token", token);
-        return "login"; // Trả về trang nơi người dùng có thể nhập mật khẩu mới
+        return "reset-password"; // Trả về trang nơi người dùng có thể nhập mật khẩu mới
     }
 }

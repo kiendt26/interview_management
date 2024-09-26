@@ -2,7 +2,6 @@ package fa.training.enums;
 
 
 public enum Department {
-
     IT("IT"),
     HR("HR"),
     FINANCE("Finance"),

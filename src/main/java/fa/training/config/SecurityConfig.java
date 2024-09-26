@@ -1,6 +1,7 @@
 package fa.training.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -21,11 +23,12 @@ public class SecurityConfig {
             "/login",
             "/forgot-password",
             "/register",
-            "/",
             "/css/**",
             "/js/**",
             "/send",
+            "/reset/reset-password/*",
     };
+
     private static final String[] ADMIN_PERMIT_LINK = {
             "/interview/edit",
             "/candidate/detail",
@@ -81,4 +84,13 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder);
 
     }
+
+    @Bean
+    public LocalValidatorFactoryBean getValidator(MessageSource messageSource) {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        validator.setValidationMessageSource(messageSource);
+        return validator;
+    }
+
+
 }

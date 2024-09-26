@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:replace="~{layout/template::areas(~{::title},~{::main},@{/css/candidate.css},@{/js/user.js})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="../../static/css/main.css">
+</head>
+<body>
+<main class="col-12 mt-5">
+
+    <div class="d-flex justify-content-between">
+        <h4>Candidate Detail</h4>
+
+        <form th:if="${user.status.name() == 'Active'}"
+              th:action="@{/users/toggleStatus/{id}(id=${user.userId})}"
+              method="post">
+            <button class="btn btn-danger" type="submit">In-Active</button>
+        </form>
+
+        <form th:if="${user.status.name() == 'Inactive'}"
+              th:action="@{/users/toggleStatus/{id}(id=${user.userId})}"
+              method="post">
+            <button class="btn btn-success" type="submit">Active</button>
+        </form>
+
+
+    </div>
+    <form th:object="${user}"  method="post" style="background: #f1f6fb" class="pt-3 pb-3 row">
+
+        <div class="col-6 mt-3">
+            <label >Username</label>
+            <label id="userName" th:text="*{userName}" style="border: none;width: 65%;margin-left: 29px" ></label>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Email</label>
+            <label id="email" th:text="*{email}" style="border: none;width: 65%;margin-left: 29px" ></label>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label >Role</label>
+            <label id="role" th:text="*{role}" style="border: none;width: 65%;padding: 8px 0px; margin-left: 64px; font-weight: bold"></label>
+        </div>
+
+        <div class="col-6 mt-3">
+            <label>Status</label>
+            <label id="status" th:text="*{status}" style="border: none;width: 65%;margin-left: 64px; font-weight: bold"></label>
+        </div>
+
+        <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
+            <a th:href="@{/users}" class="btn ms-5 ps-4 pe-4   " style="background: #e1dfdf;font-weight: 600">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
