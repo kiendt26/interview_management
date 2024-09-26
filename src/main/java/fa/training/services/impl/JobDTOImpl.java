@@ -110,8 +110,6 @@ public class JobDTOImpl implements JobService {
             } else if (job.getStartDate().isAfter(currentDate)) {
                 job.setStatus("Open");
 
-            } else {
-                job.setStatus("Draft");
             }
             // Lưu lại trạng thái mới nếu có thay đổi
             jobRepository.save(job);
@@ -156,19 +154,18 @@ public class JobDTOImpl implements JobService {
         return convertEntity2DTO(job,null);    }
 
     @Override
-    public Page<JobDTO> searchJob(String keyword, String status,int page, int size) {
+    public Page<JobDTO> searchJob(String keyword, String status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         if ((keyword == null || keyword.isEmpty()) && (status == null || status.isEmpty())) {
-            return getAll(page, size);
+            return getAll(page,size);
 
         } else if (status == null || status.isEmpty()) {
-            return jobRepository.findByKeyword(keyword, pageable);
+            return jobRepository.findByKeyword(keyword,pageable);
         } else if (keyword == null || keyword.isEmpty()) {
             return jobRepository.findByStatus(status, pageable);
         } else {
             return jobRepository.findByKeywordAndStatus(keyword, status, pageable);
         }
-
     }
 
 

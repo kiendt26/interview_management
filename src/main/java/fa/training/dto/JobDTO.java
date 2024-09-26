@@ -57,5 +57,9 @@ public class JobDTO {
     private String description;
     private String status;
 
-
+    public JobDTO(String jobTitle, @NotEmpty(message = "Skill must not empty") String[] skillsDTO, @NotEmpty(message = "Level must not empty") String[] levelDTO) {
+        this.jobTitle = jobTitle;
+        this.skillsDTO = skillsDTO;
+        this.levelDTO = levelDTO;
+    }
 }

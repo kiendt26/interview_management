@@ -9,11 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface JobRepository extends JpaRepository<Job,Long> {
-    @Query("SELECT j FROM Job j WHERE " +
+    @Query("SELECT j Job " +
+            "FROM Job j WHERE " +
             "(LOWER(j.jobTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(j.skills) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(j.level) LIKE LOWER(CONCAT('%', :keyword, '%'))) ")
