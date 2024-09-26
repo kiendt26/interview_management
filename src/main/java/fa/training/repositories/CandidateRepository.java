@@ -18,7 +18,6 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
             "LOWER(c.phone) LIKE LOWER(CONCAT('%', :keyword, '%'))) ")
     List<Candidate> findByKeyword(@Param("keyword") String keyword);
 
-    List<Candidate> findByStatus(String status);
 
     @Query("SELECT c FROM Candidate c WHERE " +
             "(LOWER(TRIM(c.fullname)) LIKE LOWER(CONCAT('%', TRIM(:keyword), '%')) OR " +

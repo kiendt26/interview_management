@@ -5,6 +5,7 @@ import fa.training.enums.Status;
 import fa.training.services.CandidateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,9 +49,10 @@ public class CandidateController {
     @PostMapping("/addNew")
     public String saveCandidate(@Valid @ModelAttribute Candidate candidate,
                                 BindingResult result,
-                                RedirectAttributes redirectAttributes
-                                ) {
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("recruiters", candidateService.selectByRecruiter());
             return "candidates/candidate-create";
         }
 
@@ -69,10 +71,28 @@ public class CandidateController {
             Candidate c = candidate.get();
             c.setSkillsAsString(c.getSkillsAsString());
             model.addAttribute("candidate", c);
-            return "candidates/candidate-create";
+            model.addAttribute("recruiters", candidateService.selectByRecruiter());
+            return "candidates/candidate-edit";
         }
         return "redirect:/candidates/list";
     }
+
+    @PostMapping("/update")
+    public String updateCandidate(@Valid @ModelAttribute Candidate candidate,
+                                  BindingResult result,
+                                  RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "candidates/candidate-edit";
+        }
+
+        if (candidate.getSkills() != null) {
+            candidate.setSkills(candidate.getSkills());
+        }
+
+        candidateService.save(candidate);
+        return "redirect:/candidates/list";
+    }
+
 
     @GetMapping("/detail/{id}")
     public String detailCandidateForm(@PathVariable Long id, Model model) {
@@ -114,7 +134,5 @@ public class CandidateController {
         }
         return "redirect:/candidates/detail/" + id;
     }
-
-
 
 }

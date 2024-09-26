@@ -46,8 +46,9 @@ public class Candidate {
     private String address;
 
     @NotNull(message = "Gender is required")
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    private Boolean gender;
+    private Gender gender;
 
     @Column(name = "attachment", length = 255)
     private String attachment;

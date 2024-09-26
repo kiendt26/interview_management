@@ -3,6 +3,7 @@ package fa.training.services;
 import fa.training.dto.Interview.InterviewSearchByInterviewDTO;
 import fa.training.entities.Candidate;
 import fa.training.enums.Role;
+import fa.training.enums.Status;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.InterviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class CandidateService {
     public Candidate save(Candidate candidate) {
         return candidateRepository.save(candidate);
     }
+
 
     public void deleteById(Long id) {
         candidateRepository.deleteById(id);
