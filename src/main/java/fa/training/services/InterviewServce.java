@@ -13,6 +13,7 @@ import fa.training.repositories.Interview.InterviewScheduleRepository;
 import fa.training.repositories.Interview.PasswordResetTokenRepository;
 import fa.training.repositories.InterviewRepository;
 import fa.training.repositories.UsersRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +23,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -423,6 +425,7 @@ public class InterviewServce {
 
     }
     //submit
+    @Validated
     public void submitSchedule(InterviewDTO newSchedule){
         if (newSchedule != null){
             Schedule schedule = interviewRepository.findById(newSchedule.getInterviewId()).orElse(null);

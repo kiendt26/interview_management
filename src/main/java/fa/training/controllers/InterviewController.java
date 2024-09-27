@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,6 +121,12 @@ public class InterviewController {
             RedirectAttributes redirectAttributes
 
     ){
+        if (schedule.getScheduledDate() != null){
+            if (schedule.getScheduledDate().isBefore(LocalDate.now())){
+                result.rejectValue("scheduledDate", "error.scheduledDate", "*Scheduled date must be today or in the future");
+            }
+        }
+
         if (idInterviewer == null || idInterviewer.isEmpty()) {
             result.rejectValue("interviewScheduleList", "error.interviewScheduleList", "*Must selected interviewer");
         }

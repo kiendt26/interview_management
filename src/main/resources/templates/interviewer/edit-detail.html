@@ -39,6 +39,7 @@
 
             </div>
         </div>
+        <!--                            th:selected="${scheduleDetail.job.jobId == job.id}"-->
 
         <div class="col-6 mt-3">
             <label >Job <span style="color: red">*</span> </label>
@@ -47,10 +48,12 @@
                     <option value="" >Select a job...</option>
                     <option
                             th:each="job : ${jobs}"
+                            th:if="${job.id} != ${scheduleDetail.job.jobId}"
                             th:value="${job.id}"
                             th:text="${job.name}"
-                            th:selected="${scheduleDetail.job.jobId == job.id}"
+
                     ></option>
+                    <option th:value="${scheduleDetail.job.jobId}" th:text="${scheduleDetail.job.jobTitle}" selected></option>
                 </select>
                 <div>
                     <span th:if="${#fields.hasErrors('job')}" th:errorclass="error" th:errors="*{job}"></span>

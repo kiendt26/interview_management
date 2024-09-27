@@ -31,7 +31,7 @@ public class Schedule {
     private String scheduleTitle;
 
     @NotNull(message = "*Scheduled date cannot be null")
-    @FutureOrPresent(message = "*Scheduled date must be today or in the future")
+//    @FutureOrPresent(message = "*Scheduled date must be today or in the future")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @Column(name = "Schedule_Date")
     private LocalDate scheduledDate;
