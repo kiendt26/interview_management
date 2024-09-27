@@ -4,10 +4,8 @@ import fa.training.dto.Interview.InterviewDTO;
 import fa.training.dto.Interview.InterviewSearchByInterviewDTO;
 import fa.training.dto.Interview.InterviewSelectDTO;
 import fa.training.dto.Interview.ResetPassDTO;
-import fa.training.entities.InterviewSchedule;
-import fa.training.entities.PasswordResetToken;
-import fa.training.entities.Schedule;
-import fa.training.entities.User;
+import fa.training.dto.JobDTO;
+import fa.training.entities.*;
 import fa.training.enums.ResultInterview;
 import fa.training.enums.StatusInterview;
 import fa.training.enums.StatusUser;
@@ -15,8 +13,10 @@ import fa.training.repositories.Interview.InterviewScheduleRepository;
 import fa.training.repositories.Interview.PasswordResetTokenRepository;
 import fa.training.repositories.InterviewRepository;
 //import fa.training.repositories.Interview.InterviewScheduleRepository;
+import fa.training.repositories.JobRepository;
 import fa.training.repositories.UsersRepository;
 import fa.training.services.InterviewServce;
+import fa.training.services.JobService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -199,6 +199,8 @@ public class InterviewController {
         return "interviewer/edit-detail";
     }
 
+    @Autowired
+    private JobRepository jobRepository;
     @PostMapping("/interview/edit-schedule")
     public String edit(
             @Valid
@@ -235,6 +237,8 @@ public class InterviewController {
             for (InterviewSelectDTO interview : listInterview) {
                 existingUsersMap.put(interview.getId(), interview.getName());
             }
+            Job jobSelect = jobRepository.findById(schedule.getJob().getJobId()).orElse(null);
+            schedule.setJob(jobSelect);
             model.addAttribute("existingUsersMap", existingUsersMap);
             List<ResultInterview> result = Arrays.asList(ResultInterview.values());
             model.addAttribute("results", result);
