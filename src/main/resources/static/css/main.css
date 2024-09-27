@@ -6,6 +6,8 @@
     background: #EEF1DF;
     width: 10%;
     height: 100vh;
+    position: fixed;
+
 
 }
 ul{
@@ -37,6 +39,10 @@ h4{
     display: flex;
     justify-content: space-between;
     height: 100%;
+    margin-left: 200px !important;
+}
+
+
 
 }
 p{
