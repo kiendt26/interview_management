@@ -23,7 +23,7 @@ public class JobDTO {
     @NotBlank(message = "Job Title must not be blank")
     private String jobTitle;
 
-    @Future(message = "Date must be in future")
+//    @Future(message = "Date must be in future")
     @NotNull(message = "Start Date must not be blank")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)

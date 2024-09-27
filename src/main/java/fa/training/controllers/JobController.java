@@ -64,6 +64,7 @@ public class JobController {
     public String jobCreate(Model model,@ModelAttribute("dto") JobDTO jobDTO) {
         model.addAttribute("job", new Job());
 
+
         return "job/job-create";
     }
     @PostMapping("/job/create")
@@ -79,6 +80,12 @@ public class JobController {
 //            result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
 //
 //        }
+        if (jobDTO.getStartDate() != null){
+            if (jobDTO.getStartDate().isBefore(LocalDate.now())){
+                result.rejectValue("startDate", "error.startDate", "start date must be today or in the future");
+            }
+        }
+
 
         if (result.hasErrors()) {
             return "job/job-create";
