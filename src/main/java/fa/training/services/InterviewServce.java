@@ -3,10 +3,7 @@ package fa.training.services;
 import fa.training.dto.Interview.InterviewDTO;
 import fa.training.dto.Interview.InterviewSearchByInterviewDTO;
 import fa.training.entities.*;
-import fa.training.enums.ResultInterview;
-import fa.training.enums.Role;
-import fa.training.enums.Status;
-import fa.training.enums.StatusInterview;
+import fa.training.enums.*;
 import fa.training.exception.InvalidTokenException;
 import fa.training.repositories.CandidateRepository;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
@@ -239,7 +236,7 @@ public class InterviewServce {
 
     // selection interview
     public List<InterviewSearchByInterviewDTO> searchByInterview() {
-        List<Object[]> rawResults = interviewRepository.searchByInterview(Role.Interview);
+        List<Object[]> rawResults = interviewRepository.searchByInterview(Role.Interview, StatusUser.Active);
         List<InterviewSearchByInterviewDTO> userDTOs = new ArrayList<>();
 
         for (Object[] result : rawResults) {

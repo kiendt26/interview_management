@@ -4,6 +4,7 @@ import fa.training.entities.Schedule;
 import fa.training.enums.Role;
 import fa.training.enums.Status;
 import fa.training.enums.StatusInterview;
+import fa.training.enums.StatusUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -65,8 +66,8 @@ public interface InterviewRepository extends JpaRepository<Schedule, Long> {
 
 
     // List interview trong search by interview
-    @Query("SELECT u.userId ,u.userName FROM User u WHERE u.role = :role")
-    List<Object[]> searchByInterview(@Param("role") Role role);
+    @Query("SELECT u.userId ,u.userName FROM User u WHERE u.role = :role AND u.status = :status")
+    List<Object[]> searchByInterview(@Param("role") Role role, @Param("status") StatusUser status);
 
     // List candidate trong select status open
     @Query("SELECT c.candidateId, c.fullname FROM Candidate c WHERE c.status = :statusCandidate" )

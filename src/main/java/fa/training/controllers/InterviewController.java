@@ -1,6 +1,8 @@
 package fa.training.controllers;
 
 import fa.training.dto.Interview.InterviewDTO;
+import fa.training.dto.Interview.InterviewSearchByInterviewDTO;
+import fa.training.dto.Interview.InterviewSelectDTO;
 import fa.training.dto.Interview.ResetPassDTO;
 import fa.training.entities.InterviewSchedule;
 import fa.training.entities.PasswordResetToken;
@@ -26,9 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Controller
@@ -174,15 +174,23 @@ public class InterviewController {
     ){
         Schedule scheduleDB = interviewRepository.findById(idInterviewSchedule).orElse(null);
 
-        List<String> userNames = new ArrayList<>();
+        List<InterviewSelectDTO> listInterview = new ArrayList<>();
         for (InterviewSchedule interview : scheduleDB.getInterviewScheduleList()) {
-            userNames.add(interview.getInterview().getUserName());
+            Long userId = interview.getInterview().getUserId(); // Lấy userId
+            String userName = interview.getInterview().getUserName(); // Lấy userName
+            listInterview.add(new InterviewSelectDTO(userId, userName)); // Thêm vào danh sách
         }
 
+        // truyen list vao map de loai ra cai trung nhau
+        Map<Long, String> existingUsersMap = new HashMap<>();
+        for (InterviewSelectDTO interview : listInterview) {
+            existingUsersMap.put(interview.getId(), interview.getName());
+        }
+        model.addAttribute("existingUsersMap", existingUsersMap);
         List<ResultInterview> result = Arrays.asList(ResultInterview.values());
 
         model.addAttribute("results", result);
-        model.addAttribute("userNames", userNames);
+        model.addAttribute("userNames", listInterview);
         model.addAttribute("idInterviewer", interviewServce.searchByInterview());
         model.addAttribute("candidateName", interviewServce.selectByCandidate());
         model.addAttribute("scheduleDetail", scheduleDB);
@@ -217,14 +225,20 @@ public class InterviewController {
         if (bindingResult.hasErrors()){
             Schedule scheduleDB = interviewRepository.findById(schedule.getScheduleId()).orElse(null);
 
-            List<String> userNames = new ArrayList<>();
+            List<InterviewSelectDTO> listInterview = new ArrayList<>();
             for (InterviewSchedule interview : scheduleDB.getInterviewScheduleList()) {
-                userNames.add(interview.getInterview().getUserName());
+                Long userId = interview.getInterview().getUserId();
+                String userName = interview.getInterview().getUserName();
+                listInterview.add(new InterviewSelectDTO(userId, userName));
             }
-
+            Map<Long, String> existingUsersMap = new HashMap<>();
+            for (InterviewSelectDTO interview : listInterview) {
+                existingUsersMap.put(interview.getId(), interview.getName());
+            }
+            model.addAttribute("existingUsersMap", existingUsersMap);
             List<ResultInterview> result = Arrays.asList(ResultInterview.values());
             model.addAttribute("results", result);
-            model.addAttribute("userNames", userNames);
+            model.addAttribute("userNames", listInterview);
             model.addAttribute("idInterviewer", interviewServce.searchByInterview());
             model.addAttribute("candidateName", interviewServce.selectByCandidate());
             model.addAttribute("scheduleDetail", schedule);

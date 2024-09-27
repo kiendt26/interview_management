@@ -82,9 +82,15 @@
             <div  class="input-left">
                 <select id="skillSelectTag"  name="userNames" class="form-select" multiple="multiple">
                     <option th:each="id : ${idInterviewer}"
+                            th:if="${!existingUsersMap.containsKey(id.id)}"
                             th:value="${id.id}"
-                            th:text="${id.name}"
-                            th:selected="${userNames.contains(id.name)}"></option>
+                            th:text="${id.name} "
+                    ></option>
+                    <option th:each="users : ${userNames}"
+                            th:value="${users.id}"
+                            th:text="${users.name}"
+                            selected
+                    ></option>
                 </select>
                 <div>
                     <span th:if="${#fields.hasErrors('interviewScheduleList')}" th:errorclass="error" th:errors="*{interviewScheduleList}"></span>
