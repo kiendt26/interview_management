@@ -24,26 +24,26 @@
                     <i class="fa-brands fa-dev me-1" style="font-size: 36px;"></i> IMS</a>
             </li>
             <li class="menu-li">
-                <a th:href="@{/}"><i class="fa-solid fa-house mb-2" style="font-size: 26px;"></i></a>
+                <a th:href="@{/}" class="nav-item active"><i class="fa-solid fa-house mb-2" style="font-size: 26px;"></i></a>
             </li>
             <li class="menu-li">
-                <a th:href="@{/candidates/list}"><i class="fa-solid fa-user-group mb-2" style="font-size: 26px;display: block;margin-left: 22px;"></i>
+                <a th:href="@{/candidates/list}" class="nav-item"><i class="fa-solid fa-user-group mb-2" style="font-size: 26px;display: block;margin-left: 22px;"></i>
                     Candidate</a>
             </li>
             <li class="menu-li">
-                <a th:href="@{/job/job-list}"><i class="fa-solid fa-briefcase mb-2" style="font-size: 26px;display: block;margin-left: 0px;"></i>
+                <a th:href="@{/job/job-list}" class="nav-item"><i class="fa-solid fa-briefcase mb-2" style="font-size: 26px;display: block;margin-left: 0px;"></i>
                     Job</a>
             </li>
             <li class="menu-li">
-                <a th:href="@{/list-interview}"><i class="fa-solid fa-comments mb-2" style="font-size: 26px;display: block;margin-left: 16px;"></i>
+                <a th:href="@{/list-interview}" class="nav-item"><i class="fa-solid fa-comments mb-2" style="font-size: 26px;display: block;margin-left: 16px;"></i>
                     Interview</a>
             </li>
             <li class="menu-li">
-                <a><i class="fa-solid fa-file-invoice mb-2" style="font-size: 26px;display: block;margin-left: 8px;"></i>
+                <a class="nav-item"><i class="fa-solid fa-file-invoice mb-2" style="font-size: 26px;display: block;margin-left: 8px;"></i>
                     Offer</a>
             </li>
             <li class="menu-li">
-                <a sec:authorize="hasAnyAuthority('Admin')" th:href="@{/users}"><i class="fa-solid fa-user-pen mb-2" style="font-size: 26px;display: block;margin-left: 3px;"></i>
+                <a sec:authorize="hasAnyAuthority('Admin')" th:href="@{/users}" class="nav-item"><i class="fa-solid fa-user-pen mb-2" style="font-size: 26px;display: block;margin-left: 3px;"></i>
                     User</a>
             </li>
         </ul>

@@ -106,7 +106,7 @@
                 <!-- Previous button -->
                 <!--               -->
                 <li  th:if="${jobDTOS.hasPrevious()}" class="page-item p-0">
-                    <a class="page-link border-0" th:href="@{/job/job-list(page=${jobDTOS.getNumber()})}">
+                    <a class="page-link border-0" th:href="@{/job/job-list(page=${jobDTOS.getNumber() -1})}">
                         <i class="fa-solid fa-chevron-left " style="color: #000000;"></i>
                     </a>
                 </li>
@@ -114,7 +114,7 @@
                 <!-- Next button -->
                 <!--                -->
                 <li th:if="${jobDTOS.hasNext()}" class="page-item p-0">
-                    <a class="page-link border-0 " th:href="@{/job/job-list(page=${jobDTOS.getNumber() + 2})}">
+                    <a class="page-link border-0 " th:href="@{/job/job-list(page=${jobDTOS.getNumber() + 1})}">
                         <i class="fa-solid fa-chevron-right" style="color: #000000;"></i>
                     </a>
                 </li>

@@ -5,7 +5,6 @@ input:hover{
     border: none;
 }
 .skills-container {
-    margin: 20px 0;
     font-family: Arial, sans-serif;
     display: flex;
 }
@@ -54,7 +53,7 @@ li{
     color: red;
 }
 .select2-container {
-    width: 100% !important;
+    width: 90% !important;
     display: block;
 
 }
@@ -64,5 +63,8 @@ li{
 }
 .skills-container{
     display: inline-block;
+}
+.select2-container--default .select2-results>.select2-results__options{
+    margin-bottom: 60px;
 }
 

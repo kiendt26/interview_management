@@ -42,6 +42,7 @@ public class JobDTO {
     @NotEmpty(message = "Skill must not empty")
     private String[] skillsDTO;
 
+    @Future(message = "Date must be in future")
     @NotNull(message = "End Date must not be blank")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.TIMESTAMP)
