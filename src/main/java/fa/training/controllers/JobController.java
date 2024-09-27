@@ -70,15 +70,16 @@ public class JobController {
     public String jobCreate(@Validated @ModelAttribute("dto") JobDTO jobDTO,BindingResult result, Model model) {
         LocalDate localDate = LocalDate.now();
 
-        if(!(jobDTO.getStartDate() != null) &&  jobDTO.getStartDate().isAfter(localDate)) {
-            jobDTO.setStatus("Open");
-            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
-        }
-        if(jobDTO.getEndDate() != null &&  jobDTO.getEndDate().isBefore(localDate)) {
-            jobDTO.setStatus("Closed");
-            result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
+//        if(!(jobDTO.getStartDate() != null) &&  jobDTO.getStartDate().isAfter(localDate)) {
+//            jobDTO.setStatus("Open");
+//            result.rejectValue("startDate", "error.startDate", "Start date cannot be in the past");
+//        }
+//        if(jobDTO.getEndDate() != null &&  jobDTO.getEndDate().isBefore(localDate)) {
+//            jobDTO.setStatus("Closed");
+//            result.rejectValue("endDate", "error.endDate", "End date cannot be in the past");
+//
+//        }
 
-        }
         if (result.hasErrors()) {
             return "job/job-create";
         }

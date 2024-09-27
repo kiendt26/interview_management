@@ -58,17 +58,19 @@
 
         </div>
         <div class="col-6 mt-3 skills-container">
-            <label class="skills-label">Benefits <span style="color: red">*</span> </label>
-<!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px" class="ms-4 skills-select" name="benefitDTO" id="benefitDTO" multiple="multiple" th:field="*{benefitDTO}" disabled>
+            <div class="d-flex">
+                <label class="skills-label">Benefits <span style="color: red">*</span> </label>
+                <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+                <select style="border: none;width: 75%;padding: 8px 0px" class="ms-4 skills-select" name="benefitDTO" id="benefitDTO" multiple="multiple" th:field="*{benefitDTO}" disabled>
 
-                <option th:value="Travel">Travel</option>
-                <option th:value="25LeaveOff">25 leave off</option>
-                <option th:value="HybridWorking">Hybrid working</option>
-                <option th:value="Lunch">Lunch</option>
-                <option th:value="HealthcareInsurance">Healthcare insurance</option>
+                    <option th:value="Travel">Travel</option>
+                    <option th:value="25LeaveOff">25 leave off</option>
+                    <option th:value="HybridWorking">Hybrid working</option>
+                    <option th:value="Lunch">Lunch</option>
+                    <option th:value="HealthcareInsurance">Healthcare insurance</option>
 
-            </select>
+                </select>
+            </div>
         </div>
 
         <div class="col-6 mt-3">
@@ -76,26 +78,35 @@
             <input type="text" name="workingAddress" id="workingAddress" placeholder="Type a title" style="border: none;width: 75%;margin-left: 15px" th:field="*{workingAddress}" disabled>
         </div>
         <div class="col-6  mt-3 skills-container">
-            <label class="skills-label">Level <span style="color: red">*</span> </label>
-            <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
-            <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 50px" name="levelDTO" id="levelDTO" multiple="multiple" class="skills-select" th:field="*{levelDTO}" disabled>
+            <div class="d-flex">
+                <label class="skills-label">Level <span style="color: red">*</span> </label>
+                <!--            <input type="text" name="" id="" placeholder="Type a title" >-->
+                <select style="border: none;width: 75%;padding: 8px 0px;margin-left: 50px" name="levelDTO" id="levelDTO" multiple="multiple" class="skills-select" th:field="*{levelDTO}" disabled>
+                    <option th:value="Fresher">Fresher</option>
+                    <option th:value="Junior">Junior</option>
+                    <option th:value="Senior">Senior</option>
+                    <option th:value="Leader">Leader</option>
+                    <option th:value="Manager">Manager</option>
+                    <option th:value="ViceHead">Vice Head</option>
 
-                <option th:value="Fresher">Fresher</option>
-                <option th:value="Junior">Junior</option>
-                <option th:value="Senior">Senior</option>
-                <option th:value="Leader">Leader</option>
-                <option th:value="Manager">Manager</option>
-                <option th:value="ViceHead">Vice Head</option>
+
+                </select>
+            </div>
 
 
-            </select>
+
+
         </div>
 
-        <div class="col-6"></div>
+        <div class="col-6">
+            <label >Status</label>
+            <input type="text" name="status" id="status" placeholder="Type a title" style="border: none;width: 75%;margin-left: 15px" disabled th:field="*{status}">
+        </div>
         <div class="col-6 mt-3 d-flex">
             <label style="">Description</label>
-            <textarea placeholder="Type a Description" cols="42" rows="4" style="border: none" class="ms-3" name="description" id="description" th:field="*{description}" disabled></textarea>
+            <textarea placeholder="" cols="42" rows="4" style="border: none" class="ms-3" name="description" id="description" th:field="*{description}" disabled></textarea>
         </div>
+
         <div style="margin-top: 150px;margin-bottom: 50px" class="d-flex justify-content-center">
             <a sec:authorize="hasAnyAuthority('Admin', 'Recruiter', 'Manager')"  th:href="@{'/job/job-edit/' + ${dto.jobId}}">
                 <button class="btn ms-5 ps-4 pe-4" style="background: #e1dfdf;font-weight: 600" type="button">Edit</button>
