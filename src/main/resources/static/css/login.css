@@ -53,6 +53,6 @@ h2 {
     text-align: center;
 }
 .error{
-    margin-left: 130px;
+    margin-left: 130px !important;
     color: red;
 }

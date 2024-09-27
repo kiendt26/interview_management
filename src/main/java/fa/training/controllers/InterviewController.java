@@ -8,6 +8,7 @@ import fa.training.entities.Schedule;
 import fa.training.entities.User;
 import fa.training.enums.ResultInterview;
 import fa.training.enums.StatusInterview;
+import fa.training.enums.StatusUser;
 import fa.training.repositories.Interview.InterviewScheduleRepository;
 import fa.training.repositories.Interview.PasswordResetTokenRepository;
 import fa.training.repositories.InterviewRepository;
@@ -310,6 +311,11 @@ public class InterviewController {
         User user = usersRepository.findByEmail(email);
         if (user == null) {
             model.addAttribute("emailError", "Email  not exist!");
+            model.addAttribute("email", email);
+            return "forgot-password";
+        }
+        if(!user.getStatus().equals(StatusUser.Active) || user.getStatus() == null){
+            model.addAttribute("emailError", "User use this email is not active!");
             model.addAttribute("email", email);
             return "forgot-password";
         }
